@@ -724,6 +724,135 @@ body {
 .home-quick-bar {
   display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: var(--space-md);
 }
+.home-howto {
+  margin-top: var(--space-lg); border: 1px solid var(--border); border-radius: var(--radius-md);
+  background: var(--bg-card); overflow: hidden;
+}
+.home-howto > summary {
+  padding: 12px 16px; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+  list-style: none; user-select: none;
+}
+.home-howto > summary::-webkit-details-marker { display: none; }
+.home-howto > summary::after {
+  content: "\25b8"; float: right; color: var(--text-muted); font-size: 0.75rem; transition: transform 0.15s;
+}
+.home-howto[open] > summary::after { transform: rotate(90deg); }
+.home-howto-body { padding: 0 16px 16px; border-top: 1px solid var(--border); }
+.home-journey-intro {
+  font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; margin: var(--space-md) 0;
+}
+.home-journey-steps {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-sm);
+}
+.home-journey-step {
+  text-align: left; padding: 12px 14px; border-radius: var(--radius-md);
+  border: 1px solid var(--border); background: var(--bg-card);
+  cursor: pointer; font-family: inherit; color: inherit;
+  transition: border-color 0.15s, background 0.15s;
+}
+.home-journey-step:hover { border-color: rgba(90,157,224,0.35); background: var(--bg-hover); }
+.home-journey-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%; font-size: 0.68rem; font-weight: 700;
+  background: var(--accent-dim); color: var(--accent-soft); margin-bottom: 8px;
+}
+.home-journey-step h4 { font-size: 0.82rem; font-weight: 600; margin-bottom: 6px; }
+.home-journey-step p { font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; }
+.home-journey-where { display: block; margin-top: 8px; font-size: 0.66rem; color: var(--accent); }
+.panel-head-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.panel-edit-btn {
+  padding: 4px 8px; font-size: 0.64rem; font-family: inherit; font-weight: 500;
+  border: 1px dashed var(--border-strong); border-radius: var(--radius-sm);
+  background: transparent; color: var(--text-muted); cursor: pointer; white-space: nowrap;
+}
+.panel-edit-btn:hover { color: var(--accent-soft); border-color: rgba(90,157,224,0.4); background: var(--accent-dim); }
+.passport-edit-btn {
+  margin-top: 6px; padding: 5px 10px; font-size: 0.68rem; font-family: inherit;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg-card); color: var(--accent-soft); cursor: pointer;
+}
+.passport-edit-btn:hover { background: var(--accent-dim); }
+.editor-overlay {
+  position: fixed; inset: 0; z-index: 290; background: rgba(0,0,0,0.5);
+  opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.editor-overlay.open { opacity: 1; pointer-events: auto; }
+.editor-panel {
+  position: fixed; z-index: 291; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.96);
+  width: min(560px, 94vw); max-height: 88vh;
+  background: var(--bg-elevated); border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg); box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  display: flex; flex-direction: column; opacity: 0; pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.editor-panel.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+.editor-head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  padding: var(--space-md) var(--space-lg); border-bottom: 1px solid var(--border);
+}
+.editor-head h3 { font-size: 1rem; font-weight: 600; }
+.editor-sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+.editor-close {
+  width: 32px; height: 32px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: transparent; color: var(--text-secondary); cursor: pointer; font-size: 1.2rem; flex-shrink: 0;
+}
+.editor-body { padding: var(--space-lg); overflow-y: auto; flex: 1; }
+.editor-foot {
+  display: flex; justify-content: flex-end; gap: 8px; padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--border);
+}
+.editor-field { margin-bottom: 12px; }
+.editor-field label {
+  display: block; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--text-muted); margin-bottom: 4px;
+}
+.editor-field input, .editor-field select, .editor-field textarea {
+  width: 100%; padding: 8px 10px; font-family: inherit; font-size: 0.82rem;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg-card); color: var(--text);
+}
+.editor-field textarea { min-height: 72px; resize: vertical; }
+.editor-hint {
+  margin-top: 12px; padding: 10px 12px; font-size: 0.72rem; line-height: 1.45;
+  color: var(--text-secondary); background: rgba(90,157,224,0.08);
+  border-radius: var(--radius-sm); border: 1px solid rgba(90,157,224,0.16);
+}
+.editor-btn {
+  padding: 8px 14px; font-size: 0.78rem; font-family: inherit; font-weight: 500;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg-card); color: var(--text-secondary); cursor: pointer;
+}
+.editor-btn.primary { background: var(--accent-dim); color: var(--accent-soft); border-color: rgba(90,157,224,0.35); }
+.editor-btn:hover { background: var(--bg-hover); color: var(--text); }
+.journey-guide-step {
+  display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.journey-guide-step:last-child { border-bottom: none; }
+.journey-guide-num {
+  flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700; background: var(--accent-dim); color: var(--accent-soft);
+}
+.journey-guide-body h4 { font-size: 0.88rem; margin-bottom: 4px; }
+.journey-guide-body p { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45; }
+.journey-guide-meta { font-size: 0.72rem; color: var(--text-muted); margin-top: 6px; }
+.journey-roles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.journey-role-box {
+  padding: 10px 12px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--bg-card); font-size: 0.75rem;
+}
+.journey-role-box strong { display: block; margin-bottom: 6px; font-size: 0.78rem; }
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+  z-index: 400; padding: 10px 18px; border-radius: var(--radius-md);
+  background: var(--bg-elevated); border: 1px solid rgba(90,157,224,0.35);
+  color: var(--text); font-size: 0.78rem; box-shadow: var(--shadow);
+  opacity: 0; pointer-events: none; transition: transform 0.25s, opacity 0.25s;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 @media (max-width: 768px) {
   :root { --header-h: auto; --passport-w: 100%; }
   .header { grid-template-columns: 1fr; padding: var(--space-md); }
@@ -736,6 +865,7 @@ body {
   .home-scorecard { grid-template-columns: 1fr; }
   .home-hero { flex-direction: column; }
   .header-nav { flex-wrap: wrap; }
+  .journey-roles { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -760,13 +890,17 @@ body {
   <main class="home-main" id="homeRoot"></main>
   <main class="main" id="workspaceRoot" aria-hidden="true">
     <aside class="col-tree panel">
-      <div class="panel-head">Продуктовая иерархия</div>
+      <div class="panel-head panel-head-row">
+        <span>Продуктовая иерархия</span>
+        <button type="button" class="panel-edit-btn" data-open-editor="hierarchy" title="Добавить сегмент или продукт">+ узел</button>
+      </div>
       <div class="panel-body" id="treeRoot"></div>
     </aside>
     <section class="col-pyramid panel">
       <div class="panel-head pyramid-panel-head">
         <div class="pyramid-panel-head-left">
           <span class="panel-head-title" id="pyramidPanelTitle">Пирамида метрик</span>
+          <button type="button" class="panel-edit-btn" data-open-editor="metric-add" title="Добавить метрику на уровень">+ метрика</button>
           <button type="button" class="pyramid-panel-toggle" id="btnToggleProductView" hidden>Описание продукта</button>
         </div>
       </div>
@@ -778,7 +912,7 @@ body {
     </aside>
   </main>
   </div>
-  <footer class="footer-line" id="appFooter">Рабочее место лидера Блок Т · v2.0 · прототип · mock-данные</footer>
+  <footer class="footer-line" id="appFooter">Рабочее место лидера Блок Т · v2.1 · прототип · mock-данные</footer>
 </div>
 <div class="guide-overlay" id="guideOverlay"></div>
 <aside class="guide-panel" id="guidePanel">
@@ -790,6 +924,7 @@ body {
     <button type="button" class="active" data-guide-tab="levels">Уровни и роли</button>
     <button type="button" data-guide-tab="catalog">Каталог метрик</button>
     <button type="button" data-guide-tab="hierarchy">Иерархия продуктов</button>
+    <button type="button" data-guide-tab="journey">Создание и редактирование</button>
   </div>
   <div class="guide-body" id="guideBody"></div>
 </aside>
@@ -804,6 +939,22 @@ body {
   </div>
   <div class="passport-body" id="passportBody"></div>
 </aside>
+<div class="editor-overlay" id="editorOverlay"></div>
+<aside class="editor-panel" id="editorPanel" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+  <div class="editor-head">
+    <div>
+      <h3 id="editorTitle">Редактор</h3>
+      <p class="editor-sub" id="editorSub"></p>
+    </div>
+    <button type="button" class="editor-close" id="editorClose" aria-label="Закрыть">×</button>
+  </div>
+  <div class="editor-body" id="editorBody"></div>
+  <div class="editor-foot">
+    <button type="button" class="editor-btn" id="editorCancel">Отмена</button>
+    <button type="button" class="editor-btn primary" id="editorSave">Сохранить (демо)</button>
+  </div>
+</aside>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 const LEVELS = [
   { id: 4, label: "L4 · Outcome / Value", tagline: "\u00ab\u0441\u043e\u0437\u0434\u0430\u0451\u043c \u043b\u0438 \u0446\u0435\u043d\u043d\u043e\u0441\u0442\u044c \u0434\u043b\u044f \u0431\u0438\u0437\u043d\u0435\u0441\u0430\u00bb" },
@@ -1745,7 +1896,35 @@ const state = {
   centerView: "metrics",
   guideOpen: false,
   guideTab: "levels",
-  treeCollapsed: {}
+  treeCollapsed: {},
+  editorOpen: false,
+  editorType: null
+};
+
+const LEADER_JOURNEY = {
+  intro: "\u041b\u0438\u0434\u0435\u0440 \u0432\u0435\u0434\u0451\u0442 \u043f\u043e\u0440\u0442\u0444\u0435\u043b\u044c \u0432 \u0438\u0435\u0440\u0430\u0440\u0445\u0438\u0438 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432, \u043d\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u0442 \u043f\u0438\u0440\u0430\u043c\u0438\u0434\u0443 \u0438\u0437 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0430, \u0441\u0432\u044f\u0437\u044b\u0432\u0430\u0435\u0442 \u043c\u0435\u0442\u0440\u0438\u043a\u0438 \u2191\u2193 \u0438 \u043f\u0440\u0438\u0432\u044f\u0437\u044b\u0432\u0430\u0435\u0442 \u044d\u043f\u0438\u043a\u0438 \u043a L4. \u041d\u0438\u0436\u0435 \u2014 \u043f\u043e\u0448\u0430\u0433\u043e\u0432\u044b\u0439 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439; \u043a\u043d\u043e\u043f\u043a\u0438 \u00ab+\u00bb \u0432 \u043f\u0430\u043d\u0435\u043b\u044f\u0445 workspace \u2014 \u0434\u0435\u043c\u043e \u0444\u043e\u0440\u043c \u0440\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f.",
+  steps: [
+    { id: "hierarchy", num: 1, title: "\u0421\u043f\u0440\u043e\u0435\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0438\u0435\u0440\u0430\u0440\u0445\u0438\u044e", text: "\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043a\u043b\u0430\u0441\u0442\u0435\u0440, \u0441\u0435\u0433\u043c\u0435\u043d\u0442 \u0438\u043b\u0438 \u043b\u0438\u0441\u0442\u043e\u0432\u043e\u0439 \u043f\u0440\u043e\u0434\u0443\u043a\u0442. \u041d\u0430\u0437\u043d\u0430\u0447\u0438\u0442\u044c \u0432\u043b\u0430\u0434\u0435\u043b\u044c\u0446\u0430 \u0438 \u0434\u043e\u043c\u0435\u043d (internal / infra).", where: "\u0414\u0435\u0440\u0435\u0432\u043e \u00b7 + \u0443\u0437\u0435\u043b", editor: "hierarchy" },
+    { id: "metrics", num: 2, title: "\u041d\u0430\u043f\u043e\u043b\u043d\u0438\u0442\u044c \u043f\u0438\u0440\u0430\u043c\u0438\u0434\u0443", text: "\u0412\u044b\u0431\u0440\u0430\u0442\u044c \u043f\u0440\u043e\u0434\u0443\u043a\u0442 \u2192 \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043c\u0435\u0442\u0440\u0438\u043a\u0443 \u043d\u0430 L4\u2013L1 \u0438\u0437 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0430 \u0438\u043b\u0438 \u0441\u043e\u0437\u0434\u0430\u0442\u044c \u043d\u043e\u0432\u0443\u044e. \u041d\u0430 \u0431\u043b\u043e\u043a\u0435 \u2014 \u0441\u0432\u043e\u0434 L4\u2013L2.", where: "\u041f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 \u00b7 + \u043c\u0435\u0442\u0440\u0438\u043a\u0430", editor: "metric-add" },
+    { id: "passport", num: 3, title: "\u041e\u0444\u043e\u0440\u043c\u0438\u0442\u044c \u043f\u0430\u0441\u043f\u043e\u0440\u0442", text: "\u0414\u043b\u044f \u043a\u0430\u0436\u0434\u043e\u0439 \u043c\u0435\u0442\u0440\u0438\u043a\u0438: \u0432\u043e\u043f\u0440\u043e\u0441, \u0444\u043e\u0440\u043c\u0443\u043b\u0430, \u0435\u0434\u0438\u043d\u0438\u0446\u044b, \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a, \u0432\u043b\u0430\u0434\u0435\u043b\u0435\u0446, \u043a\u0430\u0434\u0435\u043d\u0441.", where: "\u041a\u043b\u0438\u043a \u043f\u043e \u043c\u0435\u0442\u0440\u0438\u043a\u0435 \u2192 \u043f\u0430\u0441\u043f\u043e\u0440\u0442", editor: "metric-edit" },
+    { id: "links", num: 4, title: "\u0423\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c \u0441\u0432\u044f\u0437\u0438 \u2191\u2193", text: "\u0421\u0432\u044f\u0437\u0430\u0442\u044c L1\u2192L4: \u0447\u0442\u043e \u0432\u043b\u0438\u044f\u0435\u0442 \u043d\u0430 \u0447\u0442\u043e, \u043e\u0442 \u0447\u0435\u0433\u043e \u0437\u0430\u0432\u0438\u0441\u0438\u0442. \u0411\u0435\u0437 \u0441\u0432\u044f\u0437\u0435\u0439 \u043f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 \u2014 \u0441\u043f\u0438\u0441\u043e\u043a, \u0430 \u043d\u0435 \u0441\u0438\u0441\u0442\u0435\u043c\u0430.", where: "\u041f\u0430\u0441\u043f\u043e\u0440\u0442 \u00b7 \u0441\u0432\u044f\u0437\u0438 \u2191\u2193", editor: "metric-links" },
+    { id: "product", num: 5, title: "\u041e\u043f\u0438\u0441\u0430\u0442\u044c \u043f\u0440\u043e\u0434\u0443\u043a\u0442", text: "\u0412\u0438\u0434\u0435\u043d\u0438\u0435, \u0430\u0443\u0434\u0438\u0442\u043e\u0440\u0438\u044f, \u043f\u0440\u043e\u0431\u043b\u0435\u043c\u0430, \u0440\u0435\u0448\u0435\u043d\u0438\u0435, \u0432\u044b\u0433\u043e\u0434\u0430. \u0428\u0442\u0430\u0442 \u0438 \u044d\u0442\u0430\u043f \u0436\u0438\u0437\u043d\u0435\u043d\u043d\u043e\u0433\u043e \u0446\u0438\u043a\u043b\u0430 \u2014 \u0434\u043b\u044f \u043b\u0438\u0441\u0442\u043e\u0432.", where: "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430", editor: "product-profile" },
+    { id: "backlog", num: 6, title: "\u041f\u0440\u0438\u0432\u044f\u0437\u0430\u0442\u044c \u0440\u0430\u0431\u043e\u0442\u0443", text: "\u042d\u043f\u0438\u043a\u0438, \u0444\u0438\u0447\u0438, \u0433\u0438\u043f\u043e\u0442\u0435\u0437\u044b \u0438 \u0438\u0441\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u043d\u0438\u044f \u2014 \u0441 \u043f\u0440\u0438\u0432\u044f\u0437\u043a\u043e\u0439 \u043a \u043c\u0435\u0442\u0440\u0438\u043a\u0435 L3\u2013L4.", where: "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u00b7 + \u044d\u043f\u0438\u043a", editor: "epic-add" },
+    { id: "review", num: 7, title: "Review \u0438 scorecard", text: "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0430\u0433\u0440\u0435\u0433\u0430\u0446\u0438\u044e \u043d\u0430 \u0431\u043b\u043e\u043a\u0435, \u0437\u0430\u043a\u0440\u044b\u0442\u044c gap \u043f\u043e L4, \u0432\u044b\u043d\u0435\u0441\u0442\u0438 \u0440\u0435\u0448\u0435\u043d\u0438\u044f \u043d\u0430 portfolio review.", where: "\u0413\u043b\u0430\u0432\u043d\u0430\u044f \u00b7 scorecard", action: "home" }
+  ],
+  roles: [
+    { title: "\u041b\u0438\u0434\u0435\u0440 \u0431\u043b\u043e\u043a\u0430", can: "L4 \u0431\u043b\u043e\u043a\u0430, \u0438\u0435\u0440\u0430\u0440\u0445\u0438\u044f, \u0441\u0432\u044f\u0437\u0438 \u043c\u0435\u0436\u0434\u0443 \u043a\u043b\u0430\u0441\u0442\u0435\u0440\u0430\u043c\u0438, scorecard", cant: "L1 \u0434\u0435\u0442\u0430\u043b\u0438 \u043a\u043e\u043c\u0430\u043d\u0434 (\u0434\u0435\u043b\u0435\u0433\u0438\u0440\u0443\u0435\u0442 \u0432\u043b\u0430\u0434\u0435\u043b\u044c\u0446\u0430\u043c \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432)" },
+    { title: "\u0412\u043b\u0430\u0434\u0435\u043b\u0435\u0446 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430", can: "L1\u2013L3 \u043b\u0438\u0441\u0442\u0430, \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435, \u044d\u043f\u0438\u043a\u0438, \u043f\u0430\u0441\u043f\u043e\u0440\u0442\u0430 \u043c\u0435\u0442\u0440\u0438\u043a", cant: "L4 \u0431\u043b\u043e\u043a\u0430 (\u0441\u043e\u0433\u043b\u0430\u0441\u043e\u0432\u044b\u0432\u0430\u0435\u0442 \u0441 \u043b\u0438\u0434\u0435\u0440\u043e\u043c)" }
+  ]
+};
+
+const EDITOR_META = {
+  hierarchy: { title: "\u041d\u043e\u0432\u044b\u0439 \u0443\u0437\u0435\u043b \u0438\u0435\u0440\u0430\u0440\u0445\u0438\u0438", sub: "\u041a\u043b\u0430\u0441\u0442\u0435\u0440 \u00b7 \u0441\u0435\u0433\u043c\u0435\u043d\u0442 \u00b7 \u043b\u0438\u0441\u0442\u043e\u0432\u043e\u0439 \u043f\u0440\u043e\u0434\u0443\u043a\u0442", toast: "\u0423\u0437\u0435\u043b \u0434\u043e\u0431\u0430\u0432\u043b\u0435\u043d \u0432 \u0438\u0435\u0440\u0430\u0440\u0445\u0438\u044e (\u0434\u0435\u043c\u043e)" },
+  "metric-add": { title: "\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043c\u0435\u0442\u0440\u0438\u043a\u0443", sub: "\u0418\u0437 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0430 \u043c\u0435\u0442\u043e\u0434\u043e\u043b\u043e\u0433\u0438\u0438 \u0438\u043b\u0438 \u043d\u043e\u0432\u0430\u044f", toast: "\u041c\u0435\u0442\u0440\u0438\u043a\u0430 \u0434\u043e\u0431\u0430\u0432\u043b\u0435\u043d\u0430 \u043d\u0430 \u043f\u0438\u0440\u0430\u043c\u0438\u0434\u0443 (\u0434\u0435\u043c\u043e)" },
+  "metric-edit": { title: "\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043f\u0430\u0441\u043f\u043e\u0440\u0442", sub: "\u041e\u043f\u0440\u0435\u0434\u0435\u043d\u0438\u0435, \u0432\u043e\u043f\u0440\u043e\u0441, \u0444\u043e\u0440\u043c\u0443\u043b\u0430, \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a", toast: "\u041f\u0430\u0441\u043f\u043e\u0440\u0442 \u043c\u0435\u0442\u0440\u0438\u043a\u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0451\u043d (\u0434\u0435\u043c\u043e)" },
+  "metric-links": { title: "\u0421\u0432\u044f\u0437\u0438 \u043c\u0435\u0442\u0440\u0438\u043a", sub: "\u2191 \u0432\u043b\u0438\u044f\u0435\u0442 \u043d\u0430 \u00b7 \u2193 \u0437\u0430\u0432\u0438\u0441\u0438\u0442 \u043e\u0442", toast: "\u0421\u0432\u044f\u0437\u0438 \u043c\u0435\u0442\u0440\u0438\u043a \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u044b (\u0434\u0435\u043c\u043e)" },
+  "product-profile": { title: "\u041f\u0440\u043e\u0444\u0438\u043b\u044c \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430", sub: "\u0412\u0438\u0434\u0435\u043d\u0438\u0435, \u0430\u0443\u0434\u0438\u0442\u043e\u0440\u0438\u044f, \u043f\u0440\u043e\u0431\u043b\u0435\u043c\u0430 \u2192 \u0440\u0435\u0448\u0435\u043d\u0438\u0435 \u2192 \u0432\u044b\u0433\u043e\u0434\u0430", toast: "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u043e (\u0434\u0435\u043c\u043e)" },
+  "epic-add": { title: "\u042d\u043f\u0438\u043a / \u0433\u0438\u043f\u043e\u0442\u0435\u0437\u0430", sub: "\u041f\u0440\u0438\u0432\u044f\u0437\u043a\u0430 \u043a \u043c\u0435\u0442\u0440\u0438\u043a\u0435 \u0438 \u0432\u043b\u0430\u0434\u0435\u043b\u0435\u0446\u0443", toast: "\u042d\u043f\u0438\u043a \u0434\u043e\u0431\u0430\u0432\u043b\u0435\u043d \u0432 \u0431\u044d\u043a\u043b\u043e\u0433 (\u0434\u0435\u043c\u043e)" }
 };
 
 const LEADER_HOME = {
@@ -1964,7 +2143,10 @@ function buildProductDescHeaderHtml(productId) {
   var dmeta = getDomainMeta(productId);
   return '<div class="product-desc-head">' +
     '<span class="domain-pill ' + domain + '">' + escapeHtml(dmeta.short) + "</span>" +
-    "<h2>" + escapeHtml(prodName) + "</h2></div>";
+    "<h2>" + escapeHtml(prodName) + "</h2>" +
+    '<div class="home-actions-row" style="margin-top:10px">' +
+    '<button type="button" class="home-leaf-btn primary" data-open-editor="product-profile">\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043f\u0440\u043e\u0444\u0438\u043b\u044c</button>' +
+    '<button type="button" class="home-leaf-btn" data-open-editor="epic-add">+ \u044d\u043f\u0438\u043a / \u0433\u0438\u043f\u043e\u0442\u0435\u0437\u0430</button></div></div>';
 }
 
 function taskStatusClass(status) {
@@ -2165,6 +2347,173 @@ function renderAppShell() {
   renderAppShell._prevView = state.appView;
 }
 
+function getSelectedProductName() {
+  var path = findPath(PRODUCT_TREE, state.selectedProduct) || [];
+  return path.length ? path[path.length - 1].name : "\u0411\u043b\u043e\u043a \u0422";
+}
+
+function editorField(label, html) {
+  return '<div class="editor-field"><label>' + escapeHtml(label) + "</label>" + html + "</div>";
+}
+
+function renderEditorForm(type) {
+  var prodName = getSelectedProductName();
+  var met = state.selectedMetric;
+  var p = met && met.passport ? met.passport : {};
+  var inf = met ? getInfluence(met.id) : null;
+  var prof = getProductProfile(state.selectedProduct);
+  var hint = '<div class="editor-hint"><strong>\u0414\u0435\u043c\u043e \u043f\u0440\u043e\u0442\u043e\u0442\u0438\u043f\u0430.</strong> \u0412 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0435 \u0434\u0430\u043d\u043d\u044b\u0435 \u0441\u043e\u0445\u0440\u0430\u043d\u044f\u044e\u0442\u0441\u044f \u0432 \u043a\u0430\u0442\u0430\u043b\u043e\u0433 \u043c\u0435\u0442\u0440\u0438\u043a / MDM \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432 / backlog. \u0417\u0434\u0435\u0441\u044c \u2014 \u043f\u043e\u043a\u0430\u0437 \u0444\u043e\u0440\u043c\u044b \u0438 \u0442\u043e\u0447\u043a\u0438 \u0432\u0445\u043e\u0434\u0430 \u043b\u0438\u0434\u0435\u0440\u0430.</div>';
+  if (type === "hierarchy") {
+    return editorField("\u0420\u043e\u0434\u0438\u0442\u0435\u043b\u044c", '<select><option>' + escapeHtml(prodName) + "</option></select>") +
+      editorField("\u0422\u0438\u043f \u0443\u0437\u043b\u0430", '<select><option>\u0441\u0435\u0433\u043c\u0435\u043d\u0442</option><option>\u043f\u0440\u043e\u0434\u0443\u043a\u0442 (\u043b\u0438\u0441\u0442)</option></select>') +
+      editorField("\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435", '<input type="text" placeholder="\u041d\u0430\u043f\u0440\u0438\u043c\u0435\u0440: \u041f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430 X">') +
+      editorField("\u0412\u043b\u0430\u0434\u0435\u043b\u0435\u0446", '<input type="text" placeholder="\u0424\u0418\u041e, \u0440\u043e\u043b\u044c">') +
+      editorField("\u0414\u043e\u043c\u0435\u043d", '<select><option>internal</option><option>infra</option></select>') + hint;
+  }
+  if (type === "metric-add") {
+    return editorField("\u041f\u0440\u043e\u0434\u0443\u043a\u0442", '<input type="text" value="' + escapeHtml(prodName) + '" readonly>') +
+      editorField("\u0423\u0440\u043e\u0432\u0435\u043d\u044c L", '<select><option value="4">L4 \u00b7 Outcome</option><option value="3">L3 \u00b7 Product</option><option value="2">L2 \u00b7 Flow</option><option value="1">L1 \u00b7 Activity</option></select>') +
+      editorField("\u0418\u0437 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0430", '<select><option>\u2014 \u0441\u043e\u0437\u0434\u0430\u0442\u044c \u043d\u043e\u0432\u0443\u044e \u2014</option><option>ROI</option><option>TCO</option><option>CSI</option><option>Adoption</option></select>') +
+      editorField("\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435 \u043c\u0435\u0442\u0440\u0438\u043a\u0438", '<input type="text" placeholder="Net effect \u2014 \u043a\u0432\u0430\u0440\u0442\u0430\u043b">') +
+      editorField("\u0415\u0434\u0438\u043d\u0438\u0446\u044b", '<input type="text" placeholder="\u043c\u043b\u043d \u20bd, %, \u0431\u0430\u043b\u043b">') + hint;
+  }
+  if (type === "metric-edit") {
+    return editorField("\u041c\u0435\u0442\u0440\u0438\u043a\u0430", '<input type="text" value="' + escapeHtml(met ? met.name : "") + '" readonly>') +
+      editorField("\u0427\u0442\u043e \u043c\u0435\u0440\u044f\u0435\u0442", '<textarea>' + escapeHtml(p.what || "") + "</textarea>") +
+      editorField("\u0412\u043e\u043f\u0440\u043e\u0441 \u0434\u043b\u044f \u0431\u0438\u0437\u043d\u0435\u0441\u0430", '<textarea>' + escapeHtml(p.question || "") + "</textarea>") +
+      editorField("\u0424\u043e\u0440\u043c\u0443\u043b\u0430", '<textarea>' + escapeHtml(p.formula || "") + "</textarea>") +
+      editorField("\u0418\u0441\u0442\u043e\u0447\u043d\u0438\u043a", '<input type="text" value="' + escapeHtml(p.source || "") + '">') +
+      editorField("\u0412\u043b\u0430\u0434\u0435\u043b\u0435\u0446", '<input type="text" value="' + escapeHtml(p.owner || "") + '">') + hint;
+  }
+  if (type === "metric-links") {
+    var feeds = inf && inf.feeds ? inf.feeds.join(", ") : (inf && inf.up ? inf.up : "");
+    var drives = inf && inf.drives ? inf.drives.join(", ") : (inf && inf.down ? inf.down : "");
+    return editorField("\u041c\u0435\u0442\u0440\u0438\u043a\u0430", '<input type="text" value="' + escapeHtml(met ? met.name : "bt-net") + '" readonly>') +
+      editorField("\u2191 \u0412\u043b\u0438\u044f\u0435\u0442 \u043d\u0430 (id \u0447\u0435\u0440\u0435\u0437 \u0437\u0430\u043f\u044f\u0442\u0443\u044e)", '<input type="text" value="' + escapeHtml(feeds) + '" placeholder="bt-roi, ip-net">') +
+      editorField("\u2193 \u0417\u0430\u0432\u0438\u0441\u0438\u0442 \u043e\u0442", '<input type="text" value="' + escapeHtml(drives) + '" placeholder="id-sla, id-load">') +
+      '<p style="font-size:0.72rem;color:var(--text-muted);margin-bottom:8px">\u0421\u0432\u044f\u0437\u0438 \u043e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u044e\u0442\u0441\u044f \u043d\u0430 \u043a\u0430\u0440\u0442\u043e\u0447\u043a\u0435 \u043c\u0435\u0442\u0440\u0438\u043a\u0438 \u0438 \u0432 \u043f\u0430\u0441\u043f\u043e\u0440\u0442\u0435.</p>' + hint;
+  }
+  if (type === "product-profile") {
+    var v = prof && prof.vision ? prof.vision : {};
+    return editorField("\u041f\u0440\u043e\u0434\u0443\u043a\u0442", '<input type="text" value="' + escapeHtml(prodName) + '" readonly>') +
+      editorField("\u042d\u0442\u0430\u043f \u0416\u0426", '<select><option>\u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0439</option><option>\u043f\u0438\u043b\u043e\u0442</option><option>\u043f\u0440\u043e\u0435\u043a\u0442</option></select>') +
+      editorField("\u0412\u0438\u0434\u0435\u043d\u0438\u0435", '<textarea>' + escapeHtml(v.description || "") + "</textarea>") +
+      editorField("\u0410\u0443\u0434\u0438\u0442\u043e\u0440\u0438\u044f", '<textarea>' + escapeHtml(v.audience || "") + "</textarea>") +
+      editorField("\u041f\u0440\u043e\u0431\u043b\u0435\u043c\u0430", '<textarea>' + escapeHtml(v.problem || "") + "</textarea>") +
+      editorField("\u0420\u0435\u0448\u0435\u043d\u0438\u0435", '<textarea>' + escapeHtml(v.solution || "") + "</textarea>") + hint;
+  }
+  if (type === "epic-add") {
+    return editorField("\u041f\u0440\u043e\u0434\u0443\u043a\u0442", '<input type="text" value="' + escapeHtml(prodName) + '" readonly>') +
+      editorField("\u0422\u0438\u043f", '<select><option>\u044d\u043f\u0438\u043a</option><option>\u0433\u0438\u043f\u043e\u0442\u0435\u0437\u0430</option><option>\u0438\u0441\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u043d\u0438\u0435</option></select>') +
+      editorField("\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435", '<input type="text" placeholder="\u0421\u043d\u0438\u0436\u0435\u043d\u0438\u0435 CoL \u043d\u0430 \u043f\u043e\u0440\u0442\u0444\u0435\u043b\u0435">') +
+      editorField("\u041c\u0435\u0442\u0440\u0438\u043a\u0430 (L\u2192)", '<input type="text" value="' + escapeHtml(met ? met.id : "ai-col") + '">') +
+      editorField("\u0412\u043b\u0430\u0434\u0435\u043b\u0435\u0446", '<input type="text" placeholder="Product / Platform">') + hint;
+  }
+  return hint;
+}
+
+function openEditor(type) {
+  if (!type || !EDITOR_META[type]) return;
+  closeGuide();
+  state.editorOpen = true;
+  state.editorType = type;
+  renderEditor();
+}
+
+function closeEditor() {
+  state.editorOpen = false;
+  state.editorType = null;
+  var ov = document.getElementById("editorOverlay");
+  var pn = document.getElementById("editorPanel");
+  if (ov) ov.classList.remove("open");
+  if (pn) pn.classList.remove("open");
+}
+
+function renderEditor() {
+  var ov = document.getElementById("editorOverlay");
+  var pn = document.getElementById("editorPanel");
+  var body = document.getElementById("editorBody");
+  var titleEl = document.getElementById("editorTitle");
+  var subEl = document.getElementById("editorSub");
+  if (!ov || !pn || !body || !state.editorType) return;
+  var meta = EDITOR_META[state.editorType];
+  if (titleEl) titleEl.textContent = meta.title;
+  if (subEl) subEl.textContent = meta.sub;
+  body.innerHTML = renderEditorForm(state.editorType);
+  ov.classList.add("open");
+  pn.classList.add("open");
+}
+
+function showToast(msg) {
+  var t = document.getElementById("toast");
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(function () { t.classList.remove("show"); }, 2800);
+}
+
+function runJourneyStep(stepId) {
+  var step = null;
+  LEADER_JOURNEY.steps.forEach(function (s) { if (s.id === stepId) step = s; });
+  if (!step) return;
+  if (step.action === "home") {
+    setAppView("home");
+    requestAnimationFrame(function () {
+      var sc = document.querySelector(".home-scorecard");
+      if (sc) sc.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    return;
+  }
+  if (step.editor === "product-profile" || step.editor === "epic-add") {
+    openWorkspace(isLeafProduct(state.selectedProduct) ? state.selectedProduct : "int-ai-pdlc", { description: true });
+    openEditor(step.editor);
+    return;
+  }
+  if (step.editor === "metric-edit" || step.editor === "metric-links") {
+    navigateToMetric(state.selectedMetric ? state.selectedMetric.id : "bt-net");
+    openEditor(step.editor);
+    return;
+  }
+  openWorkspace(state.selectedProduct || "blok-t", {});
+  openEditor(step.editor);
+}
+
+function renderHomeJourneyHtml() {
+  var steps = LEADER_JOURNEY.steps.map(function (s) {
+    return '<button type="button" class="home-journey-step" data-journey-step="' + escapeHtml(s.id) + '">' +
+      '<span class="home-journey-num">' + s.num + "</span>" +
+      "<h4>" + escapeHtml(s.title) + "</h4>" +
+      "<p>" + escapeHtml(s.text) + "</p>" +
+      '<span class="home-journey-where">' + escapeHtml(s.where) + "</span></button>";
+  }).join("");
+  return '<details class="home-howto">' +
+    '<summary>\u041a\u0430\u043a \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0438 \u0440\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043e\u0431\u044a\u0435\u043a\u0442\u044b \u0438 \u043c\u0435\u0442\u0440\u0438\u043a\u0438</summary>' +
+    '<div class="home-howto-body">' +
+    '<p class="home-journey-intro">' + escapeHtml(LEADER_JOURNEY.intro) + "</p>" +
+    '<div class="home-journey-steps">' + steps + "</div>" +
+    '<div class="home-actions-row" style="margin-top:12px"><button type="button" class="home-action-btn" data-open-guide="journey">\u041f\u043e\u0434\u0440\u043e\u0431\u043d\u044b\u0439 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439 \u0432 \u0441\u043f\u0440\u0430\u0432\u043e\u0447\u043d\u0438\u043a\u0435</button></div></div></details>';
+}
+
+function renderJourneyGuideHtml() {
+  var steps = LEADER_JOURNEY.steps.map(function (s) {
+    return '<div class="journey-guide-step"><div class="journey-guide-num">' + s.num + '</div><div class="journey-guide-body">' +
+      "<h4>" + escapeHtml(s.title) + "</h4>" +
+      "<p>" + escapeHtml(s.text) + "</p>" +
+      '<div class="journey-guide-meta">' + escapeHtml(s.where) +
+      ' \u00b7 <button type="button" class="home-leaf-btn primary" data-journey-step="' + escapeHtml(s.id) + '">\u043f\u043e\u043a\u0430\u0437\u0430\u0442\u044c</button></div></div></div>';
+  }).join("");
+  var roles = LEADER_JOURNEY.roles.map(function (r) {
+    return '<div class="journey-role-box"><strong>' + escapeHtml(r.title) + "</strong>" +
+      "<div>\u2713 " + escapeHtml(r.can) + "</div>" +
+      '<div style="margin-top:4px;color:var(--text-muted)">\u2717 ' + escapeHtml(r.cant) + "</div></div>";
+  }).join("");
+  return "<p>" + escapeHtml(LEADER_JOURNEY.intro) + "</p>" + steps +
+    "<h4 style=\"margin-top:16px\">\u0420\u0430\u0437\u0434\u0435\u043b\u0435\u043d\u0438\u0435 \u043e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0435\u043d\u043d\u043e\u0441\u0442\u0438</h4>" +
+    '<div class="journey-roles">' + roles + "</div>" +
+    '<p style="margin-top:14px;font-size:0.75rem;color:var(--text-muted)">\u041a\u0430\u0434\u0435\u043d\u0441: \u0438\u0435\u0440\u0430\u0440\u0445\u0438\u044f \u2014 \u043f\u043e \u043c\u0435\u0440\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0439; \u043c\u0435\u0442\u0440\u0438\u043a\u0438 L4 \u2014 \u043a\u0432\u0430\u0440\u0442\u0430\u043b\u044c\u043d\u043e; L2\u2013L1 \u2014 \u0432\u043b\u0430\u0434\u0435\u043b\u0446\u044b \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432.</p>';
+}
+
 function setAppView(view) {
   if (state.appView === view) {
     renderAppShell();
@@ -2319,6 +2668,12 @@ function bindHomeEvents(root) {
     var guideBtn = e.target.closest("[data-open-guide]");
     if (guideBtn) {
       openGuide(guideBtn.getAttribute("data-open-guide"));
+      return;
+    }
+    var journeyBtn = e.target.closest("[data-journey-step]");
+    if (journeyBtn) {
+      runJourneyStep(journeyBtn.getAttribute("data-journey-step"));
+      return;
     }
   });
 }
@@ -2373,7 +2728,8 @@ function renderHome() {
     '<div class="home-panel"><div class="home-panel-head">\u041a\u043e\u043c\u0430\u043d\u0434\u0430 \u0438 \u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0430</div><div class="home-panel-body">' +
     renderHomeTeamHtml() + "</div></div>" +
     '<div class="home-panel"><div class="home-panel-head">\u041a\u0430\u043b\u0435\u043d\u0434\u0430\u0440\u044c \u043b\u0438\u0434\u0435\u0440\u0430</div><div class="home-panel-body"><ul class="home-list">' +
-    agendaHtml + "</ul></div></div></div></div>";
+    agendaHtml + "</ul></div></div></div></div>" +
+    renderHomeJourneyHtml();
   bindHomeEvents(root);
 }
 
@@ -2563,7 +2919,8 @@ function renderGuide() {
   var guideTitles = {
     levels: "\u0423\u0440\u043e\u0432\u043d\u0438 \u0438 \u0440\u043e\u043b\u0438 L1\u2013L4",
     catalog: "\u041a\u0430\u0442\u0430\u043b\u043e\u0433 \u043c\u0435\u0442\u0440\u0438\u043a \u0438 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u0435",
-    hierarchy: "\u0418\u0435\u0440\u0430\u0440\u0445\u0438\u044f \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432"
+    hierarchy: "\u0418\u0435\u0440\u0430\u0440\u0445\u0438\u044f \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432",
+    journey: "\u041a\u0430\u043a \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0438 \u0440\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043e\u0431\u044a\u0435\u043a\u0442\u044b \u0438 \u043c\u0435\u0442\u0440\u0438\u043a\u0438"
   };
   if (titleEl) titleEl.textContent = guideTitles[tab] || "\u0421\u043f\u0440\u0430\u0432\u043a\u0430";
   if (tabs) {
@@ -2605,12 +2962,22 @@ function renderGuide() {
           protoHtml + "</div>";
       });
     });
-  } else {
+  } else if (tab === "hierarchy") {
     html += "<p>\u0414\u0435\u0440\u0435\u0432\u043e \u043e\u043f\u0440\u0435\u0434\u0435\u043b\u044f\u0435\u0442, <strong>\u0433\u0434\u0435 \u0430\u0433\u0440\u0435\u0433\u0438\u0440\u0443\u044e\u0442\u0441\u044f</strong> \u043c\u0435\u0442\u0440\u0438\u043a\u0438. \u041d\u0430 \u043b\u0438\u0441\u0442\u0435 \u2014 \u043f\u043e\u043b\u043d\u0430\u044f \u043f\u0438\u0440\u0430\u043c\u0438\u0434\u0430; \u043d\u0430 \u0440\u043e\u0434\u0438\u0442\u0435\u043b\u044f\u0445 \u2014 \u0441\u0432\u043e\u0434 \u0441 \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u043e\u043c \u0432\u043d\u0438\u0437.</p>";
     html += '<div class="hierarchy-guide-tree">' + renderHierarchyGuideTree(PRODUCT_TREE) + "</div>";
     html += '<p class="hg-legend"><strong>\u0411\u043b\u043e\u043a \u0422 / \u043a\u043b\u0430\u0441\u0442\u0435\u0440 / \u0441\u0435\u0433\u043c\u0435\u043d\u0442</strong> \u2014 \u0441\u0432\u043e\u0434 L4\u2013L2 (\u0431\u0435\u0437 L1). <strong>\u041f\u0440\u043e\u0434\u0443\u043a\u0442 (\u043b\u0438\u0441\u0442)</strong> \u2014 \u043f\u043e\u043b\u043d\u0430\u044f \u043f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 L1\u2013L4.</p>';
+  } else if (tab === "journey") {
+    html += renderJourneyGuideHtml();
   }
   body.innerHTML = html;
+  if (tab === "journey") {
+    body.querySelectorAll("[data-journey-step]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        closeGuide();
+        runJourneyStep(btn.getAttribute("data-journey-step"));
+      });
+    });
+  }
   ov.classList.add("open");
   pn.classList.add("open");
 }
@@ -2947,7 +3314,10 @@ function renderPassport() {
     ["Частота замера", p.freq, false],
     ["Ответственный", p.owner, false]
   ];
-  body.innerHTML = levelBlock + '<div class="passport-grid">' + infBlock + fields.map(function (f) {
+  var editRow = '<div class="home-actions-row" style="margin-bottom:12px">' +
+    '<button type="button" class="passport-edit-btn" data-open-editor="metric-edit">\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043f\u0430\u0441\u043f\u043e\u0440\u0442</button>' +
+    '<button type="button" class="passport-edit-btn" data-open-editor="metric-links">\u0421\u0432\u044f\u0437\u0438 \u2191\u2193</button></div>';
+  body.innerHTML = levelBlock + editRow + '<div class="passport-grid">' + infBlock + fields.map(function (f) {
     var cls = f[2] ? "passport-field full" : "passport-field";
     return '<div class="' + cls + '"><label>' + escapeHtml(f[0]) + '</label><div class="val">' + escapeHtml(f[1]) + "</div></div>";
   }).join("") + "</div>";
@@ -3044,7 +3414,9 @@ document.getElementById("btnToggleProductView").addEventListener("click", functi
 });
 document.addEventListener("keydown", function (e) {
   if (e.key !== "Escape") return;
-  if (state.passportOpen) {
+  if (state.editorOpen) {
+    closeEditor();
+  } else if (state.passportOpen) {
     state.passportOpen = false;
     renderPassport();
   } else if (state.centerView === "description") {
@@ -3053,6 +3425,18 @@ document.addEventListener("keydown", function (e) {
   } else if (state.guideOpen) {
     closeGuide();
   }
+});
+
+document.getElementById("editorClose").addEventListener("click", closeEditor);
+document.getElementById("editorCancel").addEventListener("click", closeEditor);
+document.getElementById("editorOverlay").addEventListener("click", closeEditor);
+document.getElementById("editorSave").addEventListener("click", function () {
+  var meta = EDITOR_META[state.editorType];
+  closeEditor();
+  showToast(meta ? meta.toast : "\u0421\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u043e (\u0434\u0435\u043c\u043e)");
+});
+document.getElementById("editorPanel").addEventListener("click", function (e) {
+  e.stopPropagation();
 });
 
 document.getElementById("btnGuideLevels").addEventListener("click", function () {
@@ -3083,6 +3467,12 @@ document.getElementById("headerBrand").addEventListener("click", function () {
 });
 
 document.addEventListener("click", function (e) {
+  var ed = e.target.closest("[data-open-editor]");
+  if (ed && !e.target.closest("#editorPanel")) {
+    e.preventDefault();
+    openEditor(ed.getAttribute("data-open-editor"));
+    return;
+  }
   var link = e.target.closest("[data-goto-metric]");
   if (!link) return;
   e.preventDefault();
