@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Пирамида метрик — управленческий workspace</title>
+<title>Рабочее место лидера — Блок Т</title>
 <style>
 :root {
   --bg: #0b0d11;
@@ -35,7 +35,6 @@
   --shadow: 0 4px 24px rgba(0,0,0,0.32);
   --shadow-inset: inset 0 1px 0 rgba(255,255,255,0.04);
   --font: "Segoe UI", system-ui, -apple-system, sans-serif;
-  --font-mono: "Cascadia Code", "Consolas", monospace;
   --header-h: 64px;
   --passport-w: 420px;
 }
@@ -50,9 +49,12 @@ body {
   overflow-x: hidden;
 }
 .app { display: flex; flex-direction: column; min-height: 100vh; }
+.app-views { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.app-view-home #workspaceRoot { display: none !important; }
+.app-view-workspace #homeRoot { display: none !important; }
 .header {
   position: sticky; top: 0; z-index: 100;
-  display: grid; grid-template-columns: auto 1fr auto;
+  display: grid; grid-template-columns: auto auto 1fr auto;
   align-items: center; gap: var(--space-md);
   padding: var(--space-sm) var(--space-lg);
   min-height: var(--header-h);
@@ -62,7 +64,22 @@ body {
 }
 .header-brand {
   font-size: 0.82rem; font-weight: 600; letter-spacing: -0.02em;
-  color: var(--text); white-space: nowrap;
+  color: var(--text); white-space: nowrap; cursor: pointer;
+}
+.header-brand:hover { color: var(--accent-soft); }
+.header-nav {
+  display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+}
+.header-nav button {
+  padding: 6px 11px; font-size: 0.72rem; font-family: inherit; font-weight: 500;
+  border: 1px solid transparent; border-radius: var(--radius-sm);
+  background: transparent; color: var(--text-muted); cursor: pointer;
+  white-space: nowrap; transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+.header-nav button:hover { color: var(--text); background: var(--bg-hover); }
+.header-nav button.active {
+  color: var(--accent-soft); background: var(--accent-dim);
+  border-color: rgba(90,157,224,0.35);
 }
 .header-main {
   display: flex; align-items: center; gap: var(--space-sm);
@@ -349,11 +366,11 @@ body {
   display: block; margin-top: 6px; font-size: 0.68rem; line-height: 1.35;
   color: var(--text-muted);
 }
-.m-influence .up { color: #7eb8e8; }
-.m-influence .down { color: #c9a84c; }
-.m-influence .infl-label { font-weight: 600; margin-right: 4px; }
-.m-influence .infl-group { display: block; margin-top: 5px; }
-.m-influence .infl-group:first-child { margin-top: 0; }
+.infl-label { font-weight: 600; margin-right: 4px; }
+.infl-group { display: block; margin-top: 5px; }
+.infl-group:first-child { margin-top: 0; }
+.m-influence .up, .infl-label.up { color: #7eb8e8; }
+.m-influence .down, .infl-label.down { color: #c9a84c; }
 .influence-link {
   display: inline; padding: 1px 5px; margin: 1px 2px 1px 0;
   border: none; border-radius: 3px; font-size: inherit; font-family: inherit;
@@ -582,6 +599,130 @@ body {
 @media (max-width: 1100px) {
   .main { grid-template-columns: 240px 1fr; }
   .col-charts { grid-column: 1 / -1; }
+  .home-grid { grid-template-columns: 1fr; }
+  .home-scorecard { grid-template-columns: 1fr 1fr; }
+}
+.home-main {
+  flex: 1; width: 100%; max-width: 1280px; margin: 0 auto;
+  padding: var(--space-md) var(--space-lg) var(--space-xl);
+}
+.home-hero {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-lg);
+  margin-bottom: var(--space-lg); padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border);
+}
+.home-hero h1 { font-size: 1.35rem; font-weight: 600; margin-bottom: 6px; letter-spacing: -0.02em; }
+.home-hero-sub { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; max-width: 52ch; }
+.home-hero-meta { font-size: 0.72rem; color: var(--text-muted); margin-top: 8px; }
+.home-cadence-pill {
+  flex-shrink: 0; padding: 10px 14px; border-radius: var(--radius-md);
+  border: 1px solid rgba(90,157,224,0.25); background: rgba(90,157,224,0.08);
+  font-size: 0.72rem; color: var(--text-secondary); max-width: 260px;
+}
+.home-cadence-pill strong { display: block; color: var(--accent-soft); font-size: 0.78rem; margin-bottom: 4px; }
+.home-scorecard {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+.home-kpi-card {
+  text-align: left; padding: 14px; border-radius: var(--radius-md);
+  border: 1px solid var(--border); background: var(--bg-card);
+  cursor: pointer; font-family: inherit; color: inherit; width: 100%;
+  transition: border-color 0.15s, background 0.15s, transform 0.12s;
+}
+.home-kpi-card:hover {
+  border-color: rgba(90,157,224,0.35); background: var(--bg-hover);
+  transform: translateY(-1px);
+}
+.home-kpi-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); display: block; margin-bottom: 8px; }
+.home-kpi-card .m-value-row { margin-bottom: 6px; }
+.home-kpi-hint { font-size: 0.68rem; color: var(--accent); opacity: 0.85; }
+.home-grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: var(--space-md); align-items: start; }
+.home-panel {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 48%), var(--bg-elevated);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow), var(--shadow-inset); margin-bottom: var(--space-md);
+  overflow: hidden;
+}
+.home-panel-head {
+  padding: 12px 14px; border-bottom: 1px solid var(--border);
+  font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--text-muted);
+}
+.home-panel-body { padding: 12px 14px; }
+.home-focus {
+  font-size: 0.88rem; line-height: 1.5; color: var(--text-secondary);
+  padding: 12px 14px; border-left: 3px solid var(--accent);
+  background: rgba(90,157,224,0.06); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: var(--space-md);
+}
+.home-list { list-style: none; }
+.home-list li {
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+  font-size: 0.82rem; line-height: 1.45;
+}
+.home-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.home-list-title { font-weight: 500; color: var(--text); display: block; margin-bottom: 4px; }
+.home-list-meta { font-size: 0.72rem; color: var(--text-muted); }
+.home-signal {
+  display: flex; align-items: flex-start; gap: 8px; padding: 8px 0;
+  border-bottom: 1px solid var(--border); font-size: 0.8rem; line-height: 1.4;
+}
+.home-signal:last-child { border-bottom: none; }
+.home-signal-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+}
+.home-signal-dot.warn { background: #e08080; }
+.home-signal-dot.good { background: var(--positive); }
+.home-signal-dot.info { background: var(--accent); }
+.home-signal button {
+  background: none; border: none; padding: 0; font: inherit; color: var(--accent-soft);
+  cursor: pointer; text-align: left;
+}
+.home-signal button:hover { text-decoration: underline; }
+.home-portfolio-card {
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.home-portfolio-card:last-child { border-bottom: none; padding-bottom: 0; }
+.home-portfolio-head { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.home-portfolio-head h3 { font-size: 0.92rem; font-weight: 600; }
+.home-portfolio-owner { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px; }
+.home-mini-metrics { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.home-mini-metric {
+  padding: 4px 8px; border-radius: 999px; font-size: 0.68rem;
+  background: rgba(255,255,255,0.04); color: var(--text-secondary); border: 1px solid var(--border);
+}
+.home-mini-metric.up { border-color: rgba(69,168,122,0.35); color: var(--positive); }
+.home-mini-metric.down { border-color: rgba(224,128,128,0.35); color: #e08080; }
+.home-leaves { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.home-leaf-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.home-leaf-btn {
+  padding: 5px 10px; font-size: 0.68rem; font-family: inherit;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg-card); color: var(--text-secondary); cursor: pointer;
+}
+.home-leaf-btn:hover { border-color: var(--border-strong); color: var(--text); background: var(--bg-hover); }
+.home-leaf-btn.primary { border-color: rgba(90,157,224,0.35); color: var(--accent-soft); background: var(--accent-dim); }
+.home-actions-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.home-action-btn {
+  padding: 7px 12px; font-size: 0.72rem; font-family: inherit; font-weight: 500;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg-card); color: var(--text-secondary); cursor: pointer;
+}
+.home-action-btn:hover { background: var(--bg-hover); color: var(--text); }
+.home-action-btn.primary { background: var(--accent-dim); color: var(--accent-soft); border-color: rgba(90,157,224,0.35); }
+.home-team-stat {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;
+}
+.home-stat-box {
+  padding: 10px 12px; border-radius: var(--radius-sm);
+  background: var(--bg-card); border: 1px solid var(--border);
+}
+.home-stat-box .label { font-size: 0.64rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.home-stat-box .val { font-size: 1.1rem; font-weight: 600; margin-top: 4px; }
+.home-stat-box .sub { font-size: 0.68rem; color: var(--text-muted); margin-top: 2px; }
+.home-quick-bar {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: var(--space-md);
 }
 @media (max-width: 768px) {
   :root { --header-h: auto; --passport-w: 100%; }
@@ -592,14 +733,21 @@ body {
   .passport-grid { grid-template-columns: 1fr; }
   .metric-card { flex: 1 1 100%; }
   html { font-size: 14px; }
+  .home-scorecard { grid-template-columns: 1fr; }
+  .home-hero { flex-direction: column; }
+  .header-nav { flex-wrap: wrap; }
 }
 </style>
 </head>
 <body>
-<div class="app">
+<div class="app app-view-home">
   <header class="header">
-    <div class="header-brand">Пирамида метрик</div>
-    <div class="header-main">
+    <div class="header-brand" id="headerBrand" title="На главную">Рабочее место · Блок Т</div>
+    <nav class="header-nav" id="headerNav" aria-label="Разделы">
+      <button type="button" data-app-view="home" class="active">Главная</button>
+      <button type="button" data-app-view="workspace">Пирамида и продукты</button>
+    </nav>
+    <div class="header-main" id="headerMain" hidden>
       <nav class="breadcrumb" id="breadcrumb"></nav>
       <span class="metric-crumb" id="metricCrumb" hidden></span>
     </div>
@@ -608,7 +756,9 @@ body {
       <button type="button" class="header-btn" id="btnGuideLevels">Уровни L1–L4</button>
     </div>
   </header>
-  <main class="main">
+  <div class="app-views">
+  <main class="home-main" id="homeRoot"></main>
+  <main class="main" id="workspaceRoot" aria-hidden="true">
     <aside class="col-tree panel">
       <div class="panel-head">Продуктовая иерархия</div>
       <div class="panel-body" id="treeRoot"></div>
@@ -627,7 +777,8 @@ body {
       <div class="panel-body" id="chartsRoot"></div>
     </aside>
   </main>
-  <footer class="footer-line">Прототип рабочего места лидера · mock-данные</footer>
+  </div>
+  <footer class="footer-line" id="appFooter">Рабочее место лидера Блок Т · v2.0 · прототип · mock-данные</footer>
 </div>
 <div class="guide-overlay" id="guideOverlay"></div>
 <aside class="guide-panel" id="guidePanel">
@@ -1586,6 +1737,7 @@ const METRIC_CATALOG = [
 ];
 
 const state = {
+  appView: "home",
   selectedProduct: "blok-t",
   selectedMetric: null,
   selectedLevel: null,
@@ -1596,7 +1748,42 @@ const state = {
   treeCollapsed: {}
 };
 
+const LEADER_HOME = {
+  leaderName: "\u0418\u0432\u0430\u043d\u043e\u0432 \u0418.\u0418.",
+  role: "\u0420\u0443\u043a\u043e\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u044c \u0411\u043b\u043e\u043a\u0430 \u0422",
+  period: "Q2 2026 \u00b7 \u043d\u0435\u0434\u0435\u043b\u044f 24",
+  weeklyFocus: "\u0417\u0430\u043a\u0440\u044b\u0442\u044c gap \u043f\u043e net effect DWH \u0438 Cloud; \u0441\u043e\u0433\u043b\u0430\u0441\u043e\u0432\u0430\u0442\u044c \u043a\u0430\u0434\u0440\u043e\u0432\u044b\u0439 \u043f\u043b\u0430\u043d AI PDLC \u0438 \u0437\u0430\u043a\u0440\u044b\u0442\u044c 2 \u0432\u0430\u043a\u0430\u043d\u0441\u0438\u0438 \u0434\u043e portfolio review.",
+  nextCadence: {
+    title: "Portfolio review L4",
+    when: "18 \u0438\u044e\u043d\u044f 2026",
+    prep: "Scorecard \u00b7 \u0440\u0438\u0441\u043a\u0438 TCO \u00b7 \u0440\u0435\u0448\u0435\u043d\u0438\u044f \u043f\u043e \u0432\u0430\u043a\u0430\u043d\u0441\u0438\u044f\u043c"
+  },
+  scorecardMetrics: ["bt-net", "bt-tco", "bt-csi", "bt-roi"],
+  clusterKpis: {
+    "internal-products": ["ip-net", "ip-csi", "ip-roi"],
+    "infrastructure": ["if-net", "if-cod", "if-csi"]
+  },
+  watchMetrics: ["id-loss", "ai-iod", "ic-cod", "wpt-cpw", "bt-cod", "id-sla"],
+  decisions: [
+    { title: "\u0423\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u044c \u043f\u043b\u0430\u043d \u0432\u043e\u0441\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u044f Tier-1 \u043f\u0430\u0439\u043f\u043b\u0430\u0439\u043d\u043e\u0432 DWH", due: "12.06", owner: "\u041e\u0440\u043b\u043e\u0432\u0430 \u041d.\u041f.", productId: "int-dwh", metricId: "id-loss" },
+    { title: "\u041f\u0438\u043b\u043e\u0442 self-service \u0420\u041c 500 \u043c\u0435\u0441\u0442 \u2014 go/no-go", due: "15.06", owner: "\u0413\u0440\u0438\u0433\u043e\u0440\u044c\u0435\u0432 \u0414.\u041d.", productId: "int-wp-tech", metricId: "wpt-ttv" },
+    { title: "\u0411\u044e\u0434\u0436\u0435\u0442 FinOps \u043d\u0430 Q3: cap \u0442\u043e\u043a\u0435\u043d\u043e\u0432 AI PDLC", due: "20.06", owner: "\u041a\u043e\u0437\u043b\u043e\u0432 \u0410.\u0412.", productId: "int-ai-pdlc", metricId: "ai-col" }
+  ],
+  agenda: [
+    { date: "16.06", title: "1:1 \u041f\u0435\u0442\u0440\u043e\u0432\u0430 \u0415.\u0421. \u2014 \u043a\u043b\u0430\u0441\u0442\u0435\u0440 \u0432\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u0438\u0445 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432", type: "people" },
+    { date: "17.06", title: "Steering AI PDLC \u2014 AUE / IOD", type: "product", productId: "int-ai-pdlc" },
+    { date: "18.06", title: "Portfolio review L4 \u2014 \u0441\u043e\u0432\u0435\u0442 \u0434\u0438\u0440\u0435\u043a\u0442\u043e\u0440\u043e\u0432", type: "exec" },
+    { date: "19.06", title: "Cloud platform \u2014 error budget & CoD", type: "product", productId: "infra-cloud" }
+  ]
+};
+
 const CHART_MONTHS = ["\u042f\u043d\u0432","\u0424\u0435\u0432","\u041c\u0430\u0440","\u0410\u043f\u0440","\u041c\u0430\u0439","\u0418\u044e\u043d","\u0418\u044e\u043b","\u0410\u0432\u0433","\u0421\u0435\u043d","\u041e\u043a\u0442","\u041d\u043e\u044f","\u0414\u0435\u043a"];
+
+var FLAT_TREE = null;
+function getFlatTree() {
+  if (!FLAT_TREE) FLAT_TREE = flattenTree(PRODUCT_TREE);
+  return FLAT_TREE;
+}
 
 function flattenTree(node, path) {
   path = path || [];
@@ -1631,28 +1818,6 @@ function getDomain(productId) {
     if (path[i].domain) return path[i].domain;
   }
   return "internal";
-}
-
-function collectLeaves(node, out) {
-  if (node.leaf) {
-    out.push(node.id);
-    return;
-  }
-  if (node.children) {
-    node.children.forEach(function (ch) {
-      collectLeaves(ch, out);
-    });
-  }
-}
-
-function getLeafIdsForProduct(id) {
-  var path = findPath(PRODUCT_TREE, id);
-  if (!path || !path.length) return [];
-  var node = path[path.length - 1];
-  if (node.leaf) return [node.id];
-  var leaves = [];
-  collectLeaves(node, leaves);
-  return leaves;
 }
 
 function getTreeNode(productId) {
@@ -1776,7 +1941,6 @@ function renderPyramidPanelHead() {
   var isLeaf = isLeafProduct(state.selectedProduct);
   if (!isLeaf) {
     btn.hidden = true;
-    state.centerView = "metrics";
     titleEl.textContent = "\u041f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 \u043c\u0435\u0442\u0440\u0438\u043a";
     btn.classList.remove("is-back");
     return;
@@ -1948,7 +2112,7 @@ function buildMetricNameIndex() {
 }
 
 function findMetricLocation(metricId) {
-  var flat = flattenTree(PRODUCT_TREE);
+  var flat = getFlatTree();
   var i, j, lv, pid, pd, list;
   for (i = 0; i < flat.length; i++) {
     pid = flat[i].node.id;
@@ -1969,9 +2133,248 @@ function navigateToMetric(metricId) {
   var loc = findMetricLocation(metricId);
   if (!metricId || !loc) return false;
   closeGuide();
+  state.appView = "workspace";
   state.centerView = "metrics";
   selectProduct(loc.productId, metricId);
   return true;
+}
+
+function renderAppShell() {
+  var app = document.querySelector(".app");
+  var homeRoot = document.getElementById("homeRoot");
+  var workspaceRoot = document.getElementById("workspaceRoot");
+  var headerMain = document.getElementById("headerMain");
+  var headerNav = document.getElementById("headerNav");
+  var isHome = state.appView === "home";
+  var prevView = renderAppShell._prevView;
+  if (app) {
+    app.classList.toggle("app-view-home", isHome);
+    app.classList.toggle("app-view-workspace", !isHome);
+  }
+  if (homeRoot) homeRoot.setAttribute("aria-hidden", isHome ? "false" : "true");
+  if (workspaceRoot) workspaceRoot.setAttribute("aria-hidden", isHome ? "true" : "false");
+  if (headerMain) headerMain.hidden = isHome;
+  if (headerNav) {
+    headerNav.querySelectorAll("[data-app-view]").forEach(function (btn) {
+      btn.classList.toggle("active", btn.getAttribute("data-app-view") === state.appView);
+    });
+  }
+  if (prevView !== undefined && prevView !== state.appView) {
+    window.scrollTo(0, 0);
+  }
+  renderAppShell._prevView = state.appView;
+}
+
+function setAppView(view) {
+  if (state.appView === view) {
+    renderAppShell();
+    if (view === "home") renderHome();
+    return;
+  }
+  state.appView = view;
+  closeGuide();
+  state.passportOpen = false;
+  if (view === "home") {
+    renderAppShell();
+    renderHome();
+  } else {
+    if (!state.selectedProduct) state.selectedProduct = "blok-t";
+    renderAll();
+  }
+}
+
+function openWorkspace(productId, opts) {
+  opts = opts || {};
+  closeGuide();
+  state.appView = "workspace";
+  state.selectedProduct = productId || "blok-t";
+  state.selectedMetric = null;
+  state.selectedLevel = null;
+  state.passportOpen = false;
+  state.centerView = "metrics";
+  if (opts.metricId) {
+    var loc = findMetricLocation(opts.metricId);
+    if (loc) {
+      state.selectedProduct = loc.productId;
+      state.selectedMetric = loc.metric;
+      state.selectedLevel = loc.level;
+      state.passportOpen = true;
+    }
+  } else if (opts.description && isLeafProduct(state.selectedProduct)) {
+    state.centerView = "description";
+  }
+  expandTreePath(state.selectedProduct);
+  renderAll();
+}
+
+function getMetricBrief(metricId) {
+  var loc = findMetricLocation(metricId);
+  if (!loc) return null;
+  var trend = getMetricTrend(loc.productId, metricId);
+  return { loc: loc, trend: trend, met: loc.metric };
+}
+
+function renderHomeMiniMetric(metricId) {
+  var brief = getMetricBrief(metricId);
+  if (!brief) return "";
+  var label = metricShortLabel(brief.met.name);
+  var val = formatMetricValue(brief.trend.fact, brief.met.units, brief.met);
+  return '<span class="home-mini-metric ' + brief.trend.deltaCls + '" title="' + escapeHtml(brief.met.name) + '">' +
+    escapeHtml(label) + ": " + escapeHtml(val) + "</span>";
+}
+
+function renderHomePortfolioHtml() {
+  var clusters = PRODUCT_TREE.children || [];
+  return clusters.map(function (cl) {
+    var info = PRODUCT_NODE_INFO[cl.id] || {};
+    var leaves = collectLeafNodes(cl);
+    var kpiIds = LEADER_HOME.clusterKpis[cl.id] || [];
+    var miniHtml = kpiIds.map(renderHomeMiniMetric).join("");
+    var leavesHtml = leaves.map(function (leaf) {
+      var hasDesc = !!(PRODUCT_PROFILES[leaf.id] || PRODUCT_ARTIFACTS[leaf.id]);
+      return '<div class="home-leaf-row"><button type="button" class="home-leaf-btn primary" data-open-product="' + leaf.id + '">' +
+        escapeHtml(leaf.name) + "</button>" +
+        (hasDesc ? ' <button type="button" class="home-leaf-btn" data-open-product="' + leaf.id +
+        '" data-open-mode="description">\u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435</button>' : "") +
+        "</div>";
+    }).join("");
+    return '<div class="home-portfolio-card">' +
+      '<div class="home-portfolio-head"><h3>' + escapeHtml(cl.name) + '</h3>' +
+      '<button type="button" class="home-action-btn" data-open-product="' + cl.id + '">\u041f\u0438\u0440\u0430\u043c\u0438\u0434\u0430</button></div>' +
+      '<div class="home-portfolio-owner">' + escapeHtml(info.owner || "") + "</div>" +
+      (miniHtml ? '<div class="home-mini-metrics">' + miniHtml + "</div>" : "") +
+      '<div class="home-leaves">' + leavesHtml + "</div></div>";
+  }).join("");
+}
+
+function renderHomeSignalsHtml() {
+  var signals = [];
+  (LEADER_HOME.watchMetrics || []).forEach(function (mid) {
+    var brief = getMetricBrief(mid);
+    if (!brief || brief.trend.deltaCls !== "down") return;
+    signals.push({
+      severity: "warn",
+      text: metricShortLabel(brief.met.name) + " \u2014 \u043e\u0442\u043a\u043b\u043e\u043d\u0435\u043d\u0438\u0435 \u043e\u0442 \u043f\u043b\u0430\u043d\u0430 (" + brief.trend.deltaSign + brief.trend.deltaPct.toFixed(1) + "%)",
+      metricId: mid,
+      productId: brief.loc.productId
+    });
+  });
+  if (!signals.length) {
+    signals.push({
+      severity: "good",
+      text: "\u041a\u043b\u044e\u0447\u0435\u0432\u044b\u0435 watch-мет\u0440\u0438\u043a\u0438 \u0432 \u0434\u043e\u043f\u0443\u0441\u043a\u0435 \u043f\u043e \u043f\u043b\u0430\u043d\u0443",
+      metricId: null,
+      productId: "blok-t"
+    });
+  }
+  return signals.slice(0, 5).map(function (s) {
+    var dotCls = s.severity === "warn" ? "warn" : s.severity === "good" ? "good" : "info";
+    var body = s.metricId
+      ? '<button type="button" data-goto-metric="' + escapeHtml(s.metricId) + '">' + escapeHtml(s.text) + "</button>"
+      : escapeHtml(s.text);
+    return '<div class="home-signal"><span class="home-signal-dot ' + dotCls + '"></span><div>' + body + "</div></div>";
+  }).join("");
+}
+
+function renderHomeTeamHtml() {
+  var rootInfo = PRODUCT_NODE_INFO["blok-t"] || {};
+  var total = rootInfo.headcountTotal || 0;
+  var filled = rootInfo.headcountFilled || 0;
+  var vacant = total - filled;
+  var pulse = getMetricBrief("bt-pulse");
+  var pulseVal = pulse ? formatMetricValue(pulse.trend.fact, pulse.met.units, pulse.met) : "\u2014";
+  var clusters = PRODUCT_TREE.children || [];
+  var rows = clusters.map(function (cl) {
+    var info = PRODUCT_NODE_INFO[cl.id] || {};
+    if (info.headcountTotal == null) return "";
+    var v = info.headcountTotal - info.headcountFilled;
+    return "<li><span class=\"home-list-title\">" + escapeHtml(cl.name) + "</span>" +
+      '<span class="home-list-meta">' + info.headcountFilled + " / " + info.headcountTotal +
+      (v ? " \u00b7 \u0432\u0430\u043a\u0430\u043d\u0441\u0438\u0439 " + v : "") + "</span></li>";
+  }).join("");
+  return '<div class="home-team-stat">' +
+    '<div class="home-stat-box"><div class="label">\u0428\u0442\u0430\u0442 \u0411\u043b\u043e\u043a \u0422</div><div class="val">' + filled + " / " + total +
+    '</div><div class="sub">\u0432\u0430\u043a\u0430\u043d\u0441\u0438\u0439 ' + vacant + "</div></div>" +
+    '<div class="home-stat-box"><div class="label">\u041f\u0443\u043b\u044c\u0441 \u043b\u0438\u0434\u043e\u0432</div><div class="val">' + pulseVal +
+    '</div><div class="sub">\u043e\u043f\u0440\u043e\u0441 \u0440\u0443\u043a\u043e\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u0435\u0439 \u043a\u043b\u0430\u0441\u0442\u0435\u0440\u043e\u0432</div></div></div>' +
+    '<ul class="home-list">' + rows + "</ul>";
+}
+
+function bindHomeEvents(root) {
+  if (!root || root._homeBound) return;
+  root._homeBound = true;
+  root.addEventListener("click", function (e) {
+    var prodBtn = e.target.closest("[data-open-product]");
+    if (prodBtn) {
+      var pid = prodBtn.getAttribute("data-open-product");
+      var mode = prodBtn.getAttribute("data-open-mode");
+      openWorkspace(pid, { description: mode === "description" });
+      return;
+    }
+    var wsBtn = e.target.closest("[data-open-workspace]");
+    if (wsBtn) {
+      openWorkspace(wsBtn.getAttribute("data-open-workspace") || "blok-t", {});
+      return;
+    }
+    var guideBtn = e.target.closest("[data-open-guide]");
+    if (guideBtn) {
+      openGuide(guideBtn.getAttribute("data-open-guide"));
+    }
+  });
+}
+
+function renderHome() {
+  var root = document.getElementById("homeRoot");
+  if (!root) return;
+  var scoreHtml = LEADER_HOME.scorecardMetrics.map(function (mid) {
+    var brief = getMetricBrief(mid);
+    if (!brief) return "";
+    return '<button type="button" class="home-kpi-card" data-goto-metric="' + escapeHtml(mid) + '">' +
+      '<span class="home-kpi-label">' + escapeHtml(metricShortLabel(brief.met.name)) + "</span>" +
+      renderMetricValueHtml(brief.loc.productId, brief.met) +
+      '<span class="home-kpi-hint">L4 \u00b7 \u043a\u0432\u0430\u0440\u0442\u0430\u043b \u00b7 \u043a\u043b\u0438\u043a \u2192 \u043c\u0435\u0442\u0440\u0438\u043a\u0430</span></button>';
+  }).join("");
+  var decisionsHtml = LEADER_HOME.decisions.map(function (d) {
+    return "<li><span class=\"home-list-title\">" + escapeHtml(d.title) + "</span>" +
+      '<span class="home-list-meta">' + escapeHtml(d.due) + " \u00b7 " + escapeHtml(d.owner) + "</span>" +
+      '<div class="home-actions-row">' +
+      '<button type="button" class="home-leaf-btn primary" data-open-product="' + escapeHtml(d.productId) + '">\u043f\u0440\u043e\u0434\u0443\u043a\u0442</button>' +
+      (d.metricId ? ' <button type="button" class="home-leaf-btn" data-goto-metric="' + escapeHtml(d.metricId) + '">\u043c\u0435\u0442\u0440\u0438\u043a\u0430</button>' : "") +
+      "</div></li>";
+  }).join("");
+  var agendaHtml = LEADER_HOME.agenda.map(function (a) {
+    var link = a.productId
+      ? ' \u00b7 <button type="button" class="home-leaf-btn" data-open-product="' + escapeHtml(a.productId) + '">\u043e\u0442\u043a\u0440\u044b\u0442\u044c</button>'
+      : "";
+    return "<li><span class=\"home-list-title\">" + escapeHtml(a.date) + " \u2014 " + escapeHtml(a.title) + "</span>" +
+      '<span class="home-list-meta">' + escapeHtml(a.type || "") + link + "</span></li>";
+  }).join("");
+  root.innerHTML =
+    '<section class="home-hero">' +
+    "<div><h1>" + escapeHtml(LEADER_HOME.leaderName) + "</h1>" +
+    '<p class="home-hero-sub">' + escapeHtml(LEADER_HOME.role) + " \u2014 \u0435\u0434\u0438\u043d\u044b\u0439 \u0432\u0437\u0433\u043b\u044f\u0434 \u043d\u0430 \u043f\u043e\u0440\u0442\u0444\u0435\u043b\u044c, \u043a\u043e\u043c\u0430\u043d\u0434\u0443 \u0438 \u0440\u0435\u0448\u0435\u043d\u0438\u044f. \u041e\u0441\u043d\u043e\u0432\u0430 \u2014 scorecard L4 \u0438 \u0441\u0438\u0433\u043d\u0430\u043b\u044b \u043e\u0442\u043a\u043b\u043e\u043d\u0435\u043d\u0438\u044f \u043e\u0442 \u043f\u043b\u0430\u043d\u0430.</p>" +
+    '<p class="home-hero-meta">' + escapeHtml(LEADER_HOME.period) + "</p></div>" +
+    '<div class="home-cadence-pill"><strong>' + escapeHtml(LEADER_HOME.nextCadence.title) + "</strong>" +
+    escapeHtml(LEADER_HOME.nextCadence.when) + "<br>" + escapeHtml(LEADER_HOME.nextCadence.prep) + "</div></section>" +
+    '<div class="home-quick-bar">' +
+    '<button type="button" class="home-action-btn primary" data-open-workspace="blok-t">\u041f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 \u0411\u043b\u043e\u043a \u0422</button>' +
+    '<button type="button" class="home-action-btn" data-open-guide="hierarchy">\u0418\u0435\u0440\u0430\u0440\u0445\u0438\u044f \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432</button>' +
+    '<button type="button" class="home-action-btn" data-open-guide="catalog">\u041a\u0430\u0442\u0430\u043b\u043e\u0433 \u043c\u0435\u0442\u0440\u0438\u043a</button>' +
+    '<button type="button" class="home-action-btn" data-open-guide="levels">L1\u2013L4</button></div>' +
+    '<div class="home-focus"><strong>\u0424\u043e\u043a\u0443\u0441 \u043d\u0435\u0434\u0435\u043b\u0438:</strong> ' + escapeHtml(LEADER_HOME.weeklyFocus) + "</div>" +
+    '<div class="home-scorecard">' + scoreHtml + "</div>" +
+    '<div class="home-grid">' +
+    '<div><div class="home-panel"><div class="home-panel-head">\u041f\u043e\u0440\u0442\u0444\u0435\u043b\u044c \u0438 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u044b</div><div class="home-panel-body">' +
+    renderHomePortfolioHtml() + "</div></div>" +
+    '<div class="home-panel"><div class="home-panel-head">\u0420\u0435\u0448\u0435\u043d\u0438\u044f \u0438 \u044d\u0441\u043a\u0430\u043b\u0430\u0446\u0438\u0438</div><div class="home-panel-body"><ul class="home-list">' +
+    decisionsHtml + "</ul></div></div></div>" +
+    '<div><div class="home-panel"><div class="home-panel-head">\u0421\u0438\u0433\u043d\u0430\u043b\u044b \u0432\u043d\u0438\u043c\u0430\u043d\u0438\u044f</div><div class="home-panel-body">' +
+    renderHomeSignalsHtml() + "</div></div>" +
+    '<div class="home-panel"><div class="home-panel-head">\u041a\u043e\u043c\u0430\u043d\u0434\u0430 \u0438 \u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0430</div><div class="home-panel-body">' +
+    renderHomeTeamHtml() + "</div></div>" +
+    '<div class="home-panel"><div class="home-panel-head">\u041a\u0430\u043b\u0435\u043d\u0434\u0430\u0440\u044c \u043b\u0438\u0434\u0435\u0440\u0430</div><div class="home-panel-body"><ul class="home-list">' +
+    agendaHtml + "</ul></div></div></div></div>";
+  bindHomeEvents(root);
 }
 
 function renderMetricLinksHtml(ids) {
@@ -2530,24 +2933,10 @@ function renderPassport() {
       (meta ? '<p class="passport-audience">Для кого: ' + escapeHtml(meta.audience) + " \u00b7 Каденс: " + escapeHtml(meta.cadence) + "</p>" : "")
     : "";
   var inf = getInfluence(state.selectedMetric.id);
-  var infBlock = "";
-  if (inf) {
-    var infParts = [];
-    if (inf.feeds && inf.feeds.length) {
-      infParts.push('<div><span class="infl-label up">\u2191 \u0412\u043b\u0438\u044f\u0435\u0442 \u043d\u0430:</span> ' + renderMetricLinksHtml(inf.feeds) + "</div>");
-    } else if (inf.up) {
-      infParts.push("<div>\u2191 " + escapeHtml(inf.up) + "</div>");
-    }
-    if (inf.drives && inf.drives.length) {
-      infParts.push('<div style="margin-top:8px"><span class="infl-label down">\u2193 \u0417\u0430\u0432\u0438\u0441\u0438\u0442 \u043e\u0442:</span> ' + renderMetricLinksHtml(inf.drives) + "</div>");
-    } else if (inf.down) {
-      infParts.push("<div style=\"margin-top:8px\">\u2193 " + escapeHtml(inf.down) + "</div>");
-    }
-    if (infParts.length) {
-      infBlock = '<div class="passport-field full"><label>Влияние в пирамиде</label><div class="val">' +
-        infParts.join("") + "</div></div>";
-    }
-  }
+  var infHtml = formatInfluenceHtml(inf);
+  var infBlock = infHtml
+    ? '<div class="passport-field full"><label>Влияние в пирамиде</label><div class="val">' + infHtml + "</div></div>"
+    : "";
   var fields = [
     ["Что меряет", p.what, false],
     ["На какой вопрос отвечает", p.question, false],
@@ -2624,6 +3013,8 @@ function renderCharts() {
 }
 
 function renderAll() {
+  renderAppShell();
+  if (state.appView !== "workspace") return;
   renderBreadcrumbs();
   renderTree();
   renderPyramid();
@@ -2633,7 +3024,7 @@ function renderAll() {
 }
 
 function escapeHtml(s) {
-  if (!s) return "";
+  if (s == null || s === "") return "";
   return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
 
@@ -2658,7 +3049,7 @@ document.addEventListener("keydown", function (e) {
     renderPassport();
   } else if (state.centerView === "description") {
     state.centerView = "metrics";
-    renderPyramid();
+    renderAll();
   } else if (state.guideOpen) {
     closeGuide();
   }
@@ -2682,6 +3073,15 @@ document.getElementById("guideTabs").addEventListener("click", function (e) {
   renderGuide();
 });
 
+document.getElementById("headerNav").addEventListener("click", function (e) {
+  var btn = e.target.closest("[data-app-view]");
+  if (!btn) return;
+  setAppView(btn.getAttribute("data-app-view"));
+});
+document.getElementById("headerBrand").addEventListener("click", function () {
+  setAppView("home");
+});
+
 document.addEventListener("click", function (e) {
   var link = e.target.closest("[data-goto-metric]");
   if (!link) return;
@@ -2691,7 +3091,7 @@ document.addEventListener("click", function (e) {
   if (mid) navigateToMetric(mid);
 });
 
-selectProduct("blok-t");
+setAppView("home");
 </script>
 </body>
 </html>
