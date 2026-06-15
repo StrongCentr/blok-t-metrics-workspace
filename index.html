@@ -845,6 +845,24 @@ body {
   border: 1px solid var(--border); background: var(--bg-card); font-size: 0.75rem;
 }
 .journey-role-box strong { display: block; margin-bottom: 6px; font-size: 0.78rem; }
+.c2v-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin: 10px 0; }
+.c2v-table th, .c2v-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.c2v-table th { color: var(--text-muted); font-weight: 500; font-size: 0.68rem; text-transform: uppercase; }
+.guide-c2v-step { margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.guide-c2v-step:last-child { border-bottom: none; }
+.guide-c2v-step h4 { font-size: 0.88rem; margin-bottom: 6px; }
+.guide-c2v-step p { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45; }
+.c2v-product-box {
+  padding: 12px 14px; margin-top: 10px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--bg-card); font-size: 0.78rem; line-height: 1.5;
+}
+.c2v-product-box dt { color: var(--text-muted); font-size: 0.66rem; text-transform: uppercase; margin-top: 8px; }
+.c2v-product-box dt:first-child { margin-top: 0; }
+.c2v-product-box dd { margin: 2px 0 0; }
+.hypo-template {
+  font-size: 0.72rem; line-height: 1.5; padding: 10px 12px; margin-top: 8px;
+  border-radius: var(--radius-sm); background: var(--bg-card); border: 1px dashed var(--border-strong);
+}
 .toast {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
   z-index: 400; padding: 10px 18px; border-radius: var(--radius-md);
@@ -882,6 +900,7 @@ body {
       <span class="metric-crumb" id="metricCrumb" hidden></span>
     </div>
     <div class="header-actions">
+      <button type="button" class="header-btn" id="btnGuideC2v">Cost-to-Value</button>
       <button type="button" class="header-btn primary" id="btnGuideCatalog">Каталог метрик</button>
       <button type="button" class="header-btn" id="btnGuideLevels">Уровни L1–L4</button>
     </div>
@@ -912,7 +931,7 @@ body {
     </aside>
   </main>
   </div>
-  <footer class="footer-line" id="appFooter">Рабочее место лидера Блок Т · v2.1 · прототип · mock-данные</footer>
+  <footer class="footer-line" id="appFooter">Рабочее место лидера Блок Т · v3.0 · Cost-to-Value · mock-данные</footer>
 </div>
 <div class="guide-overlay" id="guideOverlay"></div>
 <aside class="guide-panel" id="guidePanel">
@@ -924,6 +943,7 @@ body {
     <button type="button" class="active" data-guide-tab="levels">Уровни и роли</button>
     <button type="button" data-guide-tab="catalog">Каталог метрик</button>
     <button type="button" data-guide-tab="hierarchy">Иерархия продуктов</button>
+    <button type="button" data-guide-tab="c2v">Cost-to-Value</button>
     <button type="button" data-guide-tab="journey">Создание и редактирование</button>
   </div>
   <div class="guide-body" id="guideBody"></div>
@@ -1274,6 +1294,7 @@ const METRICS_BY_PRODUCT = {
         m("bt-tco","TCO портфеля платформ","Outcome","Value","Head Block T","Квартал","млн ₽",{what:"Совокупная стоимость владения внутренними и инфра продуктами",question:"Сколько обходится поддержка платформ?",formula:"Σ(OPEX internal + OPEX infra + alloc capex)",units:"млн ₽",window:"YTD",source:"FinOps",freq:"Квартал",owner:"Head Block T"},1.02),
         m("bt-net","Чистый эффект (экономия − TCO)","Outcome","Value","Head Block T","Квартал","млн ₽",{what:"Сальдо: предотвращённые потери и экономия минус затраты",question:"Окупаются ли вложения в платформы?",formula:"Σ(prevented loss + OPEX save) − TCO",units:"млн ₽",window:"YTD",source:"FinOps + FP&A",freq:"Квартал",owner:"Head Block T"},1.06),
         m("bt-roi","ROI портфеля Блок Т","Outcome","Value","FinOps","Квартал","%",{what:"Окупаемость инвестиций в платформенный портфель",question:"Создаём ли ценность для блока?",formula:"(Benefit − Cost) / Cost",units:"%",window:"Квартал",source:"FinOps",freq:"Квартал",owner:"FinOps"}),
+        m("bt-hvr","HVR — валидация гипотез","Outcome","Value","Head Block T","Квартал","%",{what:"Доля гипотез с измеримым бизнес-эффектом",question:"Строим портфель на проверенных гипотезах?",formula:"Count(hypothesis with effect) / Count(closed)",units:"%",window:"Квартал",source:"Backlog + FP&A",freq:"Квартал",owner:"Head Block T"},0.62),
         m("bt-cod","Cost of downtime (консолид.)","Outcome","Value","Head Block T","Квартал","млн ₽",{what:"Денежная оценка простоев Tier-1 по инфраструктуре",question:"Сколько теряем из-за недоступности?",formula:"Σ(downtime × loss_rate)",units:"млн ₽",window:"Квартал",source:"SLO + Finance",freq:"Квартал",owner:"Head Block T"},0.94)
       ],
       3: [
@@ -1341,6 +1362,7 @@ const METRICS_BY_PRODUCT = {
         m("ai-wfr","WFR — workflow readiness","Product","Adoption","Product","Месяц","%",{what:"Готовность процессов к автономии",question:"Можно ли масштабировать AI?",formula:"Ready workflows / Total",units:"%",window:"Квартал",source:"Process catalog",freq:"Месяц",owner:"Product"}),
         m("ai-arr","ARR — автономия конвейера","Product","Adoption","Platform","Месяц","%",{what:"Релизы без ручного вмешательства",question:"Насколько автономен конвейер?",formula:"Autonomous / Total",units:"%",window:"Квартал",source:"CI/CD audit",freq:"Месяц",owner:"Platform"},1.08),
         m("ai-ebcs","EBCS — compliance baseline","Product","Quality","Audit","Месяц","%",{what:"Соответствие audit/baseline в AI-изменениях",question:"Контролируем риски?",formula:"Compliant changes / Total",units:"%",window:"Месяц",source:"Audit log",freq:"Месяц",owner:"Audit"}),
+        m("ai-eorr","EORR — реализация outcome эпиков","Product","Quality","Product","Квартал","%",{what:"Доля эпиков, где заявленный outcome достигнут в срок",question:"Доводим работу до обещанного результата?",formula:"Count(epic outcome met) / Count(epic closed)",units:"%",window:"Квартал",source:"Jira + metrics",freq:"Квартал",owner:"Product"},0.71),
         m("ai-csi","CSI — AI-сервисы","Product","CSI","Internal CX","Месяц","балл",{what:"Удовлетворённость конвейером у команд",question:"Довольны ли разработчики?",formula:"avg(CSI)",units:"балл 1–10",window:"Квартал",source:"Survey",freq:"Месяц",owner:"Internal CX"},1.1)
       ],
       2: [
@@ -1581,6 +1603,7 @@ const METRIC_INFLUENCE = {
   "bt-tco": { drives: ["ip-tco", "if-tco"], feeds: ["bt-net"], up: "Чистый эффект, ROI", down: "TCO кластеров" },
   "bt-net": { drives: ["ip-net", "if-net"], feeds: ["bt-roi"], up: "ROI портфеля", down: "Эффект AI + Data + Cloud" },
   "bt-roi": { drives: ["bt-net"], feeds: [], up: "Итог для лидера", down: "Чистый эффект" },
+  "bt-hvr": { drives: ["ai-eorr", "id-roi"], feeds: ["bt-roi"], up: "Качество портфеля value", down: "EORR листов, ROI data" },
   "bt-cod": { drives: ["if-cod", "ic-cod"], feeds: ["bt-tco"], up: "TCO (риск простоя)", down: "Инциденты облака" },
   "bt-csi": { drives: ["ip-csi", "if-csi"], feeds: ["bt-net"], up: "L4: эффект", down: "CSI кластеров" },
   "bt-adopt": { drives: ["ip-adopt"], feeds: ["bt-roi"], up: "ROI", down: "Adoption внутренних" },
@@ -1603,7 +1626,8 @@ const METRIC_INFLUENCE = {
   "ai-roi": { drives: ["ai-val", "ai-aue"], feeds: ["ip-net"], up: "Кластер: чистый эффект", down: "Net value, AUE" },
   "ai-val": { drives: ["ai-roi"], feeds: ["ip-net", "bt-net"], up: "Блок Т: экономия", down: "ROI конвейера" },
   "ai-col": { drives: ["ai-llm"], feeds: ["ai-aue"], up: "AUE", down: "LLM L1" },
-  "ai-iod": { drives: ["ai-manual"], feeds: ["ai-roi", "idev-iod"], up: "ROI, IOD сегмента", down: "Ручные правки" },
+  "ai-iod": { drives: ["ai-manual"], feeds: ["ai-roi", "idev-iod", "ai-eorr"], up: "ROI, IOD сегмента, EORR", down: "Ручные правки" },
+  "ai-eorr": { drives: ["ai-iod"], feeds: ["bt-hvr", "ai-roi"], up: "HVR блока, ROI", down: "IOD" },
   "ai-arr": { drives: ["ai-fix", "ai-manual"], feeds: ["ai-roi", "ip-adopt", "idev-arr"], up: "ROI, adoption", down: "Fix-циклы" },
   "ai-wfr": { drives: ["ai-ebcs"], feeds: ["ai-arr"], up: "ARR", down: "Compliance" },
   "ai-ebcs": { drives: ["ai-skip"], feeds: ["ai-wfr"], up: "WFR", down: "Пропуски проверок" },
@@ -1734,7 +1758,7 @@ const METRIC_CATALOG = [
     what: "Какая часть продуктовых гипотез подтверждена измеримым эффектом на бизнес (доход, риск, экономия, NPS).",
     question: "Строим ли портфель на проверенных гипотезах, а не на активности ради активности?",
     formula: "Count(hypothesis with measured business effect) / Count(closed hypothesis)",
-    source: "Пирамида метрик v70", proto: [] },
+    source: "Пирамида метрик v70", proto: ["bt-hvr"] },
   { level: 4, key: "roi12", name: "Initiative ROI (T+12)", subtitle: "Окупаемость инициативы на горизонте 12 мес.",
     what: "Финансовый возврат от инициативы/программы через 12 месяцев после запуска.",
     question: "Окупаются ли крупные инвестиции в платформы и продукты?",
@@ -1764,7 +1788,7 @@ const METRIC_CATALOG = [
     what: "Доля эпиков/инициатив, где заявленный бизнес-outcome достигнут в согласованном окне.",
     question: "Доводим ли крупные единицы работы до обещанного результата?",
     formula: "Count(epic with outcome met) / Count(epic closed)",
-    source: "Пирамида метрик v70", proto: [] },
+    source: "Пирамида метрик v70", proto: ["ai-eorr"] },
   { level: 3, key: "pps", name: "Product Performance Score (PPS)", subtitle: "Сводная оценка продукта",
     what: "Композитный балл здоровья продукта: adoption, качество, удовлетворённость, стабильность поставки.",
     question: "В целом продукт «здоров» или точечно хорош только один срез?",
@@ -1916,6 +1940,87 @@ const LEADER_JOURNEY = {
     { title: "\u041b\u0438\u0434\u0435\u0440 \u0431\u043b\u043e\u043a\u0430", can: "L4 \u0431\u043b\u043e\u043a\u0430, \u0438\u0435\u0440\u0430\u0440\u0445\u0438\u044f, \u0441\u0432\u044f\u0437\u0438 \u043c\u0435\u0436\u0434\u0443 \u043a\u043b\u0430\u0441\u0442\u0435\u0440\u0430\u043c\u0438, scorecard", cant: "L1 \u0434\u0435\u0442\u0430\u043b\u0438 \u043a\u043e\u043c\u0430\u043d\u0434 (\u0434\u0435\u043b\u0435\u0433\u0438\u0440\u0443\u0435\u0442 \u0432\u043b\u0430\u0434\u0435\u043b\u044c\u0446\u0430\u043c \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432)" },
     { title: "\u0412\u043b\u0430\u0434\u0435\u043b\u0435\u0446 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430", can: "L1\u2013L3 \u043b\u0438\u0441\u0442\u0430, \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435, \u044d\u043f\u0438\u043a\u0438, \u043f\u0430\u0441\u043f\u043e\u0440\u0442\u0430 \u043c\u0435\u0442\u0440\u0438\u043a", cant: "L4 \u0431\u043b\u043e\u043a\u0430 (\u0441\u043e\u0433\u043b\u0430\u0441\u043e\u0432\u044b\u0432\u0430\u0435\u0442 \u0441 \u043b\u0438\u0434\u0435\u0440\u043e\u043c)" }
   ]
+};
+
+const C2V_PLAYBOOK = {
+  intro: "Cost-to-Value — операционная модель: FinOps считает cost, продукт задаёт unit и baseline, вместе получаем измеримый value. Не «придумываем benefit», а контракт до масштабирования.",
+  problem: [
+    "FinOps умеет cost (токены, CoL, TCO), но value не считается без единицы, baseline и атрибуции benefit.",
+    "Без gate (IOD, CoL cap) ROI остаётся формулой с пустым числителем."
+  ],
+  benefitTypes: [
+    { id: "A", label: "Экономия FTE", desc: "Высвобождение часов × ставка; baseline — время до автоматизации.", example: "−12 ч/спринт на команду" },
+    { id: "B", label: "Prevented loss", desc: "Предотвращённые потери: downtime, инциденты, штрафы, риск.", example: "+15 млн prevented loss DWH" },
+    { id: "C", label: "TTM / cost of delay", desc: "Ускорение time-to-value vs baseline; monetize delay.", example: "TTV −35% vs Q4 2025" },
+    { id: "D", label: "Снижение переменных затрат", desc: "Токены, run-cost, лицензии на единицу работы.", example: "CoL −20% при том же throughput" }
+  ],
+  mvms: {
+    title: "MVMS — минимальный набор для AI PDLC (не весь каталог v70)",
+    l4: ["ai-aue", "ai-val", "ai-roi", "bt-hvr"],
+    l3: ["ai-col", "ai-iod", "ai-eorr", "ai-arr", "ai-ttm"],
+    l1: ["ai-llm", "ai-manual", "ai-fix"]
+  },
+  gate: [
+    "Outcome эпика/гипотезы согласован и измерим",
+    "Baseline зафиксирован (до изменения)",
+    "Unit ценности определён (гипотеза, use-case, релиз)",
+    "CoL cap не превышен на этапе discovery",
+    "IOD ≤ порога перед scale-out"
+  ],
+  governance: [
+    { role: "Владелец продукта", action: "Предлагает primary L4, тип benefit A–D, unit и baseline по playbook" },
+    { role: "Лидер кластера", action: "Согласует primary L4 между продуктами кластера, без дублирования" },
+    { role: "Лидер блока", action: "Утверждает primary L4 для портфеля и scorecard" },
+    { role: "FinOps", action: "Валидирует cost-сторону: токены, CoL, TCO, alloc — не выбирает primary L4" },
+    { role: "FP&A", action: "Валидирует допущения benefit и модель prevented loss / FTE save" }
+  ],
+  steps: [
+    { num: 1, title: "Определить unit ценности", text: "Что считаем «единицей»: закрытая гипотеза, use-case в prod, Tier-1 сервис-месяц.", where: "Описание продукта · Cost-to-Value" },
+    { num: 2, title: "Зафиксировать baseline", text: "«Как было» до AI PDLC / до изменения: TTM, CoL, downtime, FTE-часы.", where: "Гипотеза · FP&A" },
+    { num: 3, title: "Выбрать primary L4 и тип benefit", text: "По playbook: A–D. Primary L4 — одна метрика на продукт для портфельного review.", where: "Профиль продукта · L4" },
+    { num: 4, title: "Привязать cost", text: "CoL cap на гипотезу, токены на unit, TCO alloc — зона FinOps.", where: "L3 CoL · L1 LLM" },
+    { num: 5, title: "Gate перед масштабом", text: "IOD, EORR, HVR — проверка, что outcome = intent и гипотеза подтверждена.", where: "Steering · portfolio review" }
+  ],
+  hypothesisTemplate: "Если мы [изменение] для [сегмент], то [primary L4] улучшится на [X] vs baseline [B] на единицу [unit] за [окно]. Cost cap: CoL ≤ [C]. Gate: IOD ≤ [порог], EORR подтверждён."
+};
+
+const PRODUCT_C2V = {
+  "int-ai-pdlc": {
+    primaryL4: "ai-aue",
+    benefitType: "C",
+    benefitLabel: "TTM / cost of delay + снижение переменных затрат (D)",
+    unit: "Закрытая гипотеза с измеримым outcome",
+    baseline: "TTM и CoL до внедрения AI PDLC (Q4 2025)",
+    gateMetrics: ["ai-iod", "ai-col", "ai-eorr"],
+    status: "Пилот · steering 17.06"
+  },
+  "int-dwh": {
+    primaryL4: "id-roi",
+    benefitType: "B",
+    benefitLabel: "Prevented loss от задержек данных",
+    unit: "Use-case в production с SLA",
+    baseline: "Time-to-insight и loss rate Q4 2025",
+    gateMetrics: ["id-loss", "id-sla", "ai-eorr"],
+    status: "Активный · portfolio review"
+  },
+  "int-wp-tech": {
+    primaryL4: "wpt-ttv",
+    benefitType: "C",
+    benefitLabel: "Сжатие time-to-value self-service",
+    unit: "Заявка / выдача рабочего места",
+    baseline: "TTV 14 дней (2025)",
+    gateMetrics: ["wpt-cpw", "wpt-csi"],
+    status: "Пилот self-service"
+  },
+  "infra-cloud": {
+    primaryL4: "ic-loss",
+    benefitType: "B",
+    benefitLabel: "Prevented loss от снижения CoD",
+    unit: "Tier-1 сервис · месяц",
+    baseline: "Cost of downtime Q1 2026",
+    gateMetrics: ["ic-cod", "ic-slo", "ic-adopt"],
+    status: "Активный · golden path v3"
+  }
 };
 
 const EDITOR_META = {
@@ -2207,6 +2312,28 @@ function renderTaskEpicsHtml(epics, idx) {
   return html;
 }
 
+function buildC2vProductHtml(productId) {
+  var c2v = PRODUCT_C2V[productId];
+  if (!c2v) return "";
+  var idx = buildMetricNameIndex();
+  var primaryName = idx[c2v.primaryL4] || c2v.primaryL4;
+  var gateHtml = (c2v.gateMetrics || []).map(function (mid) {
+    return renderArtMetricButton(mid, metricShortLabel(idx[mid] || mid));
+  }).join(" ");
+  return '<div class="product-desc-section"><h3>Cost-to-Value</h3>' +
+    '<div class="c2v-product-box">' +
+    "<dt>Primary L4</dt><dd><button type=\"button\" class=\"art-metric\" data-goto-metric=\"" + escapeHtml(c2v.primaryL4) + "\">" +
+    escapeHtml(primaryName) + "</button></dd>" +
+    "<dt>Тип benefit</dt><dd>" + escapeHtml(c2v.benefitType) + " — " + escapeHtml(c2v.benefitLabel) + "</dd>" +
+    "<dt>Unit ценности</dt><dd>" + escapeHtml(c2v.unit) + "</dd>" +
+    "<dt>Baseline</dt><dd>" + escapeHtml(c2v.baseline) + "</dd>" +
+    "<dt>Gate-метрики</dt><dd><div class=\"art-metric-row\">" + gateHtml + "</div></dd>" +
+    "<dt>Статус</dt><dd>" + escapeHtml(c2v.status) + "</dd>" +
+  "</div>" +
+    '<p style="margin-top:8px;font-size:0.75rem;color:var(--text-muted)">Primary L4: продукт предлагает → лидер кластера согласует → лидер блока утверждает. FinOps валидирует cost.</p>' +
+    '<button type="button" class="home-leaf-btn" data-open-guide="c2v" style="margin-top:8px">Playbook Cost-to-Value</button></div>';
+}
+
 function buildProductDescriptionHtml(productId) {
   var prof = getProductProfile(productId);
   var arts = PRODUCT_ARTIFACTS[productId];
@@ -2241,6 +2368,7 @@ function buildProductDescriptionHtml(productId) {
       "</dl></div></div>";
   }
   html += "</div>";
+  html += buildC2vProductHtml(productId);
   if (arts) {
     html += '<div class="product-desc-section"><h3>\u041f\u0440\u0438\u043a\u0440\u0435\u043f\u043b\u0451\u043d\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438</h3>';
     html += renderTaskEpicsHtml(arts.epics, idx);
@@ -2479,6 +2607,45 @@ function runJourneyStep(stepId) {
   openEditor(step.editor);
 }
 
+function renderC2vGuideHtml() {
+  var pb = C2V_PLAYBOOK;
+  var html = "<p>" + escapeHtml(pb.intro) + "</p>";
+  html += "<h4>Проблема</h4><ul style=\"font-size:0.78rem;color:var(--text-secondary);padding-left:18px\">";
+  pb.problem.forEach(function (p) { html += "<li>" + escapeHtml(p) + "</li>"; });
+  html += "</ul>";
+  html += "<h4 style=\"margin-top:14px\">5 шагов playbook</h4>";
+  pb.steps.forEach(function (s) {
+    html += '<div class="guide-c2v-step"><h4>' + s.num + ". " + escapeHtml(s.title) + "</h4>" +
+      "<p>" + escapeHtml(s.text) + "</p>" +
+      '<span style="font-size:0.72rem;color:var(--text-muted)">' + escapeHtml(s.where) + "</span></div>";
+  });
+  html += "<h4>Типы benefit (A–D)</h4>";
+  html += '<table class="c2v-table"><thead><tr><th>Тип</th><th>Описание</th><th>Пример</th></tr></thead><tbody>';
+  pb.benefitTypes.forEach(function (b) {
+    html += "<tr><td><strong>" + escapeHtml(b.id) + "</strong> " + escapeHtml(b.label) + "</td>" +
+      "<td>" + escapeHtml(b.desc) + "</td><td>" + escapeHtml(b.example) + "</td></tr>";
+  });
+  html += "</tbody></table>";
+  html += "<h4>" + escapeHtml(pb.mvms.title) + "</h4>";
+  html += '<table class="c2v-table"><thead><tr><th>Уровень</th><th>Метрики MVMS</th></tr></thead><tbody>';
+  html += "<tr><td>L4</td><td>" + renderMetricLinksHtml(pb.mvms.l4) + "</td></tr>";
+  html += "<tr><td>L3</td><td>" + renderMetricLinksHtml(pb.mvms.l3) + "</td></tr>";
+  html += "<tr><td>L1</td><td>" + renderMetricLinksHtml(pb.mvms.l1) + "</td></tr>";
+  html += "</tbody></table>";
+  html += "<h4>Gate перед масштабом</h4><ul style=\"font-size:0.78rem;color:var(--text-secondary);padding-left:18px\">";
+  pb.gate.forEach(function (g) { html += "<li>" + escapeHtml(g) + "</li>"; });
+  html += "</ul>";
+  html += "<h4>Кто задаёт primary L4</h4>";
+  html += '<table class="c2v-table"><thead><tr><th>Роль</th><th>Действие</th></tr></thead><tbody>';
+  pb.governance.forEach(function (g) {
+    html += "<tr><td>" + escapeHtml(g.role) + "</td><td>" + escapeHtml(g.action) + "</td></tr>";
+  });
+  html += "</tbody></table>";
+  html += "<h4>Шаблон гипотезы</h4>";
+  html += '<div class="hypo-template">' + escapeHtml(pb.hypothesisTemplate) + "</div>";
+  return html;
+}
+
 function renderHomeJourneyHtml() {
   var steps = LEADER_JOURNEY.steps.map(function (s) {
     return '<button type="button" class="home-journey-step" data-journey-step="' + escapeHtml(s.id) + '">' +
@@ -2492,7 +2659,9 @@ function renderHomeJourneyHtml() {
     '<div class="home-howto-body">' +
     '<p class="home-journey-intro">' + escapeHtml(LEADER_JOURNEY.intro) + "</p>" +
     '<div class="home-journey-steps">' + steps + "</div>" +
-    '<div class="home-actions-row" style="margin-top:12px"><button type="button" class="home-action-btn" data-open-guide="journey">\u041f\u043e\u0434\u0440\u043e\u0431\u043d\u044b\u0439 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439 \u0432 \u0441\u043f\u0440\u0430\u0432\u043e\u0447\u043d\u0438\u043a\u0435</button></div></div></details>';
+    '<div class="home-actions-row" style="margin-top:12px">' +
+    '<button type="button" class="home-action-btn" data-open-guide="journey">\u041f\u043e\u0434\u0440\u043e\u0431\u043d\u044b\u0439 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439 \u0432 \u0441\u043f\u0440\u0430\u0432\u043e\u0447\u043d\u0438\u043a\u0435</button> ' +
+    '<button type="button" class="home-action-btn" data-open-guide="c2v">Cost-to-Value playbook</button></div></div></details>';
 }
 
 function renderJourneyGuideHtml() {
@@ -2715,6 +2884,7 @@ function renderHome() {
     '<button type="button" class="home-action-btn primary" data-open-workspace="blok-t">\u041f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 \u0411\u043b\u043e\u043a \u0422</button>' +
     '<button type="button" class="home-action-btn" data-open-guide="hierarchy">\u0418\u0435\u0440\u0430\u0440\u0445\u0438\u044f \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432</button>' +
     '<button type="button" class="home-action-btn" data-open-guide="catalog">\u041a\u0430\u0442\u0430\u043b\u043e\u0433 \u043c\u0435\u0442\u0440\u0438\u043a</button>' +
+    '<button type="button" class="home-action-btn" data-open-guide="c2v">Cost-to-Value</button>' +
     '<button type="button" class="home-action-btn" data-open-guide="levels">L1\u2013L4</button></div>' +
     '<div class="home-focus"><strong>\u0424\u043e\u043a\u0443\u0441 \u043d\u0435\u0434\u0435\u043b\u0438:</strong> ' + escapeHtml(LEADER_HOME.weeklyFocus) + "</div>" +
     '<div class="home-scorecard">' + scoreHtml + "</div>" +
@@ -2920,7 +3090,8 @@ function renderGuide() {
     levels: "\u0423\u0440\u043e\u0432\u043d\u0438 \u0438 \u0440\u043e\u043b\u0438 L1\u2013L4",
     catalog: "\u041a\u0430\u0442\u0430\u043b\u043e\u0433 \u043c\u0435\u0442\u0440\u0438\u043a \u0438 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u0435",
     hierarchy: "\u0418\u0435\u0440\u0430\u0440\u0445\u0438\u044f \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432",
-    journey: "\u041a\u0430\u043a \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0438 \u0440\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043e\u0431\u044a\u0435\u043a\u0442\u044b \u0438 \u043c\u0435\u0442\u0440\u0438\u043a\u0438"
+    journey: "\u041a\u0430\u043a \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0438 \u0440\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043e\u0431\u044a\u0435\u043a\u0442\u044b \u0438 \u043c\u0435\u0442\u0440\u0438\u043a\u0438",
+    c2v: "Cost-to-Value — playbook и governance"
   };
   if (titleEl) titleEl.textContent = guideTitles[tab] || "\u0421\u043f\u0440\u0430\u0432\u043a\u0430";
   if (tabs) {
@@ -2968,6 +3139,8 @@ function renderGuide() {
     html += '<p class="hg-legend"><strong>\u0411\u043b\u043e\u043a \u0422 / \u043a\u043b\u0430\u0441\u0442\u0435\u0440 / \u0441\u0435\u0433\u043c\u0435\u043d\u0442</strong> \u2014 \u0441\u0432\u043e\u0434 L4\u2013L2 (\u0431\u0435\u0437 L1). <strong>\u041f\u0440\u043e\u0434\u0443\u043a\u0442 (\u043b\u0438\u0441\u0442)</strong> \u2014 \u043f\u043e\u043b\u043d\u0430\u044f \u043f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 L1\u2013L4.</p>';
   } else if (tab === "journey") {
     html += renderJourneyGuideHtml();
+  } else if (tab === "c2v") {
+    html += renderC2vGuideHtml();
   }
   body.innerHTML = html;
   if (tab === "journey") {
@@ -2975,6 +3148,17 @@ function renderGuide() {
       btn.addEventListener("click", function () {
         closeGuide();
         runJourneyStep(btn.getAttribute("data-journey-step"));
+      });
+    });
+  } else if (tab === "c2v") {
+    body.querySelectorAll("[data-goto-metric]").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        var mid = btn.getAttribute("data-goto-metric");
+        if (mid) {
+          closeGuide();
+          navigateToMetric(mid);
+        }
       });
     });
   }
@@ -3445,6 +3629,9 @@ document.getElementById("btnGuideLevels").addEventListener("click", function () 
 document.getElementById("btnGuideCatalog").addEventListener("click", function () {
   openGuide("catalog");
 });
+document.getElementById("btnGuideC2v").addEventListener("click", function () {
+  openGuide("c2v");
+});
 document.getElementById("guideClose").addEventListener("click", closeGuide);
 document.getElementById("guideOverlay").addEventListener("click", closeGuide);
 document.getElementById("guidePanel").addEventListener("click", function (e) {
@@ -3467,6 +3654,12 @@ document.getElementById("headerBrand").addEventListener("click", function () {
 });
 
 document.addEventListener("click", function (e) {
+  var guideBtn = e.target.closest("[data-open-guide]");
+  if (guideBtn) {
+    e.preventDefault();
+    openGuide(guideBtn.getAttribute("data-open-guide"));
+    return;
+  }
   var ed = e.target.closest("[data-open-editor]");
   if (ed && !e.target.closest("#editorPanel")) {
     e.preventDefault();
