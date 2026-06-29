@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -137,20 +137,150 @@ body {
 }
 .pyramid-panel-head {
   display: flex; align-items: center; justify-content: flex-start; gap: var(--space-md);
+  padding-top: 10px; padding-bottom: 10px;
 }
-.pyramid-panel-head-left {
-  display: flex; align-items: center; gap: 12px; flex-wrap: wrap; min-width: 0;
-}
-.pyramid-panel-head .panel-head-title { text-transform: none; letter-spacing: -0.02em; font-size: 0.82rem; color: var(--text); font-weight: 600; }
+.pyramid-panel-head[hidden] { display: none; }
 .pyramid-panel-toggle {
   flex-shrink: 0; padding: 6px 12px; font-size: 0.72rem; font-family: inherit; font-weight: 600;
   text-transform: none; letter-spacing: 0;
-  border: 1px solid rgba(74,143,212,0.45); border-radius: var(--radius-sm);
-  background: var(--accent-dim); color: var(--accent); cursor: pointer;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: transparent; color: var(--text-secondary); cursor: pointer;
 }
-.pyramid-panel-toggle:hover { background: rgba(74,143,212,0.28); }
-.pyramid-panel-toggle.is-back { background: transparent; color: var(--text-secondary); border-color: var(--border); }
-.pyramid-panel-toggle.is-back:hover { color: var(--text); border-color: var(--border-strong); }
+.pyramid-panel-toggle:hover { color: var(--text); border-color: var(--border-strong); background: var(--bg-hover); }
+.pyramid-panel-toggle.active {
+  background: var(--accent-dim); color: var(--accent); border-color: rgba(74,143,212,0.45);
+}
+.pyramid-panel-toggle.active:hover { background: rgba(74,143,212,0.28); }
+.pyramid-panel-actions {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.mtree-wrap { padding: 0 var(--space-sm) var(--space-md); }
+.mtree-legend {
+  display: flex; flex-wrap: wrap; gap: 8px 14px; margin-bottom: 12px;
+  padding: 10px 12px; font-size: 0.68rem; color: var(--text-muted);
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius-md);
+}
+.mtree-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.mtree-legend i {
+  display: inline-block; width: 10px; height: 10px; border-radius: 3px;
+}
+.mtree-hint {
+  margin-bottom: 12px; padding: 10px 12px; font-size: 0.75rem; line-height: 1.45;
+  color: var(--text-secondary); background: rgba(90,157,224,0.08);
+  border: 1px solid rgba(90,157,224,0.16); border-radius: var(--radius-md);
+}
+.mgraph {
+  position: relative; min-height: 380px; padding: 12px 8px 24px;
+}
+.mgraph-svg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; overflow: visible; z-index: 0;
+}
+.mgraph-path {
+  fill: none; stroke-width: 1.5;
+}
+.mgraph-path-depends { stroke: rgba(255,255,255,0.38); }
+.mgraph-path-influences { stroke: rgba(90,157,224,0.75); stroke-dasharray: 5 4; }
+.mgraph-row {
+  position: relative; z-index: 1;
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
+  gap: 14px 18px; margin-bottom: 42px; padding-top: 6px;
+}
+.mgraph-row-label {
+  flex: 0 0 100%; text-align: center;
+  font-size: 0.62rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--text-muted); margin-bottom: 2px;
+}
+.mgraph-row-external {
+  margin-top: 8px; padding-top: 14px; border-top: 1px dashed var(--border);
+}
+.mgraph-node, .mtree-node {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  min-width: 124px; max-width: 200px; padding: 11px 13px;
+  border: 2px solid var(--border-strong); border-radius: var(--radius-md);
+  background: var(--bg-card); cursor: pointer; font-family: inherit; text-align: center;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.mgraph-node:hover, .mtree-node:hover { border-color: rgba(90,157,224,0.45); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+.mgraph-node.active, .mtree-node.active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(90,157,224,0.2); }
+.mgraph-node.lvl-4, .mtree-node.lvl-4 { border-color: rgba(69,168,122,0.55); background: rgba(69,168,122,0.1); }
+.mgraph-node.lvl-3, .mtree-node.lvl-3 { border-color: rgba(224,157,90,0.55); background: rgba(224,157,90,0.08); }
+.mgraph-node.lvl-2, .mtree-node.lvl-2 { border-color: rgba(224,120,157,0.5); background: rgba(224,120,157,0.08); }
+.mgraph-node.lvl-1, .mtree-node.lvl-1 { border-color: rgba(90,157,224,0.55); background: rgba(90,157,224,0.1); }
+.mgraph-node.dimmed, .mtree-node.dimmed {
+  opacity: 0.28; filter: grayscale(0.35);
+}
+.mgraph-node.focus, .mtree-node.focus {
+  opacity: 1; box-shadow: 0 0 0 2px rgba(90,157,224,0.45);
+}
+.mgraph-node.related, .mtree-node.related {
+  opacity: 1;
+}
+.mgraph-empty-hint {
+  margin: 8px 0 12px; padding: 10px 12px; font-size: 0.75rem; line-height: 1.45;
+  color: var(--text-muted); background: rgba(255,255,255,0.03);
+  border: 1px dashed var(--border); border-radius: var(--radius-md); text-align: center;
+}
+.tree-search-wrap {
+  padding: 8px 10px 0; border-bottom: 1px solid var(--border);
+}
+.tree-search-input {
+  width: 100%; padding: 8px 10px; font-family: inherit; font-size: 0.78rem;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg-card); color: var(--text);
+}
+.tree-search-input:focus {
+  outline: none; border-color: rgba(90,157,224,0.45);
+}
+.tree-search-results { padding: 4px 0; }
+.tree-search-hit {
+  display: block; width: 100%; text-align: left; padding: 8px 10px;
+  border: none; border-radius: var(--radius-sm); background: transparent;
+  font-family: inherit; font-size: 0.78rem; color: var(--text-secondary); cursor: pointer;
+}
+.tree-search-hit:hover { background: var(--bg-hover); color: var(--text); }
+.tree-search-hit .tree-search-path {
+  display: block; font-size: 0.66rem; color: var(--text-muted); margin-top: 2px;
+}
+.home-cluster-strip {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;
+}
+.home-cluster-chip {
+  padding: 10px 12px; border-radius: var(--radius-md);
+  border: 1px solid var(--border); background: var(--bg-card);
+}
+.home-cluster-chip h4 { font-size: 0.78rem; font-weight: 600; margin-bottom: 6px; }
+.home-cluster-kpis { display: flex; flex-wrap: wrap; gap: 6px; }
+.workspace-center-view { padding: 4px 2px 8px; }
+.product-desc-view {
+  padding: 4px 8px 12px;
+}
+.mgraph-node-external {
+  border-style: dashed; opacity: 0.92; min-width: 100px;
+  background: rgba(255,255,255,0.03);
+}
+.mgraph-ext-hint { font-size: 0.58rem; color: var(--text-muted); }
+.mgraph-ext-hint { font-size: 0.58rem; color: var(--text-muted); }
+.mtree-lvl {
+  font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--text-muted);
+}
+.mtree-name { font-size: 0.78rem; font-weight: 600; line-height: 1.3; color: var(--text); }
+.mtree-val { font-size: 0.72rem; color: var(--accent-soft); font-weight: 600; }
+.mgraph-legend-arrows {
+  display: flex; flex-wrap: wrap; gap: 12px 18px; margin-top: 6px;
+  font-size: 0.66rem; color: var(--text-muted);
+}
+.mgraph-legend-arrows span { display: inline-flex; align-items: center; gap: 6px; }
+.mgraph-legend-line { display: inline-block; width: 28px; height: 0; border-top: 2px solid rgba(255,255,255,0.38); }
+.mgraph-legend-line.infl { border-top: 2px dashed rgba(90,157,224,0.75); }
+.editor-level-criteria {
+  margin: -4px 0 12px; padding: 10px 12px; font-size: 0.74rem; line-height: 1.45;
+  color: var(--text-secondary); background: rgba(69,168,122,0.08);
+  border: 1px solid rgba(69,168,122,0.2); border-radius: var(--radius-sm);
+}
+.editor-level-criteria strong { color: var(--positive); }
 .panel-body { padding: var(--space-sm); }
 .col-tree .panel-body { max-height: calc(100vh - var(--header-h) - 120px); overflow-y: auto; }
 .tree-branch { margin-bottom: 2px; }
@@ -385,6 +515,34 @@ body {
 .guide-metric-row .gm-src { display: block; font-size: 0.68rem; color: var(--text-muted); margin-top: 6px; font-style: italic; }
 .guide-metric-row .gm-proto { display: block; margin-top: 6px; font-size: 0.72rem; }
 .guide-metric-row.in-proto { border-left: 2px solid var(--positive); padding-left: 8px; }
+.catalog-overview-total {
+  margin-top: 14px; padding: 10px 12px; text-align: center;
+  background: var(--accent-dim); border-radius: var(--radius-md);
+  font-size: 0.82rem; font-weight: 600; color: var(--accent-soft);
+}
+.catalog-level-card {
+  margin-bottom: 10px; padding: 12px 14px; border-radius: var(--radius-md);
+  border: 1px solid var(--border); background: var(--bg-card); cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.catalog-level-card:hover { border-color: rgba(90,157,224,0.4); background: var(--bg-hover); }
+.catalog-level-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.catalog-level-title { font-weight: 600; font-size: 0.9rem; }
+.catalog-level-count { font-weight: 700; color: var(--accent-soft); font-size: 0.85rem; }
+.catalog-level-meta { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 6px; }
+.catalog-level-names { font-size: 0.72rem; color: var(--text-secondary); line-height: 1.45; }
+.catalog-back {
+  margin-bottom: 12px; padding: 6px 10px; font-size: 0.75rem; font-family: inherit;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--bg-card); color: var(--text-secondary); cursor: pointer;
+}
+.catalog-back:hover { border-color: var(--border-strong); color: var(--text); }
+.home-portfolio-scale {
+  margin-bottom: 12px; padding: 10px 14px; font-size: 0.78rem; line-height: 1.45;
+  color: var(--text-secondary); background: rgba(255,255,255,0.03);
+  border: 1px dashed var(--border-strong); border-radius: var(--radius-md);
+}
+.home-portfolio-scale strong { color: var(--text); }
 .guide-overlay {
   position: fixed; inset: 0; z-index: 250;
   background: rgba(0,0,0,0.55); opacity: 0; pointer-events: none;
@@ -673,8 +831,16 @@ body {
   width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
 }
 .home-signal-dot.warn { background: #e08080; }
+.home-signal-dot.critical { background: #d05050; box-shadow: 0 0 0 2px rgba(208,80,80,0.22); }
 .home-signal-dot.good { background: var(--positive); }
 .home-signal-dot.info { background: var(--accent); }
+.home-signal-tag {
+  display: inline-block; margin-bottom: 3px; padding: 1px 6px; border-radius: 4px;
+  font-size: 0.62rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.home-signal-tag.critical { background: rgba(208,80,80,0.15); color: #e8a0a0; }
+.home-signal-tag.warn { background: rgba(224,128,128,0.12); color: #e8b0b0; }
+.home-signal-tag.good { background: var(--positive-dim); color: var(--positive); }
 .home-signal button {
   background: none; border: none; padding: 0; font: inherit; color: var(--accent-soft);
   cursor: pointer; text-align: left;
@@ -893,16 +1059,14 @@ body {
     <div class="header-brand" id="headerBrand" title="На главную">Рабочее место · Блок Т</div>
     <nav class="header-nav" id="headerNav" aria-label="Разделы">
       <button type="button" data-app-view="home" class="active">Главная</button>
-      <button type="button" data-app-view="workspace">Пирамида и продукты</button>
+      <button type="button" data-app-view="workspace">Список продуктов</button>
     </nav>
     <div class="header-main" id="headerMain" hidden>
       <nav class="breadcrumb" id="breadcrumb"></nav>
       <span class="metric-crumb" id="metricCrumb" hidden></span>
     </div>
     <div class="header-actions">
-      <button type="button" class="header-btn" id="btnGuideC2v">Cost-to-Value</button>
       <button type="button" class="header-btn primary" id="btnGuideCatalog">Каталог метрик</button>
-      <button type="button" class="header-btn" id="btnGuideLevels">Уровни L1–L4</button>
     </div>
   </header>
   <div class="app-views">
@@ -910,17 +1074,19 @@ body {
   <main class="main" id="workspaceRoot" aria-hidden="true">
     <aside class="col-tree panel">
       <div class="panel-head panel-head-row">
-        <span>Продуктовая иерархия</span>
-        <button type="button" class="panel-edit-btn" data-open-editor="hierarchy" title="Добавить сегмент или продукт">+ узел</button>
+        <span>Список продуктов</span>
+      </div>
+      <div class="tree-search-wrap">
+        <input type="search" class="tree-search-input" id="productSearch" placeholder="Поиск по названию…" autocomplete="off">
       </div>
       <div class="panel-body" id="treeRoot"></div>
     </aside>
     <section class="col-pyramid panel">
-      <div class="panel-head pyramid-panel-head">
-        <div class="pyramid-panel-head-left">
-          <span class="panel-head-title" id="pyramidPanelTitle">Пирамида метрик</span>
-          <button type="button" class="panel-edit-btn" data-open-editor="metric-add" title="Добавить метрику на уровень">+ метрика</button>
-          <button type="button" class="pyramid-panel-toggle" id="btnToggleProductView" hidden>Описание продукта</button>
+      <div class="panel-head pyramid-panel-head" id="pyramidPanelHead" hidden>
+        <div class="pyramid-panel-actions" id="pyramidPanelActions">
+          <button type="button" class="pyramid-panel-toggle" data-view-mode="pyramid">Пирамида</button>
+          <button type="button" class="pyramid-panel-toggle" data-view-mode="tree">Дерево</button>
+          <button type="button" class="pyramid-panel-toggle" data-view-mode="description">Описание продукта</button>
         </div>
       </div>
       <div class="panel-body" id="pyramidRoot"></div>
@@ -931,21 +1097,15 @@ body {
     </aside>
   </main>
   </div>
-  <footer class="footer-line" id="appFooter">Рабочее место лидера Блок Т · v3.0 · Cost-to-Value · mock-данные</footer>
+  <footer class="footer-line" id="appFooter">Рабочее место лидера Блок Т · v3.4 · единый каталог метрик · mock-данные</footer>
 </div>
 <div class="guide-overlay" id="guideOverlay"></div>
 <aside class="guide-panel" id="guidePanel">
   <div class="guide-head">
-    <h3 id="guideTitle">Методология пирамиды</h3>
+    <h3 id="guideTitle">Каталог метрик</h3>
     <button type="button" class="guide-close" id="guideClose" aria-label="Закрыть">×</button>
   </div>
-  <div class="guide-tabs" id="guideTabs">
-    <button type="button" class="active" data-guide-tab="levels">Уровни и роли</button>
-    <button type="button" data-guide-tab="catalog">Каталог метрик</button>
-    <button type="button" data-guide-tab="hierarchy">Иерархия продуктов</button>
-    <button type="button" data-guide-tab="c2v">Cost-to-Value</button>
-    <button type="button" data-guide-tab="journey">Создание и редактирование</button>
-  </div>
+  <div class="guide-tabs" id="guideTabs" hidden></div>
   <div class="guide-body" id="guideBody"></div>
 </aside>
 <div class="passport-overlay" id="passportOverlay"></div>
@@ -958,21 +1118,6 @@ body {
     <button type="button" class="passport-close" id="passportClose" aria-label="Закрыть">×</button>
   </div>
   <div class="passport-body" id="passportBody"></div>
-</aside>
-<div class="editor-overlay" id="editorOverlay"></div>
-<aside class="editor-panel" id="editorPanel" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
-  <div class="editor-head">
-    <div>
-      <h3 id="editorTitle">Редактор</h3>
-      <p class="editor-sub" id="editorSub"></p>
-    </div>
-    <button type="button" class="editor-close" id="editorClose" aria-label="Закрыть">×</button>
-  </div>
-  <div class="editor-body" id="editorBody"></div>
-  <div class="editor-foot">
-    <button type="button" class="editor-btn" id="editorCancel">Отмена</button>
-    <button type="button" class="editor-btn primary" id="editorSave">Сохранить (демо)</button>
-  </div>
 </aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
@@ -991,21 +1136,46 @@ const LEVEL_META = {
 };
 
 const PRODUCT_NODE_INFO = {
-  "blok-t": { owner: "\u0418\u0432\u0430\u043d\u043e\u0432 \u0418.\u0418., \u0440\u0443\u043a\u043e\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u044c \u0411\u043b\u043e\u043a\u0430 \u0422", headcountTotal: 104, headcountFilled: 96 },
-  "internal-products": { owner: "\u041f\u0435\u0442\u0440\u043e\u0432\u0430 \u0415.\u0421., \u0434\u0438\u0440\u0435\u043a\u0442\u043e\u0440 \u043a\u043b\u0430\u0441\u0442\u0435\u0440\u0430 \u0432\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u0438\u0445 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432", headcountTotal: 62, headcountFilled: 57 },
-  "int-dev": { owner: "\u0421\u0438\u0434\u043e\u0440\u043e\u0432 \u0421.\u0421., \u0440\u0443\u043a\u043e\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u044c \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0438", headcountTotal: 24, headcountFilled: 22 },
-  "int-data": { owner: "\u041a\u0443\u0437\u043d\u0435\u0446\u043e\u0432\u0430 \u041c.\u0410., \u0440\u0443\u043a\u043e\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u044c \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c \u0434\u0430\u043d\u043d\u044b\u0445", headcountTotal: 38, headcountFilled: 35 },
-  "int-ai-pdlc": { owner: "\u041a\u043e\u0437\u043b\u043e\u0432 \u0410.\u0412., \u0432\u043b\u0430\u0434\u0435\u043b\u0435\u0446 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430 AI PDLC" },
-  "int-dwh": { owner: "\u041e\u0440\u043b\u043e\u0432\u0430 \u041d.\u041f., \u0432\u043b\u0430\u0434\u0435\u043b\u0435\u0446 \u0430\u043d\u0430\u043b\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0439 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u044b" },
+  "blok-t": { owner: "\u0418\u0432\u0430\u043d\u043e\u0432 \u0418.\u0418., \u0440\u0443\u043a\u043e\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u044c \u0411\u043b\u043e\u043a\u0430 \u0422", headcountTotal: 60, headcountFilled: 55 },
+  "internal-products": { owner: "\u041f\u0435\u0442\u0440\u043e\u0432\u0430 \u0415.\u0421., \u0434\u0438\u0440\u0435\u043a\u0442\u043e\u0440 \u043a\u043b\u0430\u0441\u0442\u0435\u0440\u0430 \u0432\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u0438\u0445 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432", headcountTotal: 18, headcountFilled: 16 },
+  "int-sbervision": { owner: "\u0412\u043b\u0430\u0434\u0435\u043b\u0435\u0446 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430 SberVision" },
   "infrastructure": { owner: "\u0424\u0451\u0434\u043e\u0440\u043e\u0432 \u0414.\u0412., \u0434\u0438\u0440\u0435\u043a\u0442\u043e\u0440 \u0438\u043d\u0444\u0440\u0430\u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u044b", headcountTotal: 42, headcountFilled: 39 },
-  "infra-platform": { owner: "\u041c\u043e\u0440\u043e\u0437\u043e\u0432 \u0412.\u0413., \u0440\u0443\u043a\u043e\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u044c \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435\u043d\u043d\u043e\u0433\u043e \u0441\u043b\u043e\u044f", headcountTotal: 12, headcountFilled: 11 },
-  "infra-cloud": { owner: "\u0412\u043e\u043b\u043a\u043e\u0432 \u041f.\u0421., \u0432\u043b\u0430\u0434\u0435\u043b\u0435\u0446 \u043e\u0431\u043b\u0430\u0447\u043d\u043e\u0439 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u044b" },
-  "int-corp": { owner: "\u041d\u043e\u0432\u0438\u043a\u043e\u0432\u0430 \u041e.\u0412., \u0434\u0438\u0440\u0435\u043a\u0442\u043e\u0440 \u043a\u043e\u0440\u043f\u043e\u0440\u0430\u0442\u0438\u0432\u043d\u044b\u0445 IT-\u0441\u0435\u0440\u0432\u0438\u0441\u043e\u0432", headcountTotal: 28, headcountFilled: 26 },
-  "int-wp-seg": { owner: "\u0411\u0435\u043b\u043e\u0432\u0430 \u0410.\u041a., \u0440\u0443\u043a\u043e\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u044c \u0441\u0435\u0433\u043c\u0435\u043d\u0442\u0430 \u00ab\u0420\u0430\u0431\u043e\u0447\u0435\u0435 \u043c\u0435\u0441\u0442\u043e\u00bb", headcountTotal: 14, headcountFilled: 13 },
-  "int-wp-tech": { owner: "\u0413\u0440\u0438\u0433\u043e\u0440\u044c\u0435\u0432 \u0414.\u041d., \u0432\u043b\u0430\u0434\u0435\u043b\u0435\u0446 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430 \u00ab\u0422\u0435\u0445\u043d\u0438\u043a\u0430 \u0440\u0430\u0431\u043e\u0447\u0435\u0433\u043e \u043c\u0435\u0441\u0442\u0430\u00bb" }
+  "infra-cloud": { owner: "\u0412\u043e\u043b\u043a\u043e\u0432 \u041f.\u0421., \u0432\u043b\u0430\u0434\u0435\u043b\u0435\u0446 \u043e\u0431\u043b\u0430\u0447\u043d\u043e\u0439 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u044b" }
 };
 
 const PRODUCT_ARTIFACTS = {
+  "int-sbervision": {
+    epics: [
+      {
+        title: "Каталог закрытых источников — покрытие Tier-1 аналитики",
+        status: "в работе", metricId: "sv-cov", assignee: "Knowledge", due: "30.06",
+        features: [
+          { title: "Интеграция Gartner + CB Insights", status: "в работе", metricId: "sv-cov" },
+          { title: "Пайплайн ingest McKinsey/BCG отчётов", status: "запланировано", metricId: "sv-docs" },
+          { title: "GraphRAG: связи тренд ↔ регуляторика", status: "в работе", metricId: "sv-graph" }
+        ]
+      },
+      {
+        title: "Time-to-Insight ≤ 4 ч для типовых запросов лидеров",
+        status: "в работе", metricId: "sv-tti", assignee: "Product", due: "15.07",
+        features: [
+          { title: "Интеграция Corp.Search / SberChat", status: "в работе", metricId: "sv-adopt" },
+          { title: "Обязательное цитирование в ответах агента", status: "завершено", metricId: "sv-cite" },
+          { title: "Eval harness Agent Accuracy", status: "в работе", metricId: "sv-acc" }
+        ]
+      }
+    ],
+    hypotheses: [
+      { title: "TTI −40% при GraphRAG на закрытых отчётах", metricId: "sv-tti", status: "проверка", stage: "value" },
+      { title: "Экономия подписок +18 млн при централизации", metricId: "sv-save", status: "пилот", stage: "value" },
+      { title: "Adoption 60% решений блока с инсайтом SberVision", metricId: "sv-adopt", status: "очередь", stage: "adoption" }
+    ],
+    research: [
+      { title: "Опрос лидеров блоков: доверие к AI-инсайтам (n=24)", type: "CSI", date: "20.05.2026", file: "sbervision-csi-wave1.pdf" },
+      { title: "Benchmark Time-to-Insight — консалтинг vs GenAI", type: "Benchmark", date: "08.05.2026", file: "tti-benchmark-2026.xlsx" },
+      { title: "Аудит покрытия закрытых источников", type: "Audit", date: "28.04.2026", file: "sources-gap-analysis.pdf" }
+    ]
+  },
   "int-ai-pdlc": {
     epics: [
       {
@@ -1134,28 +1304,16 @@ const PRODUCT_ARTIFACTS = {
 };
 
 const PRODUCT_PROFILES = {
-  "int-ai-pdlc": {
-    lifecycle: "\u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0439",
-    headcountTotal: 24, headcountFilled: 22,
-    owner: "\u041a\u043e\u0437\u043b\u043e\u0432 \u0410.\u0412., Head AI PDLC",
+  "int-sbervision": {
+    lifecycle: "\u043f\u0440\u043e\u0435\u043a\u0442",
+    headcountTotal: 18, headcountFilled: 16,
+    owner: "\u0412\u043b\u0430\u0434\u0435\u043b\u0435\u0446 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430 SberVision",
     vision: {
-      description: "\u0410\u0433\u0435\u043d\u0442\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0439 \u043a\u043e\u043d\u0432\u0435\u0439\u0435\u0440 \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0438 \u0441 LLM \u0438 \u0430\u0432\u0442\u043e\u043d\u043e\u043c\u043d\u043e\u0439 \u043f\u043e\u0441\u0442\u0430\u0432\u043a\u043e\u0439 \u0434\u043b\u044f \u043a\u043e\u043c\u0430\u043d\u0434 \u0411\u043b\u043e\u043a\u0430 \u0422.",
-      audience: "\u041a\u043e\u043c\u0430\u043d\u0434\u044b \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0438, \u0430\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u043e\u0440\u044b, \u0432\u043b\u0430\u0434\u0435\u043b\u044c\u0446\u044b \u0432\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u0438\u0445 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432.",
-      problem: "\u0420\u0430\u0437\u043e\u0440\u0432\u0435\u043d\u043d\u043e\u0441\u0442\u044c delivery, \u0432\u044b\u0441\u043e\u043a\u0430\u044f \u0441\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c \u0442\u043e\u043a\u0435\u043d\u043e\u0432, \u0434\u0440\u0435\u0439\u0444 \u0446\u0435\u043b\u0435\u0439 (SDD \u2194 \u043a\u043e\u0434), \u043d\u0438\u0437\u043a\u0430\u044f \u0430\u0432\u0442\u043e\u043d\u043e\u043c\u0438\u044f CI/CD.",
-      solution: "\u0415\u0434\u0438\u043d\u044b\u0439 AI PDLC: \u0441\u043f\u0435\u043a\u0438, gate, \u043c\u0435\u0442\u0440\u0438\u043a\u0438 AUE/CoL/IOD/ARR \u0438 \u043a\u043e\u043d\u0442\u0440\u043e\u043b\u044c \u043a\u0430\u0447\u0435\u0441\u0442\u0432\u0430 \u043d\u0430 L1\u2013L4.",
-      benefit: "\u0421\u043e\u043a\u0440\u0430\u0449\u0435\u043d\u0438\u0435 TTM, \u043f\u0440\u043e\u0437\u0440\u0430\u0447\u043d\u0430\u044f \u044e\u043d\u0438\u0442-\u044d\u043a\u043e\u043d\u043e\u043c\u0438\u043a\u0430, \u0440\u043e\u0441\u0442 \u0447\u0438\u0441\u0442\u043e\u0433\u043e \u044d\u0444\u0444\u0435\u043a\u0442\u0430 \u0432 ip-net / bt-net."
-    }
-  },
-  "int-dwh": {
-    lifecycle: "\u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0439",
-    headcountTotal: 38, headcountFilled: 35,
-    owner: "\u041e\u0440\u043b\u043e\u0432\u0430 \u041d.\u041f., Head Data Platform",
-    vision: {
-      description: "\u0412\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u044f\u044f \u0430\u043d\u0430\u043b\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430: \u0432\u0438\u0442\u0440\u0438\u043d\u044b, ETL, self-service BI.",
-      audience: "\u0411\u0438\u0437\u043d\u0435\u0441-\u0430\u043d\u0430\u043b\u0438\u0442\u0438\u043a\u0438, \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432\u044b\u0435 \u043a\u043e\u043c\u0430\u043d\u0434\u044b, \u0440\u0438\u0441\u043a \u0438 \u043e\u043f\u0435\u0440\u0430\u0446\u0438\u043e\u043d\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438.",
-      problem: "\u0414\u043e\u043b\u0433\u0438\u0439 time-to-insight, \u0434\u0443\u0431\u043b\u0438 \u0434\u0430\u043d\u043d\u044b\u0445, \u043d\u0435\u043f\u0440\u0435\u0434\u0441\u043a\u0430\u0437\u0443\u0435\u043c\u043e\u0441\u0442\u044c \u043f\u043e\u0441\u0442\u0430\u0432\u043a\u0438 use-case.",
-      solution: "\u0424\u0430\u0431\u0440\u0438\u043a\u0430 \u0434\u0430\u043d\u043d\u044b\u0445, \u043a\u0430\u0442\u0430\u043b\u043e\u0433 \u0432\u0438\u0442\u0440\u0438\u043d, SLA \u043f\u0430\u0439\u043f\u043b\u0430\u0439\u043d\u043e\u0432, \u043c\u0435\u0442\u0440\u0438\u043a\u0438 ROI \u0438 prevented loss.",
-      benefit: "\u0411\u044b\u0441\u0442\u0440\u044b\u0435 \u0440\u0435\u0448\u0435\u043d\u0438\u044f \u043d\u0430 \u0434\u0430\u043d\u043d\u044b\u0445, \u0441\u043d\u0438\u0436\u0435\u043d\u0438\u0435 \u043f\u043e\u0442\u0435\u0440\u044c \u043e\u0442 \u043e\u0448\u0438\u0431\u043e\u043a, \u043f\u043e\u043b\u043e\u0436\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0432\u043a\u043b\u0430\u0434 \u0432 \u0447\u0438\u0441\u0442\u044b\u0439 \u044d\u0444\u0444\u0435\u043a\u0442 \u043a\u043b\u0430\u0441\u0442\u0435\u0440\u0430."
+      description: "SberVision \u2014 \u043f\u0440\u043e\u0434\u0443\u043a\u0442 \u0434\u043b\u044f \u0440\u0430\u0431\u043e\u0442\u044b \u0441 \u0433\u043b\u043e\u0431\u0430\u043b\u044c\u043d\u043e\u0439 \u0442\u0435\u0445\u043d\u043e\u043b\u043e\u0433\u0438\u0447\u0435\u0441\u043a\u043e\u0439 \u044d\u043a\u0441\u043f\u0435\u0440\u0442\u0438\u0437\u043e\u0439 \u0438 \u043f\u0440\u0435\u0432\u0440\u0430\u0449\u0435\u043d\u0438\u044f \u0435\u0451 \u0432 \u0438\u043d\u0441\u0430\u0439\u0442\u044b \u0434\u043b\u044f \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u044f \u043a\u043e\u043d\u043a\u0443\u0440\u0435\u043d\u0442\u043d\u044b\u0445 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432 \u0438 \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u0438\u043d\u0438\u0446\u0438\u0430\u0442\u0438\u0432. \u041e\u0441\u043d\u043e\u0432\u0430\u043d \u043d\u0430 AI-\u0430\u0433\u0435\u043d\u0442\u0430\u0445 \u0438 LLM: \u043d\u0430\u043a\u043e\u043f\u043b\u0435\u043d\u0438\u0435 \u0438 \u0430\u043d\u0430\u043b\u0438\u0437 \u0437\u0430\u043a\u0440\u044b\u0442\u043e\u0439 \u0432\u043d\u0435\u0448\u043d\u0435\u0439 \u0438\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u0438 (\u043e\u0442\u0447\u0451\u0442\u044b PWC, McKinsey, BCG, Gartner, CB Insights, Statista, \u043d\u0430\u0443\u0447\u043d\u044b\u0435 \u0431\u0430\u0437\u044b). \u0427\u0430\u0441\u0442\u044c \u043a\u043e\u043d\u0446\u0435\u043f\u0446\u0438\u0438 \u00ab\u0415\u0434\u0438\u043d\u043e\u0439 \u0441\u0438\u0441\u0442\u0435\u043c\u044b \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f \u0437\u043d\u0430\u043d\u0438\u044f\u043c\u0438\u00bb.",
+      audience: "\u041b\u0438\u0434\u0435\u0440\u044b \u0431\u043b\u043e\u043a\u043e\u0432 (\u0422, \u0422\u041f, B2C), CPO/PL/PO, \u0430\u043d\u0430\u043b\u0438\u0442\u0438\u043a\u0438, \u0430\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u043e\u0440\u044b, \u0443\u0447\u0430\u0441\u0442\u043d\u0438\u043a\u0438 IT-\u0442\u0440\u0430\u043d\u0441\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u0438, \u0418\u0411, \u043a\u043b\u044e\u0447\u0435\u0432\u044b\u0435 \u043b\u0438\u0446\u0430 \u043f\u0440\u0438\u043d\u044f\u0442\u0438\u044f \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u0440\u0435\u0448\u0435\u043d\u0438\u0439.",
+      problem: "\u0421\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0438 \u0438 \u0446\u0435\u043b\u0438 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432 \u043d\u0435 \u0432\u0441\u0435\u0433\u0434\u0430 \u0443\u0447\u0438\u0442\u044b\u0432\u0430\u044e\u0442 \u0433\u043b\u043e\u0431\u0430\u043b\u044c\u043d\u044b\u0435 \u0442\u0440\u0435\u043d\u0434\u044b; \u0437\u0430\u0434\u0435\u0440\u0436\u043a\u0430 \u0432 \u0438\u0445 \u0432\u044b\u044f\u0432\u043b\u0435\u043d\u0438\u0438 \u0431\u044c\u0451\u0442 \u043f\u043e \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0447\u0435\u0441\u043a\u0438\u043c \u0440\u0435\u0448\u0435\u043d\u0438\u044f\u043c. \u0423\u043d\u0438\u043a\u0430\u043b\u044c\u043d\u044b\u0435 \u043c\u0430\u0442\u0435\u0440\u0438\u0430\u043b\u044b \u0441\u043a\u0440\u044b\u0442\u044b \u0437\u0430 \u0434\u043e\u0440\u043e\u0433\u0438\u043c\u0438 \u043f\u043e\u0434\u043f\u0438\u0441\u043a\u0430\u043c\u0438 \u0441 \u043d\u0438\u0437\u043a\u043e\u0439 \u0443\u0442\u0438\u043b\u0438\u0437\u0430\u0446\u0438\u0435\u0439.",
+      solution: "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0437\u0430\u0446\u0438\u044f \u0441\u0431\u043e\u0440\u0430 \u0438 \u0430\u043a\u0442\u0443\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u0438 \u0437\u043d\u0430\u043d\u0438\u0439 \u0438\u0437 \u0437\u0430\u043a\u0440\u044b\u0442\u044b\u0445 \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a\u043e\u0432; \u0433\u0440\u0430\u0444 \u0437\u043d\u0430\u043d\u0438\u0439 \u043d\u0430 GenAI \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430, \u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0446\u0438\u0438 \u0438 \u043f\u0440\u043e\u0433\u043d\u043e\u0437\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f \u0441 \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u043c \u0446\u0438\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435\u043c (GraphRAG).",
+      benefit: "Reduced Time to Info \u0434\u043b\u044f \u0430\u043d\u0430\u043b\u0438\u0442\u0438\u043a\u043e\u0432 \u0438 \u0432\u043b\u0430\u0434\u0435\u043b\u044c\u0446\u0435\u0432; \u0441\u043d\u0438\u0436\u0435\u043d\u0438\u0435 \u0441\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u0438 \u043f\u043e\u0434\u043f\u0438\u0441\u043e\u043a \u0437\u0430 \u0441\u0447\u0451\u0442 \u0446\u0435\u043d\u0442\u0440\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u0438 \u0437\u043d\u0430\u043d\u0438\u0439; \u0442\u043e\u0447\u043d\u043e\u0441\u0442\u044c \u0441\u0442\u0440\u0430\u0442\u0435\u0433\u0438\u0438; \u0443\u0441\u043a\u043e\u0440\u0435\u043d\u0438\u0435 discovery; \u0448\u0438\u0440\u043e\u043a\u0438\u0439 \u043a\u043e\u043d\u0442\u0435\u043a\u0441\u0442 \u0434\u043b\u044f \u043b\u0438\u0434\u0435\u0440\u043e\u0432. \u041a\u043e\u043d\u043a\u0443\u0440\u0435\u043d\u0442\u043d\u043e\u0435 \u043f\u0440\u0435\u0438\u043c\u0443\u0449\u0435\u0441\u0442\u0432\u043e: \u0441\u0438\u0441\u0442\u0435\u043c\u043d\u043e\u0435 \u043f\u043e\u043a\u0440\u044b\u0442\u0438\u0435 \u0437\u0430\u043a\u0440\u044b\u0442\u044b\u0445 \u0430\u043d\u0430\u043b\u0438\u0442\u0438\u043a, \u0431\u044b\u0441\u0442\u0440\u044b\u0439 \u0434\u043e\u0441\u0442\u0443\u043f \u0432 \u0442\u043e\u0447\u043a\u0435 \u0440\u0435\u0448\u0435\u043d\u0438\u044f (Corp.Search, SberChat)."
     }
   },
   "infra-cloud": {
@@ -1168,18 +1326,6 @@ const PRODUCT_PROFILES = {
       problem: "\u0424\u0440\u0430\u0433\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044f \u043f\u0440\u0430\u043a\u0442\u0438\u043a, \u0438\u043d\u0446\u0438\u0434\u0435\u043d\u0442\u044b, \u043d\u0435\u043f\u0440\u0435\u0434\u0441\u043a\u0430\u0437\u0443\u0435\u043c\u044b\u0439 cost of downtime.",
       solution: "\u0415\u0434\u0438\u044b\u0439 golden path, SLO/error budget, \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0437\u0430\u0446\u0438\u044f \u0434\u0435\u043f\u043b\u043e\u0435\u0432 \u0438 \u043d\u0430\u0431\u043b\u044e\u0434\u0430\u0435\u043c\u043e\u0441\u0442\u044c.",
       benefit: "\u0421\u0442\u0430\u0431\u0438\u043b\u044c\u043d\u043e\u0441\u044c, \u0441\u043d\u0438\u0436\u0435\u043d\u0438\u0435 P1/P2 \u0438 \u043f\u043e\u0442\u0435\u0440\u044c \u043e\u0442 \u043f\u0440\u043e\u0441\u0442\u043e\u0435\u0432, \u0437\u0430\u0449\u0438\u0442\u0430 \u0432\u044b\u0440\u0443\u0447\u043a\u0438 \u0447\u0435\u0440\u0435\u0437 prevented loss."
-    }
-  },
-  "int-wp-tech": {
-    lifecycle: "\u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0439",
-    headcountTotal: 14, headcountFilled: 13,
-    owner: "\u0413\u0440\u0438\u0433\u043e\u0440\u044c\u0435\u0432 \u0414.\u041d., Head Workplace Technology",
-    vision: {
-      description: "\u0415\u0434\u0438\u043d\u044b\u0439 \u043a\u043e\u043d\u0442\u0443\u0440 \u0436\u0438\u0437\u043d\u0435\u043d\u043d\u043e\u0433\u043e \u0446\u0438\u043a\u043b\u0430 \u0442\u0435\u0445\u043d\u0438\u043a\u0438 \u0440\u0430\u0431\u043e\u0447\u0435\u0433\u043e \u043c\u0435\u0441\u0442\u0430: \u0437\u0430\u043a\u0430\u0437, \u0432\u044b\u0434\u0430\u0447\u0430, \u0441\u043e\u043f\u0440\u043e\u0432\u043e\u0436\u0434\u0435\u043d\u0438\u0435, \u0437\u0430\u043c\u0435\u043d\u0430, \u0443\u0442\u0438\u043b\u0438\u0437\u0430\u0446\u0438\u044f.",
-      audience: "\u0421\u043e\u0442\u0440\u0443\u0434\u043d\u0438\u043a\u0438 \u0431\u0430\u043d\u043a\u0430, HR, \u0438\u0442-\u043a\u043e\u043e\u0440\u0434\u0438\u043d\u0430\u0442\u043e\u0440\u044b, \u0437\u0430\u043a\u0443\u043f\u043a\u0438.",
-      problem: "\u0420\u0430\u0437\u043d\u043e\u0432\u043e\u0437\u0440\u0430\u0441\u0442\u043d\u044b\u0439 \u043f\u0430\u0440\u043a \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432, \u0434\u043e\u043b\u0433\u0430\u044f \u0432\u044b\u0434\u0430\u0447\u0430, \u043d\u0435\u043f\u0440\u0435\u0434\u0441\u043a\u0430\u0437\u0443\u0435\u043c\u044b\u0439 TCO \u043d\u0430 \u0440\u0430\u0431\u043e\u0447\u0435\u0435 \u043c\u0435\u0441\u0442\u043e, \u043f\u043e\u0442\u0435\u0440\u0438 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u0438\u0437-\u0437\u0430 \u043f\u043e\u043b\u043e\u043c\u043e\u043a/\u0443\u0441\u0442\u0430\u0440\u0435\u0432\u0448\u0435\u0439 \u0442\u0435\u0445\u043d\u0438\u043a\u0438.",
-      solution: "\u041a\u0430\u0442\u0430\u043b\u043e\u0433 \u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0445 \u043a\u043e\u043d\u0444\u0438\u0433\u0443\u0440\u0430\u0446\u0438\u0439, ITSM self-service, SLA \u043d\u0430 \u0432\u044b\u0434\u0430\u0447\u0443/\u0440\u0435\u043c\u043e\u043d\u0442, \u043f\u043b\u0430\u043d\u043e\u0432\u0430\u044f \u043e\u0431\u043d\u043e\u0432\u043b\u044f\u0435\u043c\u043e\u0441\u0442\u044c \u043f\u0430\u0440\u043a\u0430, CMDB \u0438 \u043c\u0435\u0442\u0440\u0438\u043a\u0438 CPW/FFI/EPU.",
-      benefit: "\u041f\u0440\u043e\u0437\u0440\u0430\u0447\u043d\u0430\u044f \u044e\u043d\u0438\u0442-\u044d\u043a\u043e\u043d\u043e\u043c\u0438\u043a\u0430 \u0440\u0430\u0431\u043e\u0447\u0435\u0433\u043e \u043c\u0435\u0441\u0442\u0430, \u0441\u043d\u0438\u0436\u0435\u043d\u0438\u0435 \u043f\u043e\u0442\u0435\u0440\u044c \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438, \u0440\u043e\u0441\u0442 CSI \u2192 \u0447\u0438\u0441\u0442\u044b\u0439 \u044d\u0444\u0444\u0435\u043a\u0442 \u0432 ip-net / bt-net."
     }
   }
 };
@@ -1262,22 +1408,10 @@ const DOMAINS = {
 const PRODUCT_TREE = {
   id: "blok-t", name: "\u0411\u043b\u043e\u043a \u0422", level: "\u0431\u043b\u043e\u043a", domain: "group", children: [
     { id: "internal-products", name: "\u0412\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u0438\u0435 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u044b", level: "\u043a\u043b\u0430\u0441\u0442\u0435\u0440", domain: "internal", children: [
-      { id: "int-dev", name: "\u041f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u044b \u0440\u0430\u0437\u0440\u0430\u0431\u043e\u0442\u043a\u0438", level: "\u0441\u0435\u0433\u043c\u0435\u043d\u0442", children: [
-        { id: "int-ai-pdlc", name: "\u041a\u043e\u043d\u0432\u0435\u0439\u0435\u0440 AI PDLC", level: "\u043f\u0440\u043e\u0434\u0443\u043a\u0442", leaf: true }
-      ]},
-      { id: "int-data", name: "\u041f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u044b \u0434\u0430\u043d\u043d\u044b\u0445", level: "\u0441\u0435\u0433\u043c\u0435\u043d\u0442", children: [
-        { id: "int-dwh", name: "\u0410\u043d\u0430\u043b\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430", level: "\u043f\u0440\u043e\u0434\u0443\u043a\u0442", leaf: true }
-      ]},
-      { id: "int-corp", name: "\u041a\u043e\u0440\u043f\u043e\u0440\u0430\u0442\u0438\u0432\u043d\u044b\u0435 IT-\u0441\u0435\u0440\u0432\u0438\u0441\u044b", level: "\u0441\u0435\u0433\u043c\u0435\u043d\u0442", children: [
-        { id: "int-wp-seg", name: "\u0420\u0430\u0431\u043e\u0447\u0435\u0435 \u043c\u0435\u0441\u0442\u043e \u0441\u043e\u0442\u0440\u0443\u0434\u043d\u0438\u043a\u0430", level: "\u0441\u0435\u0433\u043c\u0435\u043d\u0442", children: [
-          { id: "int-wp-tech", name: "\u0422\u0435\u0445\u043d\u0438\u043a\u0430 \u0440\u0430\u0431\u043e\u0447\u0435\u0433\u043e \u043c\u0435\u0441\u0442\u0430", level: "\u043f\u0440\u043e\u0434\u0443\u043a\u0442", leaf: true }
-        ]}
-      ]}
+      { id: "int-sbervision", name: "SberVision", level: "\u043f\u0440\u043e\u0434\u0443\u043a\u0442", leaf: true }
     ]},
     { id: "infrastructure", name: "\u0418\u043d\u0444\u0440\u0430\u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430", level: "\u043a\u043b\u0430\u0441\u0442\u0435\u0440", domain: "infra", children: [
-      { id: "infra-platform", name: "\u041f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435\u043d\u043d\u044b\u0439 \u0441\u043b\u043e\u0439", level: "\u0441\u0435\u0433\u043c\u0435\u043d\u0442", children: [
-        { id: "infra-cloud", name: "\u041e\u0431\u043b\u0430\u0447\u043d\u0430\u044f \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430", level: "\u043f\u0440\u043e\u0434\u0443\u043a\u0442", leaf: true }
-      ]}
+      { id: "infra-cloud", name: "\u041e\u0431\u043b\u0430\u0447\u043d\u0430\u044f \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430", level: "\u043f\u0440\u043e\u0434\u0443\u043a\u0442", leaf: true }
     ]}
   ]
 };
@@ -1312,22 +1446,48 @@ const METRICS_BY_PRODUCT = {
     }
   },
   "internal-products": {
-    desc: "Кластер внутренних продуктов: AI PDLC и data. L4 — затраты и эффект сегментов; детализация — на листах.",
+    desc: "Кластер внутренних продуктов: SberVision — глобальная экспертиза и инсайты для стратегии. L4 — ROI, time-to-insight и экономия подписок; детализация на листе.",
     metrics: {
       4: [
-        m("ip-tco","TCO внутренних продуктов","Outcome","Value","Head Internal","Квартал","млн ₽",{what:"Затраты на AI PDLC и data-платформы",question:"Сколько стоит поддержка внутреннего контура?",formula:"Σ(cost AI PDLC + cost Data)",units:"млн ₽",window:"YTD",source:"FinOps",freq:"Квартал",owner:"Head Internal"}),
+        m("ip-tco","TCO внутренних продуктов","Outcome","Value","Head Internal","Квартал","млн ₽",{what:"Затраты на SberVision и сопутствующие внутренние сервисы",question:"Сколько стоит поддержка внутреннего контура?",formula:"Σ(cost SberVision + alloc)",units:"млн ₽",window:"YTD",source:"FinOps",freq:"Квартал",owner:"Head Internal"}),
         m("ip-net","Чистый эффект внутренних","Outcome","Value","Head Internal","Квартал","млн ₽",{what:"Экономия и prevented loss минус TCO кластера",question:"Даёт ли кластер положительный сальдо?",formula:"Σ(leaf benefit) − ip-tco",units:"млн ₽",window:"YTD",source:"FinOps",freq:"Квартал",owner:"Head Internal"},1.05),
         m("ip-roi","ROI кластера","Outcome","Value","FinOps","Квартал","%",{what:"Окупаемость внутреннего портфеля",question:"Окупаются ли data и AI?",formula:"(Benefit − Cost) / Cost",units:"%",window:"Квартал",source:"FinOps",freq:"Квартал",owner:"FinOps"})
       ],
       3: [
-        m("ip-adopt","Adoption (сводка)","Product","Adoption","Platform","Месяц","%",{what:"Команды на AI PDLC и аналитике",question:"Внедряется ли портфель?",formula:"Active / Target",units:"%",window:"Квартал",source:"Analytics",freq:"Месяц",owner:"Platform"}),
-        m("ip-csi","CSI кластера","Product","CSI","Internal CX","Месяц","балл",{what:"CSI конвейера и аналитической платформы",question:"Довольны ли потребители?",formula:"avg(CSI leaves)",units:"балл 1–10",window:"Квартал",source:"Survey",freq:"Месяц",owner:"Internal CX"},1.09)
+        m("ip-adopt","Adoption (сводка)","Product","Adoption","Platform","Месяц","%",{what:"Решения и инициативы с опорой на SberVision",question:"Внедряется ли портфель?",formula:"Active / Target",units:"%",window:"Квартал",source:"Analytics",freq:"Месяц",owner:"Platform"}),
+        m("ip-csi","CSI кластера","Product","CSI","Internal CX","Месяц","балл",{what:"CSI SberVision у лидеров и аналитиков",question:"Довольны ли потребители?",formula:"avg(CSI leaves)",units:"балл 1–10",window:"Квартал",source:"Survey",freq:"Месяц",owner:"Internal CX"},1.09)
       ],
       2: [
         m("ip-csat","CSAT обработки (свод)","Flow","CSAT","Data Ops","Месяц","балл",{what:"CSAT запросов data и AI-сервисов",question:"Качество operational слоя?",formula:"avg(CSAT)",units:"балл 1–5",window:"Месяц",source:"Service desk",freq:"Месяц",owner:"Data Ops"}),
         m("ip-flow","Throughput кластера","Flow","Throughput","Ops","Неделя","тыс.",{what:"Успешные запросы и загрузки",question:"Поток стабилен?",formula:"Σ(OK)",units:"тыс.",window:"Неделя",source:"Orchestrator + API",freq:"Неделя",owner:"Ops"})
       ],
       1: [m("ip-rel","Релизы портфеля","Activity","Health","Release","Месяц","шт.",{what:"Релизы внутренних продуктов",question:"Темп delivery?",formula:"Count(release)",units:"шт.",window:"Квартал",source:"CI/CD",freq:"Неделя",owner:"Release"})]
+    }
+  },
+  "int-sbervision": {
+    desc: "SberVision: глобальная технологическая экспертиза и инсайты для стратегических решений Блока Т.",
+    metrics: {
+      4: [
+        m("sv-roi","ROI программы SberVision","Outcome","Value","Head SberVision","Квартал","%",{what:"Окупаемость инвестиций в платформу знаний",question:"Создаём измеримую ценность?",formula:"(Benefit − Cost) / Cost",units:"%",window:"YTD",source:"FinOps + FP&A",freq:"Квартал",owner:"Head SberVision"},1.04),
+        m("sv-tti","Time-to-Insight","Outcome","Value","Product","Квартал","ч",{what:"Время от запроса до actionable инсайта",question:"Ускоряем ли доступ к экспертизе?",formula:"median(insight_ready − query_time)",units:"ч",window:"Квартал",source:"Product analytics",freq:"Квартал",owner:"Product"},1.08),
+        m("sv-save","Экономия на подписках","Outcome","Value","FinOps","Квартал","млн ₽",{what:"Снижение дублирующих подписок за счёт централизации",question:"Окупается ли консолидация?",formula:"Baseline sub cost − Actual",units:"млн ₽",window:"YTD",source:"FinOps",freq:"Квартал",owner:"FinOps"}),
+        m("sv-tco","TCO SberVision","Outcome","Value","FinOps","Квартал","млн ₽",{what:"Стоимость владения платформой знаний",question:"Контролируем затраты?",formula:"OPEX + alloc capex + LLM",units:"млн ₽",window:"YTD",source:"FinOps",freq:"Квартал",owner:"FinOps"},1.02)
+      ],
+      3: [
+        m("sv-adopt","Adoption инсайтов","Product","Adoption","Product","Месяц","%",{what:"Доля решений/инициатив с опорой на SberVision",question:"Используется ли продукт в стратегии?",formula:"Decisions with insight / Total",units:"%",window:"Квартал",source:"Portfolio",freq:"Месяц",owner:"Product"}),
+        m("sv-csi","CSI платформы","Product","CSI","Internal CX","Месяц","балл",{what:"Удовлетворённость качеством инсайтов",question:"Доверяют ли лидеры выводам?",formula:"avg(CSI)",units:"балл 1–10",window:"Квартал",source:"Survey",freq:"Месяц",owner:"Internal CX"},1.09),
+        m("sv-cov","Покрытие источников","Product","Coverage","Knowledge","Месяц","%",{what:"Доля целевых закрытых источников в каталоге",question:"Полон ли контур знаний?",formula:"Connected / Target sources",units:"%",window:"Квартал",source:"Catalog",freq:"Месяц",owner:"Knowledge"})
+      ],
+      2: [
+        m("sv-query","Throughput запросов","Flow","Throughput","Platform","Неделя","тыс.",{what:"Успешные поисковые и аналитические запросы",question:"Выдерживает ли нагрузку?",formula:"Count(OK queries)",units:"тыс.",window:"Неделя",source:"Search API",freq:"Неделя",owner:"Platform"}),
+        m("sv-csat","CSAT ответа агента","Flow","CSAT","Product","Месяц","балл",{what:"Удовлетворённость ответом AI-агента",question:"Качество journey?",formula:"avg(CSAT)",units:"балл 1–5",window:"Месяц",source:"VoC",freq:"Месяц",owner:"Product"},1.1),
+        m("sv-cite","Доля ответов с цитированием","Flow","Quality","Knowledge","Месяц","%",{what:"Ответы с обязательными ссылками на источник",question:"Соблюдаем доверие?",formula:"Cited / Total answers",units:"%",window:"Месяц",source:"Agent logs",freq:"Месяц",owner:"Knowledge"})
+      ],
+      1: [
+        m("sv-docs","Обработанные документы","Activity","Health","Knowledge","День","шт.",{what:"Новые и обновлённые материалы в контуре",question:"Ритм наполнения?",formula:"Count(ingested)",units:"шт.",window:"День",source:"Ingestion",freq:"День",owner:"Knowledge"}),
+        m("sv-acc","Agent Accuracy","Activity","Health","ML","Неделя","%",{what:"Точность ответов агента",question:"Качество GenAI?",formula:"Correct / Total",units:"%",window:"Неделя",source:"Eval harness",freq:"Неделя",owner:"ML"},1.05),
+        m("sv-graph","Обновления графа знаний","Activity","Health","Platform","Неделя","тыс.",{what:"Новые связи в knowledge graph",question:"Живёт ли GraphRAG?",formula:"Count(new edges)",units:"тыс.",window:"Неделя",source:"Graph DB",freq:"Неделя",owner:"Platform"})
+      ]
     }
   },
   "int-dev": {
@@ -1590,6 +1750,33 @@ const GUIDE_LEVEL_BRIDGES = {
   1: "L1 — здоровье команды и активности; только на листовом продукте. На блоке, кластере и сегменте — свод L4–L2."
 };
 
+const LEVEL_ASSIGNMENT_CRITERIA = {
+  4: {
+    question: "Создаём ли ценность для бизнеса?",
+    audience: "C-level, portfolio review, квартал",
+    examples: "ROI, net effect, AUE, HVR, TCO",
+    rule: "Финансовый или стратегический outcome; не operational-деталь."
+  },
+  3: {
+    question: "Работает ли продукт у пользователей?",
+    audience: "Product, бизнес-владельцы, месяц",
+    examples: "Adoption, CSI, CoL, IOD, EORR, TTV",
+    rule: "Поведение пользователей и качество продукта; мост к L4."
+  },
+  2: {
+    question: "Как течёт работа и поставка?",
+    audience: "Engineering Director, неделя–месяц",
+    examples: "Lead Time, CFR, CSAT journey, TTM",
+    rule: "Throughput, предсказуемость, удовлетворённость процессом."
+  },
+  1: {
+    question: "Здорова ли команда и ранние сигналы?",
+    audience: "Team Lead, день–неделя",
+    examples: "LLM/fix/manual, SpD, DXI, FLT",
+    rule: "Активность, health, ранние индикаторы; не для совета директоров."
+  }
+};
+
 const LOWER_BETTER_METRIC_IDS = {
   "bt-tco": 1, "bt-cod": 1, "ip-tco": 1, "id-tco": 1, "if-tco": 1, "idev-tcost": 1,
   "ai-aue": 1, "ai-col": 1, "ai-iod": 1, "idev-iod": 1,
@@ -1603,19 +1790,32 @@ const METRIC_INFLUENCE = {
   "bt-tco": { drives: ["ip-tco", "if-tco"], feeds: ["bt-net"], up: "Чистый эффект, ROI", down: "TCO кластеров" },
   "bt-net": { drives: ["ip-net", "if-net"], feeds: ["bt-roi"], up: "ROI портфеля", down: "Эффект AI + Data + Cloud" },
   "bt-roi": { drives: ["bt-net"], feeds: [], up: "Итог для лидера", down: "Чистый эффект" },
-  "bt-hvr": { drives: ["ai-eorr", "id-roi"], feeds: ["bt-roi"], up: "Качество портфеля value", down: "EORR листов, ROI data" },
+  "bt-hvr": { drives: ["sv-roi"], feeds: ["bt-roi"], up: "Качество портфеля value", down: "ROI SberVision" },
   "bt-cod": { drives: ["if-cod", "ic-cod"], feeds: ["bt-tco"], up: "TCO (риск простоя)", down: "Инциденты облака" },
   "bt-csi": { drives: ["ip-csi", "if-csi"], feeds: ["bt-net"], up: "L4: эффект", down: "CSI кластеров" },
   "bt-adopt": { drives: ["ip-adopt"], feeds: ["bt-roi"], up: "ROI", down: "Adoption внутренних" },
   "bt-csat": { drives: ["ip-csat", "if-csat"], feeds: ["bt-csi"], up: "CSI свод", down: "CSAT листов" },
   "bt-flow": { drives: ["ip-flow"], feeds: ["bt-csat"], up: "CSAT", down: "Throughput кластеров" },
-  "ip-tco": { drives: ["idev-tcost", "id-tco", "corp-tco"], feeds: ["bt-tco"], up: "Блок Т: TCO", down: "AI + Data + Corp IT" },
-  "ip-net": { drives: ["ai-val", "id-loss", "corp-net"], feeds: ["bt-net", "ip-roi"], up: "ROI кластера", down: "Net value AI + Data + Workplace" },
+  "ip-tco": { drives: ["sv-tco"], feeds: ["bt-tco"], up: "Блок Т: TCO", down: "SberVision" },
+  "ip-net": { drives: ["sv-roi", "sv-save"], feeds: ["bt-net", "ip-roi"], up: "ROI кластера", down: "Эффект SberVision" },
   "ip-roi": { drives: ["ip-net"], feeds: ["bt-roi"], up: "Блок Т: ROI", down: "Чистый эффект кластера" },
-  "ip-adopt": { drives: ["ai-arr", "id-adopt"], feeds: ["ip-roi", "bt-adopt"], up: "ROI, adoption Блок Т", down: "Листы" },
-  "ip-csi": { drives: ["ai-csi", "id-csi"], feeds: ["ip-net", "bt-csi"], up: "Чистый эффект", down: "CSI листов" },
-  "ip-csat": { drives: ["ai-csat", "id-csat"], feeds: ["ip-csi"], up: "CSI", down: "CSAT листов" },
-  "ip-flow": { drives: ["ai-ttm", "id-load"], feeds: ["ip-csat", "bt-flow"], up: "CSAT", down: "Поток листов" },
+  "ip-adopt": { drives: ["sv-adopt"], feeds: ["ip-roi", "bt-adopt"], up: "ROI, adoption Блок Т", down: "SberVision" },
+  "ip-csi": { drives: ["sv-csi"], feeds: ["ip-net", "bt-csi"], up: "Чистый эффект", down: "CSI SberVision" },
+  "ip-csat": { drives: ["sv-csat"], feeds: ["ip-csi"], up: "CSI", down: "CSAT SberVision" },
+  "ip-flow": { drives: ["sv-query"], feeds: ["ip-csat", "bt-flow"], up: "CSAT", down: "Throughput SberVision" },
+  "sv-roi": { drives: ["sv-tti", "sv-save", "sv-tco"], feeds: ["ip-net", "bt-hvr"], up: "Кластер, HVR блока", down: "TTI, экономия, TCO" },
+  "sv-tti": { drives: ["sv-query", "sv-acc"], feeds: ["sv-roi"], up: "ROI", down: "Запросы, точность" },
+  "sv-save": { drives: ["sv-adopt"], feeds: ["sv-roi", "ip-net"], up: "ROI", down: "Adoption инсайтов" },
+  "sv-tco": { drives: ["sv-docs"], feeds: ["sv-roi", "ip-tco"], up: "ROI, TCO кластера", down: "Объём контента" },
+  "sv-adopt": { drives: ["sv-cite", "sv-cov"], feeds: ["sv-save", "ip-adopt"], up: "Экономия, adoption кластера", down: "Цитирование, покрытие" },
+  "sv-csi": { drives: ["sv-csat"], feeds: ["ip-csi"], up: "CSI кластера", down: "CSAT агента" },
+  "sv-cov": { drives: ["sv-graph", "sv-docs"], feeds: ["sv-adopt"], up: "Adoption", down: "Граф, документы" },
+  "sv-query": { drives: ["sv-docs"], feeds: ["sv-tti", "ip-flow"], up: "TTI, поток кластера", down: "Документы" },
+  "sv-csat": { drives: ["sv-acc", "sv-cite"], feeds: ["sv-csi", "ip-csat"], up: "CSI", down: "Точность, цитаты" },
+  "sv-cite": { drives: ["sv-acc"], feeds: ["sv-adopt"], up: "Adoption", down: "Agent Accuracy" },
+  "sv-docs": { drives: [], feeds: ["sv-query", "sv-tco", "sv-cov"], up: "Запросы, TCO, покрытие", down: "" },
+  "sv-acc": { drives: [], feeds: ["sv-csat", "sv-tti", "sv-cite"], up: "CSAT, TTI, цитирование", down: "" },
+  "sv-graph": { drives: [], feeds: ["sv-cov"], up: "Покрытие источников", down: "" },
   "idev-tcost": { drives: ["ai-llm"], feeds: ["ip-tco", "ai-aue"], up: "TCO внутренних, AUE", down: "Запросы LLM" },
   "idev-ben": { drives: ["ai-ttm"], feeds: ["ip-net"], up: "Чистый эффект кластера", down: "TTM AI PDLC" },
   "idev-arr": { drives: ["ai-arr"], feeds: ["ip-adopt"], up: "Adoption", down: "ARR листа" },
@@ -1684,7 +1884,7 @@ const METRIC_INFLUENCE = {
   "wpt-tco": { drives: ["wpt-inv", "wpt-rma", "wpt-av"], feeds: ["wpt-cpw", "wpt-net", "wpt-roi", "corp-tco", "ip-tco"], up: "CPW, net, ROI, TCO кластера", down: "Склад, RMA, CMDB" },
   "wpt-cpw": { drives: ["wpt-tco"], feeds: ["wpt-roi", "wps-cpw"], up: "ROI", down: "TCO" },
   "wpt-net": { drives: ["wpt-epu", "wpt-sla", "wpt-ttv"], feeds: ["wpt-roi", "wps-net", "corp-net", "ip-net"], up: "ROI, эффект сегмента", down: "EPU, SLA, TTP" },
-  "wpt-roi": { drives: ["wpt-net", "wpt-cpw", "wpt-pps"], feeds: ["corp-roi", "ip-roi"], up: "ROI кластера", down: "Net, CPW, PPS" },
+  "wpt-roi": { drives: ["wpt-net", "wpt-cpw", "wpt-pps"], feeds: ["ip-roi"], up: "ROI кластера", down: "Net, CPW, PPS" },
   "wps-cpw": { drives: ["wpt-cpw"], feeds: ["corp-tco"], up: "TCO кластера", down: "CPW листа" },
   "wps-net": { drives: ["wpt-net"], feeds: ["corp-net"], up: "Чистый эффект кластера", down: "Net value листа" },
   "wps-ffi": { drives: ["wpt-ffi"], feeds: ["wpt-epu"], up: "EPU листа", down: "FFI листа" },
@@ -1704,213 +1904,112 @@ const METRIC_INFLUENCE = {
 
 const PRODUCT_HIERARCHY_ROLLUP = {
   "blok-t": {
-    chain: "Блок Т → Внутренние продукты + Инфраструктура → 4 листа",
-    text: "L4: TCO = ip-tco + if-tco; чистый эффект = ai-val + id-loss + ic-loss + wpt-net − затраты. Drill-down: AI PDLC, аналитика, облако, техника РМ."
+    chain: "Блок Т → 2 кластера → 4 демо-продукта (+ 210 в портфеле)",
+    text: "L4: TCO, чистый эффект, ROI, HVR. Кластеры: Внутренние продукты (AI PDLC, Data, Workplace) и Инфраструктура (Облако)."
   },
   "internal-products": {
-    chain: "Блок Т → Внутренние продукты → AI PDLC / Data / Corp IT",
-    text: "Кластер: затраты и ROI внутреннего контура. Листы: AI PDLC (AUE, CoL…), Data (ROI, TTM…), Техника РМ (CPW, FFI, EPU, FTR)."
-  },
-  "int-corp": {
-    chain: "… → Корпоративные IT-сервисы → Рабочее место → Техника РМ",
-    text: "Кластер: corp-tco = wpt-tco + alloc; corp-net = wpt-net. Агрегация CSI/adoption/SLA с листа перед drill-down."
-  },
-  "int-wp-seg": {
-    chain: "… → Рабочее место сотрудника → Техника рабочего места",
-    text: "Сегмент: CPW = wpt-tco/N_RM; rollup FFI, EPU, MTTR, FTR с листа. Мост к L4 кластера."
+    chain: "Блок Т → Внутренние продукты → 3 продукта",
+    text: "Кластер: AI PDLC, аналитическая платформа, техника рабочего места. Свод L4–L2 на кластере; L1 — на листах."
   },
   "int-wp-tech": {
-    chain: "… → Техника рабочего места",
-    text: "5 уровней дерева: Блок Т → Внутр. продукты → Corp IT → Рабочее место → продукт. L1 (tix, ship, RMA) → L2 (SLA, MTTR, FTR) → L3 (CSI, FFI, EPU, PPS) → L4 (ROI, TCO, CPW, net) → ip-net / bt-net."
-  },
-  "int-dev": {
-    chain: "… → Платформы разработки → Конвейер AI PDLC",
-    text: "Сегмент агрегирует токены и TTM с листа AI PDLC перед drill-down на полную пирамиду записки."
+    chain: "Блок Т → Внутренние продукты → Техника рабочего места",
+    text: "L1 (tix, ship) → L2 (SLA, MTTR, FTR) → L3 (CSI, FFI, EPU) → L4 (ROI, TCO, CPW, net) → ip-net / bt-net."
   },
   "int-ai-pdlc": {
-    chain: "… → Конвейер AI PDLC",
-    text: "Записка метрик: L1 (LLM, fix, manual) → L2 (TTM, CFR) → L3 (CoL, IOD, ARR, WFR, EBCS) → L4 (AUE, ROI, net value) → ip-net / bt-net."
-  },
-  "int-data": {
-    chain: "… → Платформы данных → Аналит. платформа",
-    text: "Сегмент: time-to-insight и покрытие → L4 листа (ROI, TTM, prevented loss, TCO data)."
+    chain: "Блок Т → Внутренние продукты → Конвейер AI PDLC",
+    text: "L1 (LLM, fix, manual) → L2 (TTM, CFR, LTC) → L3 (CoL, IOD, ARR, EBCS) → L4 (AUE, ROI, net value) → ip-net / bt-net."
   },
   "int-dwh": {
-    chain: "… → Аналитическая платформа",
+    chain: "Блок Т → Внутренние продукты → Аналитическая платформа",
     text: "Data: DAG → загрузки → adoption/CSI → prevented loss и ROI → ip-net → bt-net."
   },
   "infrastructure": {
-    chain: "Блок Т → Инфраструктура → … → Облако",
+    chain: "Блок Т → Инфраструктура → Облачная платформа",
     text: "Кластер: TCO инфра, cost of downtime, prevented loss с листа облака."
   },
-  "infra-platform": {
-    chain: "… → Платформенный слой → Облачная платформа",
-    text: "Golden path и error budget → SLO и финансовый L4 на облаке."
-  },
   "infra-cloud": {
-    chain: "… → Облачная платформа",
+    chain: "Блок Т → Инфраструктура → Облачная платформа",
     text: "L1 health/pipeline → L2 инциденты → L3 SLO/CSI → L4 cost of downtime & prevented loss → if-net / bt-net."
   }
 };
 
-const METRIC_CATALOG = [
-  { level: 4, key: "hvr", name: "Hypothesis Validation Rate (HVR)", subtitle: "Доля гипотез с измеримым бизнес-эффектом",
-    what: "Какая часть продуктовых гипотез подтверждена измеримым эффектом на бизнес (доход, риск, экономия, NPS).",
-    question: "Строим ли портфель на проверенных гипотезах, а не на активности ради активности?",
-    formula: "Count(hypothesis with measured business effect) / Count(closed hypothesis)",
-    source: "Пирамида метрик v70", proto: ["bt-hvr"] },
-  { level: 4, key: "roi12", name: "Initiative ROI (T+12)", subtitle: "Окупаемость инициативы на горизонте 12 мес.",
-    what: "Финансовый возврат от инициативы/программы через 12 месяцев после запуска.",
-    question: "Окупаются ли крупные инвестиции в платформы и продукты?",
-    formula: "(Benefit_T+12 − Cost) / Cost",
-    source: "Пирамида метрик v70", proto: ["ai-roi", "id-roi", "bt-roi", "ip-roi"] },
-  { level: 4, key: "oei", name: "Organizational Effectiveness Index (OEI)", subtitle: "Организационная эффективность",
-    what: "Сводный индекс эффективности организации: сочетание outcome, скорости и качества поставки на уровне портфеля.",
-    question: "Становится ли организация эффективнее в целом, а не точечно в одном продукте?",
-    formula: "Weighted index(OEI components) — согласованная методология FP&A",
-    source: "Пирамида метрик v70", proto: [] },
-  { level: 4, key: "aue", name: "Agentic Unit Economics (AUE)", subtitle: "Машинная юнит-экономика токенов",
-    what: "Юнит-экономика с учётом LLM-токенов и машинных затрат: ценность единицы (фича, use-case, клиент) минус COGS и стоимость inference.",
-    question: "Окупается ли агентный конвейер с точки зрения бизнеса, а не только FTE?",
-    formula: "(Revenue − COGS − Token cost) / Active unit",
-    source: "Записка метрики AI PDLC", proto: ["ai-aue"] },
-  { level: 4, key: "tco", name: "TCO портфеля платформ", subtitle: "Стоимость владения",
-    what: "Полная стоимость владения внутренними и инфраструктурными продуктами (OPEX, alloc CAPEX, поддержка).",
-    question: "Сколько лидеру обходится поддержка платформенного портфеля?",
-    formula: "Σ(OPEX + allocated capex + ops)",
-    source: "Прототип Блок Т", proto: ["bt-tco", "ip-tco", "if-tco", "id-tco"] },
-  { level: 4, key: "net", name: "Чистый эффект (экономия − затраты)", subtitle: "Сальдо портфеля",
-    what: "Экономия, prevented loss и защищённый доход минус TCO — итог «в плюсе или в минусе» для блока.",
-    question: "Дают ли вложенные продукты положительное сальдо?",
-    formula: "Σ(benefit + prevented loss) − TCO",
-    source: "Прототип Блок Т", proto: ["bt-net", "ip-net", "if-net", "ai-val"] },
-  { level: 3, key: "eorr", name: "Epic Outcome Realization Rate (EORR)", subtitle: "Реализация outcome эпиков",
-    what: "Доля эпиков/инициатив, где заявленный бизнес-outcome достигнут в согласованном окне.",
-    question: "Доводим ли крупные единицы работы до обещанного результата?",
-    formula: "Count(epic with outcome met) / Count(epic closed)",
-    source: "Пирамида метрик v70", proto: ["ai-eorr"] },
-  { level: 3, key: "pps", name: "Product Performance Score (PPS)", subtitle: "Сводная оценка продукта",
-    what: "Композитный балл здоровья продукта: adoption, качество, удовлетворённость, стабильность поставки.",
-    question: "В целом продукт «здоров» или точечно хорош только один срез?",
-    formula: "Weighted score(adoption, quality, CSI, stability)",
-    source: "Пирамида метрик v70", proto: [] },
-  { level: 3, key: "adopt", name: "Adoption & Retention Rate", subtitle: "Внедрение и удержание",
-    what: "Доля целевых команд/пользователей, регулярно использующих продукт, и удержание активной базы.",
-    question: "Продукт реально используют и остаются, а не «внедрили на бумаге»?",
-    formula: "Active users / Target; Retained cohort / Cohort",
-    source: "Пирамида метрик v70", proto: ["bt-adopt", "ip-adopt", "id-adopt"] },
-  { level: 3, key: "ttv", name: "Time-to-Value Compression (TTV 2.0)", subtitle: "Сжатие time-to-value",
-    what: "Насколько сократили время от запроса/идеи до измеримой ценности для потребителя.",
-    question: "Быстрее ли пользователь получает ценность, чем в базовом периоде?",
-    formula: "(Baseline TTV − Current TTV) / Baseline TTV",
-    source: "Пирамида метрик v70", proto: ["id-tti", "id-ttm", "ai-ttm"] },
-  { level: 3, key: "col", name: "Cost of Learning (CoL)", subtitle: "Стоимость фазы поиска ценности",
-    what: "Средняя стоимость проверки одной продуктовой гипотезы в discovery, включая токены LLM и труд команды.",
-    question: "Эффективно ли мы «учимся» на гипотезах в AI-конвейере?",
-    formula: "Σ(cost of hypothesis experiments) / Count(hypothesis)",
-    source: "Записка метрики AI PDLC", proto: ["ai-col"] },
-  { level: 3, key: "iod", name: "Intent-to-Outcome Drift (IOD)", subtitle: "Дрейф целей",
-    what: "Расхождение между заявленным intent (SDD/спека) и фактическим outcome в коде и метриках продукта.",
-    question: "Поставляем ли то, что обещали, или «быстро, но не то»?",
-    formula: "|spec_outcome − measured_outcome| / spec_outcome",
-    source: "Записка метрики AI PDLC", proto: ["ai-iod", "idev-iod"] },
-  { level: 3, key: "wfr", name: "Workaround-to-Flow Ratio (WFR)", subtitle: "Опыт агентов (AX)",
-    what: "Доля обходных путей и ручных обходов процесса vs штатный flow; прокси качества Agent Experience.",
-    question: "Удобен ли процесс для людей и агентов, или все «ломают» стандарт?",
-    formula: "Count(workarounds) / Count(standard flow completions)",
-    source: "Записка метрики AI PDLC", proto: ["ai-wfr"] },
-  { level: 3, key: "arr", name: "Autonomous Recovery Rate (ARR)", subtitle: "Самовосстановление",
-    what: "Доля сбоев/инцидентов в CI/CD и конвейере, восстановленных без ручного вмешательства.",
-    question: "Действительно ли конвейер автономен, а не «автономия на слайде»?",
-    formula: "Count(auto-recovered) / Count(failures)",
-    source: "Записка метрики AI PDLC", proto: ["ai-arr", "idev-arr"] },
-  { level: 3, key: "ebcs", name: "Evidence Bundle Completeness Score (EBCS)", subtitle: "Аудит безопасности",
-    what: "Полнота evidence bundle для изменений: тесты, ревью, policy, traceability для аудита.",
-    question: "Можно ли пройти аудит/комплаенс без «догоняющих» артефактов?",
-    formula: "Compliant changes / Total changes (weighted checklist)",
-    source: "Записка метрики AI PDLC", proto: ["ai-ebcs"] },
-  { level: 3, key: "csi", name: "CSI — Customer/User Satisfaction Index", subtitle: "Удовлетворённость продуктом",
-    what: "Индекс удовлетворённости целевых пользователей продуктом (внутренних или внешних).",
-    question: "Ценят ли пользователи продукт — мост к L4?",
-    formula: "avg(CSI survey)",
-    source: "Пирамида метрик v70", proto: ["ai-csi", "id-csi", "ic-csi", "bt-csi", "ip-csi"] },
-  { level: 2, key: "df", name: "DF — Defect rate / Defect Flow", subtitle: "Дефекты в потоке",
-    what: "Плотность и поток дефектов, дошедших до тестов/прода; индикатор качества поставки.",
-    question: "Течёт ли качество вниз по потоку?",
-    formula: "Defects / Story points (или defects / release)",
-    source: "Пирамида метрик v70 · процесс 2.7", proto: [] },
-  { level: 2, key: "ltc", name: "LTC — Lead Time for Changes", subtitle: "DORA Lead Time",
-    what: "Время от commit до production для изменения (медиана).",
-    question: "Как быстро изменения доходят до пользователя?",
-    formula: "median(prod_time − commit_time)",
-    source: "Пирамида метрик v70 · DORA", proto: ["ai-lt"] },
-  { level: 2, key: "cfr", name: "CFR — Change Failure Rate", subtitle: "DORA, доля неуспешных изменений",
-    what: "Доля изменений, приводящих к деградации, откату или инциденту.",
-    question: "Насколько стабилен поток поставки?",
-    formula: "Failed changes / Total changes",
-    source: "Пирамида метрик v70 · DORA", proto: ["ai-cfr", "idev-cfr"] },
-  { level: 2, key: "code-turn", name: "Code Turnover", subtitle: "Оборачиваемость/черн кода",
-    what: "Доля кода, переписанного или удалённого в коротком окне; прокси стабильности архитектуры.",
-    question: "Не «сжигаем» ли кодовую базу скоростью AI-генерации?",
-    formula: "Churned LOC / Total LOC (period)",
-    source: "Метрики процесса 2.7", proto: [] },
-  { level: 2, key: "scr", name: "SCR — Sprint Completion Rate", subtitle: "Предсказуемость спринта",
-    what: "Доля запланированного объёма, реально завершённого в спринте/итерации.",
-    question: "Предсказуема ли поставка на тактическом горизонте?",
-    formula: "Completed commitment / Planned commitment",
-    source: "Метрики процесса 2.7", proto: [] },
-  { level: 2, key: "vsm", name: "VSM Maturity", subtitle: "Зрелость value stream",
-    what: "Уровень зрелости картирования и управления value stream (от хаоса к измеримому E2E потоку).",
-    question: "Видим ли end-to-end поток и узкие места?",
-    formula: "Maturity score по чек-листу VSM (уровни 1–5)",
-    source: "Пирамида метрик v70", proto: [] },
-  { level: 2, key: "ttm", name: "TTM / Discovery time", subtitle: "Time to Market, контроль процесса",
-    what: "Полный цикл от идеи до prod; discovery — время до согласованного scope.",
-    question: "Ускоряем ли delivery и не теряем ли качество постановки?",
-    formula: "median(done − start); median(scope_ok − request)",
-    source: "Метрики процесса 2.7", proto: ["ai-ttm", "ai-disc", "id-ttm", "id-disc"] },
-  { level: 2, key: "csat", name: "CSAT — этап journey", subtitle: "Удовлетворённость процессом",
-    what: "Удовлетворённость конкретным этапом (запрос, инцидент, выдача).",
-    question: "Довольны ли пользователи тем, как течёт работа?",
-    formula: "avg(CSAT stage)",
-    source: "Пирамида метрик v70", proto: ["ai-csat", "id-csat", "ic-csat", "ip-csat", "bt-csat"] },
-  { level: 1, key: "spd", name: "SpD — Sprint Predictability Deviation", subtitle: "Отклонение от плана спринта",
-    what: "Отклонение факта от плана по объёму/срокам внутри итерации.",
-    question: "Стабилен ли ритм команды?",
-    formula: "|fact − plan| / plan",
-    source: "Метрики процесса 2.7", proto: [] },
-  { level: 1, key: "dxi", name: "DXI — Developer Experience Index", subtitle: "Индекс опыта разработчика",
-    what: "Субъективный и объективный опыт разработки: инструменты, friction, время на «нефичи».",
-    question: "Удобно ли команде поставлять ценность?",
-    formula: "Composite survey + tooling friction metrics",
-    source: "Пирамида метрик v70", proto: ["ai-tm", "id-tm"] },
-  { level: 1, key: "flt", name: "FLT — Flow Load Time", subtitle: "Нагрузка на поток",
-    what: "Время ожидания в очередях/WIP между этапами; индикатор перегрузки потока.",
-    question: "Где простаивает работа из-за очередей?",
-    formula: "avg(wait time between stages)",
-    source: "Метрики процесса 2.7", proto: [] },
-  { level: 1, key: "cog", name: "Cognitive Load", subtitle: "Когнитивная нагрузка",
-    what: "Субъективная когнитивная нагрузка на инженеров (опрос + прокси: context switching).",
-    question: "Не выгорает ли команда от сложности процесса и AI-конвейера?",
-    formula: "avg(cognitive load survey)",
-    source: "Метрики процесса 2.7", proto: [] },
-  { level: 1, key: "ait-roi", name: "AI Tool ROI", subtitle: "Окупаемость AI-инструментов",
-    what: "Возврат от инвестиций в AI-инструменты (лицензии, токены) vs измеренный прирост производительности.",
-    question: "Окупаются ли Copilot/агенты на уровне команды?",
-    formula: "(Time saved × rate − AI cost) / AI cost",
-    source: "Метрики процесса 2.7", proto: ["idev-tcost", "ai-llm"] },
-  { level: 1, key: "onb", name: "Onboarding Time", subtitle: "Время онбординга",
-    what: "Время вывода нового участника/команды на продуктивность в контуре продукта/платформы.",
-    question: "Быстро ли новые люди становятся продуктивными?",
-    formula: "median(first productive day − join day)",
-    source: "Метрики процесса 2.7", proto: [] },
-  { level: 1, key: "llm", name: "LLM / fix / manual / skip", subtitle: "Контроль AI PDLC на L1",
-    what: "Запросы к LLM, циклы исправления после генерации, доля ручных правок, пропуски gate.",
-    question: "Контролируем ли ранние сигналы качества и стоимости AI-конвейера?",
-    formula: "Count(LLM); Count(fix); Manual% / Generated%; Count(skipped gates)",
-    source: "Записка AI PDLC · процесс 2.7", proto: ["ai-llm", "ai-fix", "ai-manual", "ai-skip", "idev-llm"] }
+function cm(lv, key, name, formula, what, owner, threshold, proto) {
+  return { level: lv, key: key, name: name, formula: formula, what: what || "", question: what || "", owner: owner || "", threshold: threshold || "", proto: proto || [] };
+}
+
+const CATALOG_LEVELS = [
+  { key: 4, label: "L4 · Outcome / Value", count: 13, question: "Создаём ли ценность для бизнеса?", audience: "Совет, CEO, CFO", cadence: "Квартал" },
+  { key: 3, label: "L3 · Product", count: 19, question: "Работает ли продукт у пользователей?", audience: "CPO, PO", cadence: "Месяц" },
+  { key: 2, label: "L2 · Flow / Throughput", count: 13, question: "Как течёт поставка?", audience: "CTO, Eng Director", cadence: "Неделя–месяц" },
+  { key: 1, label: "L1 · Activity / Health", count: 7, question: "Здорова ли команда?", audience: "Team Lead", cadence: "Спринт" },
+  { key: "fnd", label: "Foundations · DATA & KNOWLEDGE", count: 9, question: "Сквозные слои данных и знаний", audience: "Платформы", cadence: "Месяц" }
 ];
 
+const METRIC_CATALOG = [
+  cm(4, "hvr", "HVR — Доля подтверждённых гипотез", "Гипотезы_подтверждённые / Гипотезы_закрытые × 100%", "Доля гипотез с измеримым бизнес-эффектом на проде", "CPO + Head of Experimentation", "Healthy 15–25%", ["bt-hvr"]),
+  cm(4, "roi12", "Initiative ROI (T+12)", "(Cumulative_Benefit − Fully_Loaded_Cost) / Fully_Loaded_Cost за 12 мес.", "Окупаемость инициативы через 12 месяцев", "FinOps", ">60% инициатив ROI>0", ["ai-roi", "id-roi", "bt-roi", "ip-roi", "wpt-roi"]),
+  cm(4, "oei", "OEI — Индекс организационной эффективности", "w1×Profitability + w2×Market_share + w3×NPS_norm", "Сводный индекс эффективности организации", "CEO + CFO", "Портфель"),
+  cm(4, "aue", "AUE — Машинная юнит-экономика", "(Revenue − COGS − Token_cost) / Active_unit", "Юнит-экономика с учётом токенов", "FinOps", "Healthy >3.5", ["ai-aue"]),
+  cm(4, "abi", "ABI — Атрибутированный бизнес-эффект", "Σ (ΔKPI в ₽ × attribution_factor)", "Подтверждённый дополнительный бизнес-эффект в рублях", "PO + FP&A", "Подпись бизнеса"),
+  cm(4, "ai-roi-y1", "AI Investment ROI (Y1)", "(Ценность_Y1 − Инвестиции_Y1) / Инвестиции × 100%", "ROI AI-программы за первый год", "FinOps", "≥39%"),
+  cm(4, "payback", "Payback Period", "min t: Σ(ценность − затраты)(0..t) ≥ 0", "Срок окупаемости с учётом J-curve", "FinOps", "≤8 мес."),
+  cm(4, "jcurve", "J-Curve Depth", "min(throughput_t / baseline) − 1", "Глубина провала throughput при внедрении AI", "FinOps", "Дно >−10%"),
+  cm(4, "downtime-delta", "Downtime Impact Delta", "(FDRT_после − FDRT_до) × cost/hour × incidents", "Изменение стоимости простоев", "FinOps", "Δ <5% AI-ценности"),
+  cm(4, "value-drivers", "5 Value Drivers Composite", "Сумма 5 драйверов ценности AI-программы", "Композит драйверов ценности", "FinOps", "≥ TCO × 1.5"),
+  cm(4, "cap-index", "AI Capability Index", "Σ(7 столпов) / 35 × 100%", "Зрелость AI-возможностей организации", "CTO", "≥70% к Y2"),
+  cm(4, "realloc", "Reallocation Rate", "часы на новую работу / всего освобождённых", "Доля времени на новую ценность", "CPO", "≥60%"),
+  cm(4, "spend-outcome", "AI Spend per Delivered Outcome", "TCO_AI_PDLC / validated_outcomes", "Стоимость одного подтверждённого outcome", "FinOps", "−40% к Y3"),
+  cm(3, "eorr", "EORR — Реализация outcome эпиков", "Эпики_с_outcome / Завершённые_эпики × 100%", "Доля эпиков с достигнутым outcome", "Product", "Healthy >70%", ["ai-eorr"]),
+  cm(3, "pps", "PPS — Product Performance Score", "Task_completion × Safety_SLA × Latency_SLA", "Композит производительности продукта", "Product", "Healthy >0.90", ["wpt-pps"]),
+  cm(3, "adopt", "Adoption & Retention", "D1 activation · Retention D30/D90", "Внедрение и удержание пользователей", "Product", "D30>25%", ["bt-adopt", "ip-adopt", "id-adopt", "wpt-adopt"]),
+  cm(3, "ttv", "TTV — Время до ценности", "median(дата эффекта − дата старта)", "Сжатие time-to-value", "Product", "−30…50% к baseline", ["id-tti", "id-ttm", "ai-ttm", "wpt-ttv"]),
+  cm(3, "col", "CoL — Cost of Learning", "(PM_time×rate + LLM + synthetic) / hypotheses", "Стоимость проверки гипотезы", "FinOps", "Healthy <$1500/hyp", ["ai-col"]),
+  cm(3, "iod", "IOD — Intent-to-Outcome Drift", "|spec_outcome − measured| / spec", "Дрейф между intent и фактом", "Arch", "Healthy <5%", ["ai-iod"]),
+  cm(3, "wfr", "WFR — Workaround-to-Flow Ratio", "redundant_API_calls / ideal_steps", "Доля обходных путей в процессе", "Product", "Healthy <1.15", ["ai-wfr"]),
+  cm(3, "arr", "ARR — Autonomous Recovery Rate", "auto_recovered / total_failures", "Автономное восстановление после сбоев", "Platform", "Healthy >70%", ["ai-arr"]),
+  cm(3, "ebcs", "EBCS — Evidence Bundle Completeness", "compliant_AI_tasks / total_AI_tasks", "Полнота evidence для AI-изменений", "Audit", "100%", ["ai-ebcs"]),
+  cm(3, "rev-attrib", "Revenue Attribution per Feature", "Δrevenue × idea_success_rate × impact", "Атрибуция выручки на фичу", "Product", "~33% success"),
+  cm(3, "vor", "Validated Outcome Rate", "validated_outcomes / shipped_features", "Доля фич с подтверждённым outcome", "Product", "≥75%"),
+  cm(3, "orr", "Outcome Reversal Rate", "reverted / shipped", "Доля откатов outcome (counter)", "Product", "<10%"),
+  cm(3, "srr", "Spec Reuse Rate", "reused_specs / total_specs", "Повторное использование спецификаций", "Arch", "≥50%"),
+  cm(3, "kpi-delta", "Feature Adoption / KPI Delta", "Δ product_KPI per feature @30d", "Изменение KPI продукта от фичи", "Product", "По продукту"),
+  cm(3, "ai-debt", "AI-yield Debt", "rework_cost / annual_AI_value", "Долг от низкого качества AI (counter)", "Eng", "<20%"),
+  cm(3, "trust", "Trust Index", "EvalPass × Override × (1−Hallucination)", "Доверие к AI-результатам", "Product", "≥0.85"),
+  cm(3, "stuck", "Stuck Rate", "initiatives>90d_no_release / active", "Застрявшие инициативы (counter)", "Product", "<10%"),
+  cm(3, "disc-ct", "Discovery Cycle Time", "median(spec_validated − hypothesis)", "Время discovery", "Product", "<5 дней", ["ai-disc"]),
+  cm(3, "cycle-ct", "Cycle Time", "median(deploy − first_commit)", "Полный цикл поставки", "Product", "−50% к baseline"),
+  cm(2, "df", "Deployment Frequency (DF)", "deploys_to_prod / неделя", "Частота деплоев в прод", "Eng", "Elite: неск./день"),
+  cm(2, "ltc", "Lead Time for Changes (LTC)", "median(deploy − commit)", "DORA Lead Time", "Eng", "Elite: <1 ч", ["ai-lt"]),
+  cm(2, "cfr", "Change Failure Rate (CFR)", "failed_deploys / total_deploys", "Доля неуспешных изменений", "Eng", "Elite: <5%", ["ai-cfr"]),
+  cm(2, "turnover", "Code Turnover Ratio", "LOC_churned_30d / LOC_merged", "Оборачиваемость кода в AI-era", "Eng", "AI turnover <12%"),
+  cm(2, "scr", "Spec Coverage Rate (SCR)", "epics_with_full_spec / total_epics", "Покрытие SDD-спецификациями", "Arch", ">70% SDD-ready"),
+  cm(2, "vsm", "VSM Maturity Score", "Шкала 1–5 зрелости VSM", "Зрелость value stream management", "CTO", "≥4"),
+  cm(2, "audit", "Audit Coverage", "audited_agent_actions / total", "Покрытие аудитом действий агентов", "Audit", "100%"),
+  cm(2, "obs", "AI Agent Observability Coverage", "ops_with_full_trace / total_ops", "Наблюдаемость AI-операций", "Platform", "100%"),
+  cm(2, "policy", "Policy Violations Detected", "Σ violations by severity", "Нарушения политик (counter)", "Governance", "0 critical"),
+  cm(2, "explain", "Explanation Coverage", "decisions_with_explanation / total", "Покрытие объяснениями решений", "Governance", "≥99%"),
+  cm(2, "platform", "Platform Coverage", "teams_on_IDP / total_teams", "Покрытие internal developer platform", "Platform", ">80%"),
+  cm(2, "fdrt", "FDRT — Failed Deployment Recovery Time", "median(recovered − failed_deploy)", "Время восстановления после сбоя деплоя", "SRE", "<30 мин"),
+  cm(2, "ai-share", "AI Code Share (линза, не KPI)", "ai_LOC / total_LOC", "Доля AI-кода — измерять, не таргетировать", "Eng", "Линза"),
+  cm(1, "spd", "Story per Developer", "SP_completed / devs / sprint", "Стабильность velocity (не ranking)", "Team Lead", "Тренд"),
+  cm(1, "dxi", "DXI — Developer Experience Index", "14 вопросов, шкала 0–100", "Индекс опыта разработчика", "Team Lead", "Leading 3–6 мес.", ["ai-tm"]),
+  cm(1, "flt", "Feedback Loop Time (FLT)", "median(commit → CI signal)", "Время обратной связи CI", "Team Lead", "Companion к DXI"),
+  cm(1, "cog", "Cognitive Load", "avg 4-Q DevEx survey 1–5", "Когнитивная нагрузка команды", "Team Lead", "Healthy ≤2.5"),
+  cm(1, "ait-roi", "AI Tool ROI (fully-loaded)", "(Value − FL_cost) / FL_cost", "Окупаемость AI-инструментов", "Team Lead", "Healthy 2.5–3.5×", ["ai-llm"]),
+  cm(1, "onb", "Onboarding Time", "median(days to 10th PR)", "Время выхода на продуктивность", "Team Lead", "p50<21д"),
+  cm(1, "literacy", "AI Literacy Coverage", "сотрудники с программой / headcount", "Покрытие AI-грамотностью", "HR", "Healthy >70%"),
+  cm("fnd", "t2data", "Time to Data (T2Data)", "median(data_used − requested)", "Время доступа к данным", "Data Platform", "<1 дня для 90%"),
+  cm("fnd", "dpp", "DPP Coverage", "objects_with_passport / total", "Покрытие паспортами данных", "Data Gov", "≥95%"),
+  cm("fnd", "semantic", "AI Semantic Layer Coverage", "queries_via_SL / total_queries", "Покрытие semantic layer", "Data Platform", "≥95%"),
+  cm("fnd", "housekeep", "Housekeeping Automation", "autonomous_ops / total", "Автоматизация housekeeping", "Data Ops", "≥70%"),
+  cm("fnd", "readiness", "AI-Readiness Score (СУЗ)", "composite 0–100", "Готовность базы знаний к AI", "Knowledge", "≥75"),
+  cm("fnd", "know-cov", "Knowledge Coverage Score", "tasks_with_knowledge / total", "Покрытие знаниями задач", "Knowledge", "≥90%"),
+  cm("fnd", "fresh", "Freshness Score", "fresh_artifacts / total", "Актуальность артефактов знаний", "Knowledge", "≥95%"),
+  cm("fnd", "ttca", "Time-to-Connect Agent", "median(agent_prod − need)", "Время подключения агента", "Knowledge", "≤3 дней"),
+  cm("fnd", "accuracy", "Agent Accuracy", "correct_responses / total", "Точность ответов агента", "Knowledge", "≥90%")
+];
+
+const PORTFOLIO_SCALE = { totalProducts: 214, demoProducts: 2, clustersShown: 2 };
 const state = {
   appView: "home",
   selectedProduct: "blok-t",
@@ -1918,146 +2017,37 @@ const state = {
   selectedLevel: null,
   passportOpen: false,
   centerView: "metrics",
+  metricsLayout: "pyramid",
   guideOpen: false,
-  guideTab: "levels",
+  catalogStep: "overview",
+  catalogLevel: null,
   treeCollapsed: {},
-  editorOpen: false,
-  editorType: null
+  productSearch: "",
+  graphFocusMetricId: null
 };
 
-const LEADER_JOURNEY = {
-  intro: "\u041b\u0438\u0434\u0435\u0440 \u0432\u0435\u0434\u0451\u0442 \u043f\u043e\u0440\u0442\u0444\u0435\u043b\u044c \u0432 \u0438\u0435\u0440\u0430\u0440\u0445\u0438\u0438 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432, \u043d\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u0442 \u043f\u0438\u0440\u0430\u043c\u0438\u0434\u0443 \u0438\u0437 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0430, \u0441\u0432\u044f\u0437\u044b\u0432\u0430\u0435\u0442 \u043c\u0435\u0442\u0440\u0438\u043a\u0438 \u2191\u2193 \u0438 \u043f\u0440\u0438\u0432\u044f\u0437\u044b\u0432\u0430\u0435\u0442 \u044d\u043f\u0438\u043a\u0438 \u043a L4. \u041d\u0438\u0436\u0435 \u2014 \u043f\u043e\u0448\u0430\u0433\u043e\u0432\u044b\u0439 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439; \u043a\u043d\u043e\u043f\u043a\u0438 \u00ab+\u00bb \u0432 \u043f\u0430\u043d\u0435\u043b\u044f\u0445 workspace \u2014 \u0434\u0435\u043c\u043e \u0444\u043e\u0440\u043c \u0440\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f.",
-  steps: [
-    { id: "hierarchy", num: 1, title: "\u0421\u043f\u0440\u043e\u0435\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0438\u0435\u0440\u0430\u0440\u0445\u0438\u044e", text: "\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043a\u043b\u0430\u0441\u0442\u0435\u0440, \u0441\u0435\u0433\u043c\u0435\u043d\u0442 \u0438\u043b\u0438 \u043b\u0438\u0441\u0442\u043e\u0432\u043e\u0439 \u043f\u0440\u043e\u0434\u0443\u043a\u0442. \u041d\u0430\u0437\u043d\u0430\u0447\u0438\u0442\u044c \u0432\u043b\u0430\u0434\u0435\u043b\u044c\u0446\u0430 \u0438 \u0434\u043e\u043c\u0435\u043d (internal / infra).", where: "\u0414\u0435\u0440\u0435\u0432\u043e \u00b7 + \u0443\u0437\u0435\u043b", editor: "hierarchy" },
-    { id: "metrics", num: 2, title: "\u041d\u0430\u043f\u043e\u043b\u043d\u0438\u0442\u044c \u043f\u0438\u0440\u0430\u043c\u0438\u0434\u0443", text: "\u0412\u044b\u0431\u0440\u0430\u0442\u044c \u043f\u0440\u043e\u0434\u0443\u043a\u0442 \u2192 \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043c\u0435\u0442\u0440\u0438\u043a\u0443 \u043d\u0430 L4\u2013L1 \u0438\u0437 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0430 \u0438\u043b\u0438 \u0441\u043e\u0437\u0434\u0430\u0442\u044c \u043d\u043e\u0432\u0443\u044e. \u041d\u0430 \u0431\u043b\u043e\u043a\u0435 \u2014 \u0441\u0432\u043e\u0434 L4\u2013L2.", where: "\u041f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 \u00b7 + \u043c\u0435\u0442\u0440\u0438\u043a\u0430", editor: "metric-add" },
-    { id: "passport", num: 3, title: "\u041e\u0444\u043e\u0440\u043c\u0438\u0442\u044c \u043f\u0430\u0441\u043f\u043e\u0440\u0442", text: "\u0414\u043b\u044f \u043a\u0430\u0436\u0434\u043e\u0439 \u043c\u0435\u0442\u0440\u0438\u043a\u0438: \u0432\u043e\u043f\u0440\u043e\u0441, \u0444\u043e\u0440\u043c\u0443\u043b\u0430, \u0435\u0434\u0438\u043d\u0438\u0446\u044b, \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a, \u0432\u043b\u0430\u0434\u0435\u043b\u0435\u0446, \u043a\u0430\u0434\u0435\u043d\u0441.", where: "\u041a\u043b\u0438\u043a \u043f\u043e \u043c\u0435\u0442\u0440\u0438\u043a\u0435 \u2192 \u043f\u0430\u0441\u043f\u043e\u0440\u0442", editor: "metric-edit" },
-    { id: "links", num: 4, title: "\u0423\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c \u0441\u0432\u044f\u0437\u0438 \u2191\u2193", text: "\u0421\u0432\u044f\u0437\u0430\u0442\u044c L1\u2192L4: \u0447\u0442\u043e \u0432\u043b\u0438\u044f\u0435\u0442 \u043d\u0430 \u0447\u0442\u043e, \u043e\u0442 \u0447\u0435\u0433\u043e \u0437\u0430\u0432\u0438\u0441\u0438\u0442. \u0411\u0435\u0437 \u0441\u0432\u044f\u0437\u0435\u0439 \u043f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 \u2014 \u0441\u043f\u0438\u0441\u043e\u043a, \u0430 \u043d\u0435 \u0441\u0438\u0441\u0442\u0435\u043c\u0430.", where: "\u041f\u0430\u0441\u043f\u043e\u0440\u0442 \u00b7 \u0441\u0432\u044f\u0437\u0438 \u2191\u2193", editor: "metric-links" },
-    { id: "product", num: 5, title: "\u041e\u043f\u0438\u0441\u0430\u0442\u044c \u043f\u0440\u043e\u0434\u0443\u043a\u0442", text: "\u0412\u0438\u0434\u0435\u043d\u0438\u0435, \u0430\u0443\u0434\u0438\u0442\u043e\u0440\u0438\u044f, \u043f\u0440\u043e\u0431\u043b\u0435\u043c\u0430, \u0440\u0435\u0448\u0435\u043d\u0438\u0435, \u0432\u044b\u0433\u043e\u0434\u0430. \u0428\u0442\u0430\u0442 \u0438 \u044d\u0442\u0430\u043f \u0436\u0438\u0437\u043d\u0435\u043d\u043d\u043e\u0433\u043e \u0446\u0438\u043a\u043b\u0430 \u2014 \u0434\u043b\u044f \u043b\u0438\u0441\u0442\u043e\u0432.", where: "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430", editor: "product-profile" },
-    { id: "backlog", num: 6, title: "\u041f\u0440\u0438\u0432\u044f\u0437\u0430\u0442\u044c \u0440\u0430\u0431\u043e\u0442\u0443", text: "\u042d\u043f\u0438\u043a\u0438, \u0444\u0438\u0447\u0438, \u0433\u0438\u043f\u043e\u0442\u0435\u0437\u044b \u0438 \u0438\u0441\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u043d\u0438\u044f \u2014 \u0441 \u043f\u0440\u0438\u0432\u044f\u0437\u043a\u043e\u0439 \u043a \u043c\u0435\u0442\u0440\u0438\u043a\u0435 L3\u2013L4.", where: "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u00b7 + \u044d\u043f\u0438\u043a", editor: "epic-add" },
-    { id: "review", num: 7, title: "Review \u0438 scorecard", text: "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0430\u0433\u0440\u0435\u0433\u0430\u0446\u0438\u044e \u043d\u0430 \u0431\u043b\u043e\u043a\u0435, \u0437\u0430\u043a\u0440\u044b\u0442\u044c gap \u043f\u043e L4, \u0432\u044b\u043d\u0435\u0441\u0442\u0438 \u0440\u0435\u0448\u0435\u043d\u0438\u044f \u043d\u0430 portfolio review.", where: "\u0413\u043b\u0430\u0432\u043d\u0430\u044f \u00b7 scorecard", action: "home" }
-  ],
-  roles: [
-    { title: "\u041b\u0438\u0434\u0435\u0440 \u0431\u043b\u043e\u043a\u0430", can: "L4 \u0431\u043b\u043e\u043a\u0430, \u0438\u0435\u0440\u0430\u0440\u0445\u0438\u044f, \u0441\u0432\u044f\u0437\u0438 \u043c\u0435\u0436\u0434\u0443 \u043a\u043b\u0430\u0441\u0442\u0435\u0440\u0430\u043c\u0438, scorecard", cant: "L1 \u0434\u0435\u0442\u0430\u043b\u0438 \u043a\u043e\u043c\u0430\u043d\u0434 (\u0434\u0435\u043b\u0435\u0433\u0438\u0440\u0443\u0435\u0442 \u0432\u043b\u0430\u0434\u0435\u043b\u044c\u0446\u0430\u043c \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432)" },
-    { title: "\u0412\u043b\u0430\u0434\u0435\u043b\u0435\u0446 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430", can: "L1\u2013L3 \u043b\u0438\u0441\u0442\u0430, \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435, \u044d\u043f\u0438\u043a\u0438, \u043f\u0430\u0441\u043f\u043e\u0440\u0442\u0430 \u043c\u0435\u0442\u0440\u0438\u043a", cant: "L4 \u0431\u043b\u043e\u043a\u0430 (\u0441\u043e\u0433\u043b\u0430\u0441\u043e\u0432\u044b\u0432\u0430\u0435\u0442 \u0441 \u043b\u0438\u0434\u0435\u0440\u043e\u043c)" }
-  ]
-};
-
-const C2V_PLAYBOOK = {
-  intro: "Cost-to-Value — операционная модель: FinOps считает cost, продукт задаёт unit и baseline, вместе получаем измеримый value. Не «придумываем benefit», а контракт до масштабирования.",
-  problem: [
-    "FinOps умеет cost (токены, CoL, TCO), но value не считается без единицы, baseline и атрибуции benefit.",
-    "Без gate (IOD, CoL cap) ROI остаётся формулой с пустым числителем."
-  ],
-  benefitTypes: [
-    { id: "A", label: "Экономия FTE", desc: "Высвобождение часов × ставка; baseline — время до автоматизации.", example: "−12 ч/спринт на команду" },
-    { id: "B", label: "Prevented loss", desc: "Предотвращённые потери: downtime, инциденты, штрафы, риск.", example: "+15 млн prevented loss DWH" },
-    { id: "C", label: "TTM / cost of delay", desc: "Ускорение time-to-value vs baseline; monetize delay.", example: "TTV −35% vs Q4 2025" },
-    { id: "D", label: "Снижение переменных затрат", desc: "Токены, run-cost, лицензии на единицу работы.", example: "CoL −20% при том же throughput" }
-  ],
-  mvms: {
-    title: "MVMS — минимальный набор для AI PDLC (не весь каталог v70)",
-    l4: ["ai-aue", "ai-val", "ai-roi", "bt-hvr"],
-    l3: ["ai-col", "ai-iod", "ai-eorr", "ai-arr", "ai-ttm"],
-    l1: ["ai-llm", "ai-manual", "ai-fix"]
-  },
-  gate: [
-    "Outcome эпика/гипотезы согласован и измерим",
-    "Baseline зафиксирован (до изменения)",
-    "Unit ценности определён (гипотеза, use-case, релиз)",
-    "CoL cap не превышен на этапе discovery",
-    "IOD ≤ порога перед scale-out"
-  ],
-  governance: [
-    { role: "Владелец продукта", action: "Предлагает primary L4, тип benefit A–D, unit и baseline по playbook" },
-    { role: "Лидер кластера", action: "Согласует primary L4 между продуктами кластера, без дублирования" },
-    { role: "Лидер блока", action: "Утверждает primary L4 для портфеля и scorecard" },
-    { role: "FinOps", action: "Валидирует cost-сторону: токены, CoL, TCO, alloc — не выбирает primary L4" },
-    { role: "FP&A", action: "Валидирует допущения benefit и модель prevented loss / FTE save" }
-  ],
-  steps: [
-    { num: 1, title: "Определить unit ценности", text: "Что считаем «единицей»: закрытая гипотеза, use-case в prod, Tier-1 сервис-месяц.", where: "Описание продукта · Cost-to-Value" },
-    { num: 2, title: "Зафиксировать baseline", text: "«Как было» до AI PDLC / до изменения: TTM, CoL, downtime, FTE-часы.", where: "Гипотеза · FP&A" },
-    { num: 3, title: "Выбрать primary L4 и тип benefit", text: "По playbook: A–D. Primary L4 — одна метрика на продукт для портфельного review.", where: "Профиль продукта · L4" },
-    { num: 4, title: "Привязать cost", text: "CoL cap на гипотезу, токены на unit, TCO alloc — зона FinOps.", where: "L3 CoL · L1 LLM" },
-    { num: 5, title: "Gate перед масштабом", text: "IOD, EORR, HVR — проверка, что outcome = intent и гипотеза подтверждена.", where: "Steering · portfolio review" }
-  ],
-  hypothesisTemplate: "Если мы [изменение] для [сегмент], то [primary L4] улучшится на [X] vs baseline [B] на единицу [unit] за [окно]. Cost cap: CoL ≤ [C]. Gate: IOD ≤ [порог], EORR подтверждён."
-};
-
-const PRODUCT_C2V = {
-  "int-ai-pdlc": {
-    primaryL4: "ai-aue",
-    benefitType: "C",
-    benefitLabel: "TTM / cost of delay + снижение переменных затрат (D)",
-    unit: "Закрытая гипотеза с измеримым outcome",
-    baseline: "TTM и CoL до внедрения AI PDLC (Q4 2025)",
-    gateMetrics: ["ai-iod", "ai-col", "ai-eorr"],
-    status: "Пилот · steering 17.06"
-  },
-  "int-dwh": {
-    primaryL4: "id-roi",
-    benefitType: "B",
-    benefitLabel: "Prevented loss от задержек данных",
-    unit: "Use-case в production с SLA",
-    baseline: "Time-to-insight и loss rate Q4 2025",
-    gateMetrics: ["id-loss", "id-sla", "ai-eorr"],
-    status: "Активный · portfolio review"
-  },
-  "int-wp-tech": {
-    primaryL4: "wpt-ttv",
-    benefitType: "C",
-    benefitLabel: "Сжатие time-to-value self-service",
-    unit: "Заявка / выдача рабочего места",
-    baseline: "TTV 14 дней (2025)",
-    gateMetrics: ["wpt-cpw", "wpt-csi"],
-    status: "Пилот self-service"
-  },
-  "infra-cloud": {
-    primaryL4: "ic-loss",
-    benefitType: "B",
-    benefitLabel: "Prevented loss от снижения CoD",
-    unit: "Tier-1 сервис · месяц",
-    baseline: "Cost of downtime Q1 2026",
-    gateMetrics: ["ic-cod", "ic-slo", "ic-adopt"],
-    status: "Активный · golden path v3"
-  }
-};
-
-const EDITOR_META = {
-  hierarchy: { title: "\u041d\u043e\u0432\u044b\u0439 \u0443\u0437\u0435\u043b \u0438\u0435\u0440\u0430\u0440\u0445\u0438\u0438", sub: "\u041a\u043b\u0430\u0441\u0442\u0435\u0440 \u00b7 \u0441\u0435\u0433\u043c\u0435\u043d\u0442 \u00b7 \u043b\u0438\u0441\u0442\u043e\u0432\u043e\u0439 \u043f\u0440\u043e\u0434\u0443\u043a\u0442", toast: "\u0423\u0437\u0435\u043b \u0434\u043e\u0431\u0430\u0432\u043b\u0435\u043d \u0432 \u0438\u0435\u0440\u0430\u0440\u0445\u0438\u044e (\u0434\u0435\u043c\u043e)" },
-  "metric-add": { title: "\u0414\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043c\u0435\u0442\u0440\u0438\u043a\u0443", sub: "\u0418\u0437 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0430 \u043c\u0435\u0442\u043e\u0434\u043e\u043b\u043e\u0433\u0438\u0438 \u0438\u043b\u0438 \u043d\u043e\u0432\u0430\u044f", toast: "\u041c\u0435\u0442\u0440\u0438\u043a\u0430 \u0434\u043e\u0431\u0430\u0432\u043b\u0435\u043d\u0430 \u043d\u0430 \u043f\u0438\u0440\u0430\u043c\u0438\u0434\u0443 (\u0434\u0435\u043c\u043e)" },
-  "metric-edit": { title: "\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043f\u0430\u0441\u043f\u043e\u0440\u0442", sub: "\u041e\u043f\u0440\u0435\u0434\u0435\u043d\u0438\u0435, \u0432\u043e\u043f\u0440\u043e\u0441, \u0444\u043e\u0440\u043c\u0443\u043b\u0430, \u0438\u0441\u0442\u043e\u0447\u043d\u0438\u043a", toast: "\u041f\u0430\u0441\u043f\u043e\u0440\u0442 \u043c\u0435\u0442\u0440\u0438\u043a\u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0451\u043d (\u0434\u0435\u043c\u043e)" },
-  "metric-links": { title: "\u0421\u0432\u044f\u0437\u0438 \u043c\u0435\u0442\u0440\u0438\u043a", sub: "\u2191 \u0432\u043b\u0438\u044f\u0435\u0442 \u043d\u0430 \u00b7 \u2193 \u0437\u0430\u0432\u0438\u0441\u0438\u0442 \u043e\u0442", toast: "\u0421\u0432\u044f\u0437\u0438 \u043c\u0435\u0442\u0440\u0438\u043a \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u044b (\u0434\u0435\u043c\u043e)" },
-  "product-profile": { title: "\u041f\u0440\u043e\u0444\u0438\u043b\u044c \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430", sub: "\u0412\u0438\u0434\u0435\u043d\u0438\u0435, \u0430\u0443\u0434\u0438\u0442\u043e\u0440\u0438\u044f, \u043f\u0440\u043e\u0431\u043b\u0435\u043c\u0430 \u2192 \u0440\u0435\u0448\u0435\u043d\u0438\u0435 \u2192 \u0432\u044b\u0433\u043e\u0434\u0430", toast: "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u043e (\u0434\u0435\u043c\u043e)" },
-  "epic-add": { title: "\u042d\u043f\u0438\u043a / \u0433\u0438\u043f\u043e\u0442\u0435\u0437\u0430", sub: "\u041f\u0440\u0438\u0432\u044f\u0437\u043a\u0430 \u043a \u043c\u0435\u0442\u0440\u0438\u043a\u0435 \u0438 \u0432\u043b\u0430\u0434\u0435\u043b\u0435\u0446\u0443", toast: "\u042d\u043f\u0438\u043a \u0434\u043e\u0431\u0430\u0432\u043b\u0435\u043d \u0432 \u0431\u044d\u043a\u043b\u043e\u0433 (\u0434\u0435\u043c\u043e)" }
-};
 
 const LEADER_HOME = {
   leaderName: "\u0418\u0432\u0430\u043d\u043e\u0432 \u0418.\u0418.",
   role: "\u0420\u0443\u043a\u043e\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u044c \u0411\u043b\u043e\u043a\u0430 \u0422",
   period: "Q2 2026 \u00b7 \u043d\u0435\u0434\u0435\u043b\u044f 24",
-  weeklyFocus: "\u0417\u0430\u043a\u0440\u044b\u0442\u044c gap \u043f\u043e net effect DWH \u0438 Cloud; \u0441\u043e\u0433\u043b\u0430\u0441\u043e\u0432\u0430\u0442\u044c \u043a\u0430\u0434\u0440\u043e\u0432\u044b\u0439 \u043f\u043b\u0430\u043d AI PDLC \u0438 \u0437\u0430\u043a\u0440\u044b\u0442\u044c 2 \u0432\u0430\u043a\u0430\u043d\u0441\u0438\u0438 \u0434\u043e portfolio review.",
+  weeklyFocus: "Закрыть gap по Time-to-Insight SberVision и cost of downtime Cloud; подготовить portfolio review L4.",
   nextCadence: {
     title: "Portfolio review L4",
-    when: "18 \u0438\u044e\u043d\u044f 2026",
-    prep: "Scorecard \u00b7 \u0440\u0438\u0441\u043a\u0438 TCO \u00b7 \u0440\u0435\u0448\u0435\u043d\u0438\u044f \u043f\u043e \u0432\u0430\u043a\u0430\u043d\u0441\u0438\u044f\u043c"
+    when: "18 июня 2026",
+    prep: "Scorecard · риски TCO · сигналы по кластерам"
   },
-  scorecardMetrics: ["bt-net", "bt-tco", "bt-csi", "bt-roi"],
+  scorecardMetrics: ["bt-net", "bt-tco", "bt-roi", "bt-hvr", "bt-csi"],
   clusterKpis: {
-    "internal-products": ["ip-net", "ip-csi", "ip-roi"],
+    "internal-products": ["sv-roi", "sv-csi", "sv-tti"],
     "infrastructure": ["if-net", "if-cod", "if-csi"]
   },
-  watchMetrics: ["id-loss", "ai-iod", "ic-cod", "wpt-cpw", "bt-cod", "id-sla"],
-  decisions: [
-    { title: "\u0423\u0442\u0432\u0435\u0440\u0434\u0438\u0442\u044c \u043f\u043b\u0430\u043d \u0432\u043e\u0441\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u044f Tier-1 \u043f\u0430\u0439\u043f\u043b\u0430\u0439\u043d\u043e\u0432 DWH", due: "12.06", owner: "\u041e\u0440\u043b\u043e\u0432\u0430 \u041d.\u041f.", productId: "int-dwh", metricId: "id-loss" },
-    { title: "\u041f\u0438\u043b\u043e\u0442 self-service \u0420\u041c 500 \u043c\u0435\u0441\u0442 \u2014 go/no-go", due: "15.06", owner: "\u0413\u0440\u0438\u0433\u043e\u0440\u044c\u0435\u0432 \u0414.\u041d.", productId: "int-wp-tech", metricId: "wpt-ttv" },
-    { title: "\u0411\u044e\u0434\u0436\u0435\u0442 FinOps \u043d\u0430 Q3: cap \u0442\u043e\u043a\u0435\u043d\u043e\u0432 AI PDLC", due: "20.06", owner: "\u041a\u043e\u0437\u043b\u043e\u0432 \u0410.\u0412.", productId: "int-ai-pdlc", metricId: "ai-col" }
-  ],
+  watchMetrics: ["sv-tti", "sv-acc", "ic-cod", "bt-cod", "ic-slo", "sv-cov"],
   agenda: [
-    { date: "16.06", title: "1:1 \u041f\u0435\u0442\u0440\u043e\u0432\u0430 \u0415.\u0421. \u2014 \u043a\u043b\u0430\u0441\u0442\u0435\u0440 \u0432\u043d\u0443\u0442\u0440\u0435\u043d\u043d\u0438\u0445 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432", type: "people" },
-    { date: "17.06", title: "Steering AI PDLC \u2014 AUE / IOD", type: "product", productId: "int-ai-pdlc" },
-    { date: "18.06", title: "Portfolio review L4 \u2014 \u0441\u043e\u0432\u0435\u0442 \u0434\u0438\u0440\u0435\u043a\u0442\u043e\u0440\u043e\u0432", type: "exec" },
-    { date: "19.06", title: "Cloud platform \u2014 error budget & CoD", type: "product", productId: "infra-cloud" }
+    { date: "16.06", title: "1:1 Петрова Е.С. — кластер внутренних продуктов", type: "people" },
+    { date: "17.06", title: "Steering SberVision — TTI / покрытие источников", type: "product", productId: "int-sbervision" },
+    { date: "18.06", title: "Portfolio review L4 — совет директоров", type: "exec" },
+    { date: "19.06", title: "Cloud platform — error budget & CoD", type: "product", productId: "infra-cloud" }
   ]
 };
 
@@ -2178,11 +2168,9 @@ function buildPyramidIntroHtml(productId) {
         " (" + clLeaves.map(function (l) { return escapeHtml(l.name); }).join(", ") + ")");
     });
   } else if (node.level === "\u043a\u043b\u0430\u0441\u0442\u0435\u0440") {
-    var segs = (node.children || []).filter(function (c) { return c.level === "\u0441\u0435\u0433\u043c\u0435\u043d\u0442"; });
-    lines.push("<strong>" + segs.length + " " + pluralSegments(segs.length) + "</strong>, <strong>" + leaves.length + " " +
-      pluralProducts(leaves.length) + "</strong>" +
+    lines.push("<strong>" + leaves.length + " " + pluralProducts(leaves.length) + "</strong>" +
       (leaves.length ? ": " + leaves.map(function (l) { return escapeHtml(l.name); }).join(", ") : "") +
-      ". \u041f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 L4\u2013L2 (\u0431\u0435\u0437 L1).");
+      ". Пирамида L4–L2 (без L1).");
   } else if (node.level === "\u0441\u0435\u0433\u043c\u0435\u043d\u0442") {
     if (leaves.length === 1) {
       lines.push("\u041f\u0440\u043e\u0434\u0443\u043a\u0442 \u0432 \u0441\u0435\u0433\u043c\u0435\u043d\u0442\u0435: <strong>" + escapeHtml(leaves[0].name) + "</strong>.");
@@ -2219,26 +2207,256 @@ function buildPyramidIntroBlock(productId) {
 }
 
 function renderPyramidPanelHead() {
-  var titleEl = document.getElementById("pyramidPanelTitle");
-  var btn = document.getElementById("btnToggleProductView");
-  if (!titleEl || !btn) return;
+  var head = document.getElementById("pyramidPanelHead");
+  var actions = document.getElementById("pyramidPanelActions");
+  if (!head || !actions) return;
   var isLeaf = isLeafProduct(state.selectedProduct);
   if (!isLeaf) {
-    btn.hidden = true;
-    titleEl.textContent = "\u041f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 \u043c\u0435\u0442\u0440\u0438\u043a";
-    btn.classList.remove("is-back");
+    head.hidden = true;
     return;
   }
-  btn.hidden = false;
-  if (state.centerView === "description") {
-    titleEl.textContent = "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430";
-    btn.textContent = "\u041f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 \u043c\u0435\u0442\u0440\u0438\u043a";
-    btn.classList.add("is-back");
-  } else {
-    titleEl.textContent = "\u041f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 \u043c\u0435\u0442\u0440\u0438\u043a";
-    btn.textContent = "\u041e\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0430";
-    btn.classList.remove("is-back");
+  head.hidden = false;
+  var mode = state.centerView === "description" ? "description" : state.metricsLayout;
+  actions.querySelectorAll("[data-view-mode]").forEach(function (btn) {
+    btn.classList.toggle("active", btn.getAttribute("data-view-mode") === mode);
+  });
+}
+
+function getProductMetricMap(productId) {
+  var data = getProductData(productId);
+  var map = {};
+  [4, 3, 2, 1].forEach(function (lv) {
+    (data.metrics[lv] || []).forEach(function (met) {
+      map[met.id] = { metric: met, level: lv };
+    });
+  });
+  return map;
+}
+
+function renderLevelCriteriaHtml(level) {
+  var c = LEVEL_ASSIGNMENT_CRITERIA[level];
+  if (!c) return "";
+  return "<strong>L" + level + ":</strong> " + escapeHtml(c.question) +
+    " · " + escapeHtml(c.audience) + "<br><span style=\"color:var(--text-muted)\">" +
+    escapeHtml(c.rule) + " Примеры: " + escapeHtml(c.examples) + "</span>";
+}
+
+function renderMetricTreeValue(productId, met) {
+  var t = getMetricTrend(productId, met.id);
+  return '<span class="mtree-val">' + escapeHtml(formatMetricValue(t.fact, met.units, met)) + "</span>";
+}
+
+function getLevelRowLabel(lv) {
+  var row = LEVELS.filter(function (l) { return l.id === lv; })[0];
+  return row ? row.label : "L" + lv;
+}
+
+function buildProductGraphEdges(pmap) {
+  var edges = [];
+  var keys = {};
+  function addEdge(from, to, type) {
+    if (!from || !to || from === to) return;
+    var key = from + "\0" + to + "\0" + type;
+    if (keys[key]) return;
+    keys[key] = true;
+    edges.push({ from: from, to: to, type: type });
   }
+  Object.keys(pmap).forEach(function (mid) {
+    var inf = getInfluence(mid);
+    if (!inf) return;
+    (inf.drives || []).forEach(function (tid) { addEdge(tid, mid, "depends"); });
+    (inf.feeds || []).forEach(function (tid) { addEdge(mid, tid, "influences"); });
+  });
+  return edges;
+}
+
+function collectExternalMetricIds(pmap, edges) {
+  var ext = {};
+  edges.forEach(function (e) {
+    if (!pmap[e.from]) ext[e.from] = true;
+    if (!pmap[e.to]) ext[e.to] = true;
+  });
+  return Object.keys(ext);
+}
+
+function getGraphFocusNodes(focusId, edges) {
+  if (!focusId) return null;
+  var set = {};
+  set[focusId] = "focus";
+  edges.forEach(function (e) {
+    if (e.from === focusId) set[e.to] = set[e.to] || "related";
+    if (e.to === focusId) set[e.from] = set[e.from] || "related";
+  });
+  return set;
+}
+
+function getGraphFocusEdges(focusId, edges) {
+  if (!focusId) return [];
+  return edges.filter(function (e) { return e.from === focusId || e.to === focusId; });
+}
+
+function renderMetricGraphNode(metricId, entry, productId, isExternal, focusMap) {
+  var met = entry ? entry.metric : null;
+  var lv = entry ? entry.level : (findMetricLocation(metricId) || {}).level || 0;
+  var idx = buildMetricNameIndex();
+  var name = met ? met.name : (idx[metricId] || metricId);
+  var active = state.selectedMetric && state.selectedMetric.id === metricId ? " active" : "";
+  var focusCls = "";
+  if (focusMap) {
+    if (focusMap[metricId] === "focus") focusCls = " focus";
+    else if (focusMap[metricId] === "related") focusCls = " related";
+    else focusCls = " dimmed";
+  }
+  var cls = "mgraph-node lvl-" + lv + active + focusCls + (isExternal ? " mgraph-node-external" : "");
+  var html = '<button type="button" class="' + cls + '" data-metric-id="' + escapeHtml(metricId) + '" data-level="' + lv + '"' +
+    (isExternal ? ' data-external="1"' : "") + ">" +
+    '<span class="mtree-lvl">' + (lv ? "L" + lv : "rollup") + "</span>" +
+    '<span class="mtree-name">' + escapeHtml(metricShortLabel(name)) + "</span>";
+  if (met && !isExternal) html += renderMetricTreeValue(productId, met);
+  if (isExternal) html += '<span class="mgraph-ext-hint">вне продукта</span>';
+  html += "</button>";
+  return html;
+}
+
+function renderMetricGraphRows(productId, pmap, focusMap) {
+  var html = "";
+  [4, 3, 2, 1].forEach(function (lv) {
+    var ids = Object.keys(pmap).filter(function (id) { return pmap[id].level === lv; });
+    if (!ids.length) return;
+    html += '<div class="mgraph-row" data-level="' + lv + '">' +
+      '<div class="mgraph-row-label">' + escapeHtml(getLevelRowLabel(lv)) + "</div>";
+    ids.forEach(function (id) {
+      html += renderMetricGraphNode(id, pmap[id], productId, false, focusMap);
+    });
+    html += "</div>";
+  });
+  return html;
+}
+
+function drawMetricGraphEdges(root, edges, focusId) {
+  var graph = root.querySelector(".mgraph");
+  if (!graph) return;
+  var svg = graph.querySelector(".mgraph-svg");
+  if (!svg) return;
+  var visibleEdges = focusId ? getGraphFocusEdges(focusId, edges) : [];
+  if (!focusId) {
+    svg.innerHTML = "";
+    return;
+  }
+  var graphRect = graph.getBoundingClientRect();
+  var pos = {};
+  graph.querySelectorAll(".mgraph-node").forEach(function (node) {
+    var id = node.getAttribute("data-metric-id");
+    var r = node.getBoundingClientRect();
+    pos[id] = {
+      x: r.left + r.width / 2 - graphRect.left,
+      y: r.top + r.height / 2 - graphRect.top,
+      w: r.width,
+      h: r.height
+    };
+  });
+  var defs = '<defs>' +
+    '<marker id="mgraph-arrow-depends" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">' +
+    '<path d="M0,0 L8,4 L0,8 Z" fill="rgba(255,255,255,0.45)"/></marker>' +
+    '<marker id="mgraph-arrow-influences" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">' +
+    '<path d="M0,0 L8,4 L0,8 Z" fill="rgba(90,157,224,0.85)"/></marker></defs>';
+  var paths = "";
+  visibleEdges.forEach(function (e) {
+    var from = pos[e.from];
+    var to = pos[e.to];
+    if (!from || !to) return;
+    var dx = to.x - from.x;
+    var dy = to.y - from.y;
+    var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+    var ux = dx / dist;
+    var uy = dy / dist;
+    var x1 = from.x + ux * (from.w / 2 + 2);
+    var y1 = from.y + uy * (from.h / 2 + 2);
+    var x2 = to.x - ux * (to.w / 2 + 6);
+    var y2 = to.y - uy * (to.h / 2 + 6);
+    var cls = e.type === "influences" ? "influences" : "depends";
+    var marker = e.type === "influences" ? "mgraph-arrow-influences" : "mgraph-arrow-depends";
+    var sameRow = Math.abs(from.y - to.y) < 28;
+    var d;
+    if (sameRow) {
+      var arcY = y1 - 26;
+      d = "M" + x1 + "," + y1 + " C" + x1 + "," + arcY + " " + x2 + "," + arcY + " " + x2 + "," + y2;
+    } else {
+      var midY = (y1 + y2) / 2;
+      d = "M" + x1 + "," + y1 + " C" + x1 + "," + midY + " " + x2 + "," + midY + " " + x2 + "," + y2;
+    }
+    paths += '<path class="mgraph-path mgraph-path-' + cls + '" d="' + d + '" marker-end="url(#' + marker + ')"/>';
+  });
+  svg.setAttribute("width", graphRect.width);
+  svg.setAttribute("height", graphRect.height);
+  svg.innerHTML = defs + paths;
+}
+
+function renderMetricTree(productId) {
+  var pmap = getProductMetricMap(productId);
+  var edges = buildProductGraphEdges(pmap);
+  var externalIds = collectExternalMetricIds(pmap, edges);
+  var focusId = state.graphFocusMetricId;
+  var focusMap = getGraphFocusNodes(focusId, edges);
+  var rowsHtml = renderMetricGraphRows(productId, pmap, focusMap);
+  var externalHtml = "";
+  if (externalIds.length) {
+    externalHtml = '<div class="mgraph-row mgraph-row-external"><div class="mgraph-row-label">Связи вне продукта (rollup)</div>';
+    externalIds.forEach(function (eid) {
+      externalHtml += renderMetricGraphNode(eid, null, productId, true, focusMap);
+    });
+    externalHtml += "</div>";
+  }
+  var hintMsg = focusId
+    ? "Подсвечены прямые связи: «влияет на» — стрелка от выбранной метрики; «зависит от» — стрелка к выбранной."
+    : "Кликните по метрике — покажем только её прямые связи. Без выбора стрелки скрыты.";
+  return '<div class="mtree-wrap">' +
+    '<div class="mtree-hint"><strong>Дерево метрик</strong> — L4→L1, каждая метрика один раз. ' + hintMsg + '</div>' +
+    (!focusId ? '<div class="mgraph-empty-hint">Связи скрыты · выберите метрику на схеме</div>' : "") +
+    '<div class="mtree-legend">' +
+    '<span><i style="background:rgba(69,168,122,0.8)"></i>L4 Outcome</span>' +
+    '<span><i style="background:rgba(224,157,90,0.8)"></i>L3 Product</span>' +
+    '<span><i style="background:rgba(224,120,157,0.8)"></i>L2 Flow</span>' +
+    '<span><i style="background:rgba(90,157,224,0.8)"></i>L1 Activity</span>' +
+    '<div class="mgraph-legend-arrows">' +
+    '<span><i class="mgraph-legend-line"></i>зависит от → к метрике</span>' +
+    '<span><i class="mgraph-legend-line infl"></i>влияет на → от метрики</span>' +
+    "</div></div>" +
+    '<div class="mgraph">' +
+    '<svg class="mgraph-svg"></svg>' +
+    (rowsHtml || '<div class="mgraph-row"><span style="color:var(--text-muted);font-size:0.8rem">Нет метрик</span></div>') +
+    externalHtml +
+    "</div></div>";
+}
+
+function bindMetricTreeEvents(root, productId) {
+  var pmap = getProductMetricMap(productId);
+  var edges = buildProductGraphEdges(pmap);
+  root.querySelectorAll(".mgraph-node").forEach(function (node) {
+    node.addEventListener("click", function () {
+      var mid = node.getAttribute("data-metric-id");
+      var external = node.getAttribute("data-external") === "1";
+      if (external) {
+        navigateToMetric(mid);
+        return;
+      }
+      var entry = pmap[mid];
+      if (!entry) return;
+      closeGuide();
+      state.graphFocusMetricId = mid;
+      state.centerView = "metrics";
+      state.metricsLayout = "tree";
+      state.selectedMetric = entry.metric;
+      state.selectedLevel = entry.level;
+      state.passportOpen = true;
+      renderAll();
+    });
+  });
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      drawMetricGraphEdges(root, edges, state.graphFocusMetricId);
+    });
+  });
 }
 
 function buildProductDescHeaderHtml(productId) {
@@ -2248,10 +2466,7 @@ function buildProductDescHeaderHtml(productId) {
   var dmeta = getDomainMeta(productId);
   return '<div class="product-desc-head">' +
     '<span class="domain-pill ' + domain + '">' + escapeHtml(dmeta.short) + "</span>" +
-    "<h2>" + escapeHtml(prodName) + "</h2>" +
-    '<div class="home-actions-row" style="margin-top:10px">' +
-    '<button type="button" class="home-leaf-btn primary" data-open-editor="product-profile">\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043f\u0440\u043e\u0444\u0438\u043b\u044c</button>' +
-    '<button type="button" class="home-leaf-btn" data-open-editor="epic-add">+ \u044d\u043f\u0438\u043a / \u0433\u0438\u043f\u043e\u0442\u0435\u0437\u0430</button></div></div>';
+    "<h2>" + escapeHtml(prodName) + "</h2></div>";
 }
 
 function taskStatusClass(status) {
@@ -2312,28 +2527,6 @@ function renderTaskEpicsHtml(epics, idx) {
   return html;
 }
 
-function buildC2vProductHtml(productId) {
-  var c2v = PRODUCT_C2V[productId];
-  if (!c2v) return "";
-  var idx = buildMetricNameIndex();
-  var primaryName = idx[c2v.primaryL4] || c2v.primaryL4;
-  var gateHtml = (c2v.gateMetrics || []).map(function (mid) {
-    return renderArtMetricButton(mid, metricShortLabel(idx[mid] || mid));
-  }).join(" ");
-  return '<div class="product-desc-section"><h3>Cost-to-Value</h3>' +
-    '<div class="c2v-product-box">' +
-    "<dt>Primary L4</dt><dd><button type=\"button\" class=\"art-metric\" data-goto-metric=\"" + escapeHtml(c2v.primaryL4) + "\">" +
-    escapeHtml(primaryName) + "</button></dd>" +
-    "<dt>Тип benefit</dt><dd>" + escapeHtml(c2v.benefitType) + " — " + escapeHtml(c2v.benefitLabel) + "</dd>" +
-    "<dt>Unit ценности</dt><dd>" + escapeHtml(c2v.unit) + "</dd>" +
-    "<dt>Baseline</dt><dd>" + escapeHtml(c2v.baseline) + "</dd>" +
-    "<dt>Gate-метрики</dt><dd><div class=\"art-metric-row\">" + gateHtml + "</div></dd>" +
-    "<dt>Статус</dt><dd>" + escapeHtml(c2v.status) + "</dd>" +
-  "</div>" +
-    '<p style="margin-top:8px;font-size:0.75rem;color:var(--text-muted)">Primary L4: продукт предлагает → лидер кластера согласует → лидер блока утверждает. FinOps валидирует cost.</p>' +
-    '<button type="button" class="home-leaf-btn" data-open-guide="c2v" style="margin-top:8px">Playbook Cost-to-Value</button></div>';
-}
-
 function buildProductDescriptionHtml(productId) {
   var prof = getProductProfile(productId);
   var arts = PRODUCT_ARTIFACTS[productId];
@@ -2368,7 +2561,6 @@ function buildProductDescriptionHtml(productId) {
       "</dl></div></div>";
   }
   html += "</div>";
-  html += buildC2vProductHtml(productId);
   if (arts) {
     html += '<div class="product-desc-section"><h3>\u041f\u0440\u0438\u043a\u0440\u0435\u043f\u043b\u0451\u043d\u043d\u044b\u0435 \u0437\u0430\u0434\u0430\u0447\u0438</h3>';
     html += renderTaskEpicsHtml(arts.epics, idx);
@@ -2480,208 +2672,6 @@ function getSelectedProductName() {
   return path.length ? path[path.length - 1].name : "\u0411\u043b\u043e\u043a \u0422";
 }
 
-function editorField(label, html) {
-  return '<div class="editor-field"><label>' + escapeHtml(label) + "</label>" + html + "</div>";
-}
-
-function renderEditorForm(type) {
-  var prodName = getSelectedProductName();
-  var met = state.selectedMetric;
-  var p = met && met.passport ? met.passport : {};
-  var inf = met ? getInfluence(met.id) : null;
-  var prof = getProductProfile(state.selectedProduct);
-  var hint = '<div class="editor-hint"><strong>\u0414\u0435\u043c\u043e \u043f\u0440\u043e\u0442\u043e\u0442\u0438\u043f\u0430.</strong> \u0412 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0435 \u0434\u0430\u043d\u043d\u044b\u0435 \u0441\u043e\u0445\u0440\u0430\u043d\u044f\u044e\u0442\u0441\u044f \u0432 \u043a\u0430\u0442\u0430\u043b\u043e\u0433 \u043c\u0435\u0442\u0440\u0438\u043a / MDM \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432 / backlog. \u0417\u0434\u0435\u0441\u044c \u2014 \u043f\u043e\u043a\u0430\u0437 \u0444\u043e\u0440\u043c\u044b \u0438 \u0442\u043e\u0447\u043a\u0438 \u0432\u0445\u043e\u0434\u0430 \u043b\u0438\u0434\u0435\u0440\u0430.</div>';
-  if (type === "hierarchy") {
-    return editorField("\u0420\u043e\u0434\u0438\u0442\u0435\u043b\u044c", '<select><option>' + escapeHtml(prodName) + "</option></select>") +
-      editorField("\u0422\u0438\u043f \u0443\u0437\u043b\u0430", '<select><option>\u0441\u0435\u0433\u043c\u0435\u043d\u0442</option><option>\u043f\u0440\u043e\u0434\u0443\u043a\u0442 (\u043b\u0438\u0441\u0442)</option></select>') +
-      editorField("\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435", '<input type="text" placeholder="\u041d\u0430\u043f\u0440\u0438\u043c\u0435\u0440: \u041f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430 X">') +
-      editorField("\u0412\u043b\u0430\u0434\u0435\u043b\u0435\u0446", '<input type="text" placeholder="\u0424\u0418\u041e, \u0440\u043e\u043b\u044c">') +
-      editorField("\u0414\u043e\u043c\u0435\u043d", '<select><option>internal</option><option>infra</option></select>') + hint;
-  }
-  if (type === "metric-add") {
-    return editorField("\u041f\u0440\u043e\u0434\u0443\u043a\u0442", '<input type="text" value="' + escapeHtml(prodName) + '" readonly>') +
-      editorField("\u0423\u0440\u043e\u0432\u0435\u043d\u044c L", '<select><option value="4">L4 \u00b7 Outcome</option><option value="3">L3 \u00b7 Product</option><option value="2">L2 \u00b7 Flow</option><option value="1">L1 \u00b7 Activity</option></select>') +
-      editorField("\u0418\u0437 \u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0430", '<select><option>\u2014 \u0441\u043e\u0437\u0434\u0430\u0442\u044c \u043d\u043e\u0432\u0443\u044e \u2014</option><option>ROI</option><option>TCO</option><option>CSI</option><option>Adoption</option></select>') +
-      editorField("\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435 \u043c\u0435\u0442\u0440\u0438\u043a\u0438", '<input type="text" placeholder="Net effect \u2014 \u043a\u0432\u0430\u0440\u0442\u0430\u043b">') +
-      editorField("\u0415\u0434\u0438\u043d\u0438\u0446\u044b", '<input type="text" placeholder="\u043c\u043b\u043d \u20bd, %, \u0431\u0430\u043b\u043b">') + hint;
-  }
-  if (type === "metric-edit") {
-    return editorField("\u041c\u0435\u0442\u0440\u0438\u043a\u0430", '<input type="text" value="' + escapeHtml(met ? met.name : "") + '" readonly>') +
-      editorField("\u0427\u0442\u043e \u043c\u0435\u0440\u044f\u0435\u0442", '<textarea>' + escapeHtml(p.what || "") + "</textarea>") +
-      editorField("\u0412\u043e\u043f\u0440\u043e\u0441 \u0434\u043b\u044f \u0431\u0438\u0437\u043d\u0435\u0441\u0430", '<textarea>' + escapeHtml(p.question || "") + "</textarea>") +
-      editorField("\u0424\u043e\u0440\u043c\u0443\u043b\u0430", '<textarea>' + escapeHtml(p.formula || "") + "</textarea>") +
-      editorField("\u0418\u0441\u0442\u043e\u0447\u043d\u0438\u043a", '<input type="text" value="' + escapeHtml(p.source || "") + '">') +
-      editorField("\u0412\u043b\u0430\u0434\u0435\u043b\u0435\u0446", '<input type="text" value="' + escapeHtml(p.owner || "") + '">') + hint;
-  }
-  if (type === "metric-links") {
-    var feeds = inf && inf.feeds ? inf.feeds.join(", ") : (inf && inf.up ? inf.up : "");
-    var drives = inf && inf.drives ? inf.drives.join(", ") : (inf && inf.down ? inf.down : "");
-    return editorField("\u041c\u0435\u0442\u0440\u0438\u043a\u0430", '<input type="text" value="' + escapeHtml(met ? met.name : "bt-net") + '" readonly>') +
-      editorField("\u2191 \u0412\u043b\u0438\u044f\u0435\u0442 \u043d\u0430 (id \u0447\u0435\u0440\u0435\u0437 \u0437\u0430\u043f\u044f\u0442\u0443\u044e)", '<input type="text" value="' + escapeHtml(feeds) + '" placeholder="bt-roi, ip-net">') +
-      editorField("\u2193 \u0417\u0430\u0432\u0438\u0441\u0438\u0442 \u043e\u0442", '<input type="text" value="' + escapeHtml(drives) + '" placeholder="id-sla, id-load">') +
-      '<p style="font-size:0.72rem;color:var(--text-muted);margin-bottom:8px">\u0421\u0432\u044f\u0437\u0438 \u043e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u044e\u0442\u0441\u044f \u043d\u0430 \u043a\u0430\u0440\u0442\u043e\u0447\u043a\u0435 \u043c\u0435\u0442\u0440\u0438\u043a\u0438 \u0438 \u0432 \u043f\u0430\u0441\u043f\u043e\u0440\u0442\u0435.</p>' + hint;
-  }
-  if (type === "product-profile") {
-    var v = prof && prof.vision ? prof.vision : {};
-    return editorField("\u041f\u0440\u043e\u0434\u0443\u043a\u0442", '<input type="text" value="' + escapeHtml(prodName) + '" readonly>') +
-      editorField("\u042d\u0442\u0430\u043f \u0416\u0426", '<select><option>\u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0439</option><option>\u043f\u0438\u043b\u043e\u0442</option><option>\u043f\u0440\u043e\u0435\u043a\u0442</option></select>') +
-      editorField("\u0412\u0438\u0434\u0435\u043d\u0438\u0435", '<textarea>' + escapeHtml(v.description || "") + "</textarea>") +
-      editorField("\u0410\u0443\u0434\u0438\u0442\u043e\u0440\u0438\u044f", '<textarea>' + escapeHtml(v.audience || "") + "</textarea>") +
-      editorField("\u041f\u0440\u043e\u0431\u043b\u0435\u043c\u0430", '<textarea>' + escapeHtml(v.problem || "") + "</textarea>") +
-      editorField("\u0420\u0435\u0448\u0435\u043d\u0438\u0435", '<textarea>' + escapeHtml(v.solution || "") + "</textarea>") + hint;
-  }
-  if (type === "epic-add") {
-    return editorField("\u041f\u0440\u043e\u0434\u0443\u043a\u0442", '<input type="text" value="' + escapeHtml(prodName) + '" readonly>') +
-      editorField("\u0422\u0438\u043f", '<select><option>\u044d\u043f\u0438\u043a</option><option>\u0433\u0438\u043f\u043e\u0442\u0435\u0437\u0430</option><option>\u0438\u0441\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u043d\u0438\u0435</option></select>') +
-      editorField("\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435", '<input type="text" placeholder="\u0421\u043d\u0438\u0436\u0435\u043d\u0438\u0435 CoL \u043d\u0430 \u043f\u043e\u0440\u0442\u0444\u0435\u043b\u0435">') +
-      editorField("\u041c\u0435\u0442\u0440\u0438\u043a\u0430 (L\u2192)", '<input type="text" value="' + escapeHtml(met ? met.id : "ai-col") + '">') +
-      editorField("\u0412\u043b\u0430\u0434\u0435\u043b\u0435\u0446", '<input type="text" placeholder="Product / Platform">') + hint;
-  }
-  return hint;
-}
-
-function openEditor(type) {
-  if (!type || !EDITOR_META[type]) return;
-  closeGuide();
-  state.editorOpen = true;
-  state.editorType = type;
-  renderEditor();
-}
-
-function closeEditor() {
-  state.editorOpen = false;
-  state.editorType = null;
-  var ov = document.getElementById("editorOverlay");
-  var pn = document.getElementById("editorPanel");
-  if (ov) ov.classList.remove("open");
-  if (pn) pn.classList.remove("open");
-}
-
-function renderEditor() {
-  var ov = document.getElementById("editorOverlay");
-  var pn = document.getElementById("editorPanel");
-  var body = document.getElementById("editorBody");
-  var titleEl = document.getElementById("editorTitle");
-  var subEl = document.getElementById("editorSub");
-  if (!ov || !pn || !body || !state.editorType) return;
-  var meta = EDITOR_META[state.editorType];
-  if (titleEl) titleEl.textContent = meta.title;
-  if (subEl) subEl.textContent = meta.sub;
-  body.innerHTML = renderEditorForm(state.editorType);
-  ov.classList.add("open");
-  pn.classList.add("open");
-}
-
-function showToast(msg) {
-  var t = document.getElementById("toast");
-  if (!t) return;
-  t.textContent = msg;
-  t.classList.add("show");
-  clearTimeout(showToast._timer);
-  showToast._timer = setTimeout(function () { t.classList.remove("show"); }, 2800);
-}
-
-function runJourneyStep(stepId) {
-  var step = null;
-  LEADER_JOURNEY.steps.forEach(function (s) { if (s.id === stepId) step = s; });
-  if (!step) return;
-  if (step.action === "home") {
-    setAppView("home");
-    requestAnimationFrame(function () {
-      var sc = document.querySelector(".home-scorecard");
-      if (sc) sc.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-    return;
-  }
-  if (step.editor === "product-profile" || step.editor === "epic-add") {
-    openWorkspace(isLeafProduct(state.selectedProduct) ? state.selectedProduct : "int-ai-pdlc", { description: true });
-    openEditor(step.editor);
-    return;
-  }
-  if (step.editor === "metric-edit" || step.editor === "metric-links") {
-    navigateToMetric(state.selectedMetric ? state.selectedMetric.id : "bt-net");
-    openEditor(step.editor);
-    return;
-  }
-  openWorkspace(state.selectedProduct || "blok-t", {});
-  openEditor(step.editor);
-}
-
-function renderC2vGuideHtml() {
-  var pb = C2V_PLAYBOOK;
-  var html = "<p>" + escapeHtml(pb.intro) + "</p>";
-  html += "<h4>Проблема</h4><ul style=\"font-size:0.78rem;color:var(--text-secondary);padding-left:18px\">";
-  pb.problem.forEach(function (p) { html += "<li>" + escapeHtml(p) + "</li>"; });
-  html += "</ul>";
-  html += "<h4 style=\"margin-top:14px\">5 шагов playbook</h4>";
-  pb.steps.forEach(function (s) {
-    html += '<div class="guide-c2v-step"><h4>' + s.num + ". " + escapeHtml(s.title) + "</h4>" +
-      "<p>" + escapeHtml(s.text) + "</p>" +
-      '<span style="font-size:0.72rem;color:var(--text-muted)">' + escapeHtml(s.where) + "</span></div>";
-  });
-  html += "<h4>Типы benefit (A–D)</h4>";
-  html += '<table class="c2v-table"><thead><tr><th>Тип</th><th>Описание</th><th>Пример</th></tr></thead><tbody>';
-  pb.benefitTypes.forEach(function (b) {
-    html += "<tr><td><strong>" + escapeHtml(b.id) + "</strong> " + escapeHtml(b.label) + "</td>" +
-      "<td>" + escapeHtml(b.desc) + "</td><td>" + escapeHtml(b.example) + "</td></tr>";
-  });
-  html += "</tbody></table>";
-  html += "<h4>" + escapeHtml(pb.mvms.title) + "</h4>";
-  html += '<table class="c2v-table"><thead><tr><th>Уровень</th><th>Метрики MVMS</th></tr></thead><tbody>';
-  html += "<tr><td>L4</td><td>" + renderMetricLinksHtml(pb.mvms.l4) + "</td></tr>";
-  html += "<tr><td>L3</td><td>" + renderMetricLinksHtml(pb.mvms.l3) + "</td></tr>";
-  html += "<tr><td>L1</td><td>" + renderMetricLinksHtml(pb.mvms.l1) + "</td></tr>";
-  html += "</tbody></table>";
-  html += "<h4>Gate перед масштабом</h4><ul style=\"font-size:0.78rem;color:var(--text-secondary);padding-left:18px\">";
-  pb.gate.forEach(function (g) { html += "<li>" + escapeHtml(g) + "</li>"; });
-  html += "</ul>";
-  html += "<h4>Кто задаёт primary L4</h4>";
-  html += '<table class="c2v-table"><thead><tr><th>Роль</th><th>Действие</th></tr></thead><tbody>';
-  pb.governance.forEach(function (g) {
-    html += "<tr><td>" + escapeHtml(g.role) + "</td><td>" + escapeHtml(g.action) + "</td></tr>";
-  });
-  html += "</tbody></table>";
-  html += "<h4>Шаблон гипотезы</h4>";
-  html += '<div class="hypo-template">' + escapeHtml(pb.hypothesisTemplate) + "</div>";
-  return html;
-}
-
-function renderHomeJourneyHtml() {
-  var steps = LEADER_JOURNEY.steps.map(function (s) {
-    return '<button type="button" class="home-journey-step" data-journey-step="' + escapeHtml(s.id) + '">' +
-      '<span class="home-journey-num">' + s.num + "</span>" +
-      "<h4>" + escapeHtml(s.title) + "</h4>" +
-      "<p>" + escapeHtml(s.text) + "</p>" +
-      '<span class="home-journey-where">' + escapeHtml(s.where) + "</span></button>";
-  }).join("");
-  return '<details class="home-howto">' +
-    '<summary>\u041a\u0430\u043a \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0438 \u0440\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043e\u0431\u044a\u0435\u043a\u0442\u044b \u0438 \u043c\u0435\u0442\u0440\u0438\u043a\u0438</summary>' +
-    '<div class="home-howto-body">' +
-    '<p class="home-journey-intro">' + escapeHtml(LEADER_JOURNEY.intro) + "</p>" +
-    '<div class="home-journey-steps">' + steps + "</div>" +
-    '<div class="home-actions-row" style="margin-top:12px">' +
-    '<button type="button" class="home-action-btn" data-open-guide="journey">\u041f\u043e\u0434\u0440\u043e\u0431\u043d\u044b\u0439 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439 \u0432 \u0441\u043f\u0440\u0430\u0432\u043e\u0447\u043d\u0438\u043a\u0435</button> ' +
-    '<button type="button" class="home-action-btn" data-open-guide="c2v">Cost-to-Value playbook</button></div></div></details>';
-}
-
-function renderJourneyGuideHtml() {
-  var steps = LEADER_JOURNEY.steps.map(function (s) {
-    return '<div class="journey-guide-step"><div class="journey-guide-num">' + s.num + '</div><div class="journey-guide-body">' +
-      "<h4>" + escapeHtml(s.title) + "</h4>" +
-      "<p>" + escapeHtml(s.text) + "</p>" +
-      '<div class="journey-guide-meta">' + escapeHtml(s.where) +
-      ' \u00b7 <button type="button" class="home-leaf-btn primary" data-journey-step="' + escapeHtml(s.id) + '">\u043f\u043e\u043a\u0430\u0437\u0430\u0442\u044c</button></div></div></div>';
-  }).join("");
-  var roles = LEADER_JOURNEY.roles.map(function (r) {
-    return '<div class="journey-role-box"><strong>' + escapeHtml(r.title) + "</strong>" +
-      "<div>\u2713 " + escapeHtml(r.can) + "</div>" +
-      '<div style="margin-top:4px;color:var(--text-muted)">\u2717 ' + escapeHtml(r.cant) + "</div></div>";
-  }).join("");
-  return "<p>" + escapeHtml(LEADER_JOURNEY.intro) + "</p>" + steps +
-    "<h4 style=\"margin-top:16px\">\u0420\u0430\u0437\u0434\u0435\u043b\u0435\u043d\u0438\u0435 \u043e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0435\u043d\u043d\u043e\u0441\u0442\u0438</h4>" +
-    '<div class="journey-roles">' + roles + "</div>" +
-    '<p style="margin-top:14px;font-size:0.75rem;color:var(--text-muted)">\u041a\u0430\u0434\u0435\u043d\u0441: \u0438\u0435\u0440\u0430\u0440\u0445\u0438\u044f \u2014 \u043f\u043e \u043c\u0435\u0440\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0439; \u043c\u0435\u0442\u0440\u0438\u043a\u0438 L4 \u2014 \u043a\u0432\u0430\u0440\u0442\u0430\u043b\u044c\u043d\u043e; L2\u2013L1 \u2014 \u0432\u043b\u0430\u0434\u0435\u043b\u0446\u044b \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432.</p>';
-}
 
 function setAppView(view) {
   if (state.appView === view) {
@@ -2709,7 +2699,11 @@ function openWorkspace(productId, opts) {
   state.selectedMetric = null;
   state.selectedLevel = null;
   state.passportOpen = false;
+  state.graphFocusMetricId = null;
   state.centerView = "metrics";
+  if (!isLeafProduct(state.selectedProduct)) {
+    state.metricsLayout = "pyramid";
+  }
   if (opts.metricId) {
     var loc = findMetricLocation(opts.metricId);
     if (loc) {
@@ -2741,56 +2735,64 @@ function renderHomeMiniMetric(metricId) {
     escapeHtml(label) + ": " + escapeHtml(val) + "</span>";
 }
 
-function renderHomePortfolioHtml() {
+function renderHomeClusterStripHtml() {
+  var scale = PORTFOLIO_SCALE || { totalProducts: 214, demoProducts: 2 };
   var clusters = PRODUCT_TREE.children || [];
-  return clusters.map(function (cl) {
-    var info = PRODUCT_NODE_INFO[cl.id] || {};
-    var leaves = collectLeafNodes(cl);
+  var chips = clusters.map(function (cl) {
     var kpiIds = LEADER_HOME.clusterKpis[cl.id] || [];
     var miniHtml = kpiIds.map(renderHomeMiniMetric).join("");
-    var leavesHtml = leaves.map(function (leaf) {
-      var hasDesc = !!(PRODUCT_PROFILES[leaf.id] || PRODUCT_ARTIFACTS[leaf.id]);
-      return '<div class="home-leaf-row"><button type="button" class="home-leaf-btn primary" data-open-product="' + leaf.id + '">' +
-        escapeHtml(leaf.name) + "</button>" +
-        (hasDesc ? ' <button type="button" class="home-leaf-btn" data-open-product="' + leaf.id +
-        '" data-open-mode="description">\u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435</button>' : "") +
-        "</div>";
-    }).join("");
-    return '<div class="home-portfolio-card">' +
-      '<div class="home-portfolio-head"><h3>' + escapeHtml(cl.name) + '</h3>' +
-      '<button type="button" class="home-action-btn" data-open-product="' + cl.id + '">\u041f\u0438\u0440\u0430\u043c\u0438\u0434\u0430</button></div>' +
-      '<div class="home-portfolio-owner">' + escapeHtml(info.owner || "") + "</div>" +
-      (miniHtml ? '<div class="home-mini-metrics">' + miniHtml + "</div>" : "") +
-      '<div class="home-leaves">' + leavesHtml + "</div></div>";
+    return '<div class="home-cluster-chip"><h4>' + escapeHtml(cl.name) + "</h4>" +
+      (miniHtml ? '<div class="home-cluster-kpis">' + miniHtml + "</div>" : "") +
+      '<button type="button" class="home-leaf-btn" style="margin-top:8px" data-open-product="' + escapeHtml(cl.id) + '">Пирамида кластера</button></div>';
   }).join("");
+  return '<div class="home-portfolio-scale"><strong>Портфель:</strong> ' + scale.totalProducts +
+    ' продуктов · в демо — ' + scale.demoProducts + ' (SberVision, Облачная платформа)</div>' +
+    '<div class="home-cluster-strip">' + chips + "</div>";
 }
 
 function renderHomeSignalsHtml() {
+  var html = renderHomeClusterStripHtml();
   var signals = [];
+  var severityOrder = { critical: 0, warn: 1, good: 2 };
+  var severityLabels = { critical: "Критично", warn: "Внимание", good: "Ок" };
   (LEADER_HOME.watchMetrics || []).forEach(function (mid) {
     var brief = getMetricBrief(mid);
-    if (!brief || brief.trend.deltaCls !== "down") return;
-    signals.push({
-      severity: "warn",
-      text: metricShortLabel(brief.met.name) + " \u2014 \u043e\u0442\u043a\u043b\u043e\u043d\u0435\u043d\u0438\u0435 \u043e\u0442 \u043f\u043b\u0430\u043d\u0430 (" + brief.trend.deltaSign + brief.trend.deltaPct.toFixed(1) + "%)",
-      metricId: mid,
-      productId: brief.loc.productId
-    });
+    if (!brief) return;
+    var t = brief.trend;
+    if (t.deltaCls === "down") {
+      var severity = Math.abs(t.deltaPct) >= 8 ? "critical" : "warn";
+      signals.push({
+        severity: severity,
+        text: metricShortLabel(brief.met.name) + " \u2014 \u043e\u0442\u043a\u043b\u043e\u043d\u0435\u043d\u0438\u0435 \u043e\u0442 \u043f\u043b\u0430\u043d\u0430 (" + t.deltaSign + t.deltaPct.toFixed(1) + "%)",
+        metricId: mid
+      });
+    } else {
+      signals.push({
+        severity: "good",
+        text: metricShortLabel(brief.met.name) + " \u2014 \u0432 \u0434\u043e\u043f\u0443\u0441\u043a\u0435 (" + t.deltaSign + t.deltaPct.toFixed(1) + "%)",
+        metricId: mid
+      });
+    }
+  });
+  signals.sort(function (a, b) {
+    return (severityOrder[a.severity] || 9) - (severityOrder[b.severity] || 9);
   });
   if (!signals.length) {
     signals.push({
       severity: "good",
-      text: "\u041a\u043b\u044e\u0447\u0435\u0432\u044b\u0435 watch-мет\u0440\u0438\u043a\u0438 \u0432 \u0434\u043e\u043f\u0443\u0441\u043a\u0435 \u043f\u043e \u043f\u043b\u0430\u043d\u0443",
-      metricId: null,
-      productId: "blok-t"
+      text: "\u041a\u043b\u044e\u0447\u0435\u0432\u044b\u0435 watch-\u043c\u0435\u0442\u0440\u0438\u043a\u0438 \u0432 \u0434\u043e\u043f\u0443\u0441\u043a\u0435 \u043f\u043e \u043f\u043b\u0430\u043d\u0443",
+      metricId: null
     });
   }
-  return signals.slice(0, 5).map(function (s) {
-    var dotCls = s.severity === "warn" ? "warn" : s.severity === "good" ? "good" : "info";
+  return html + signals.slice(0, 8).map(function (s) {
+    var dotCls = s.severity;
+    var tag = severityLabels[s.severity] || "";
     var body = s.metricId
       ? '<button type="button" data-goto-metric="' + escapeHtml(s.metricId) + '">' + escapeHtml(s.text) + "</button>"
       : escapeHtml(s.text);
-    return '<div class="home-signal"><span class="home-signal-dot ' + dotCls + '"></span><div>' + body + "</div></div>";
+    return '<div class="home-signal"><span class="home-signal-dot ' + dotCls + '"></span><div>' +
+      (tag ? '<span class="home-signal-tag ' + dotCls + '">' + escapeHtml(tag) + "</span>" : "") +
+      body + "</div></div>";
   }).join("");
 }
 
@@ -2834,14 +2836,9 @@ function bindHomeEvents(root) {
       openWorkspace(wsBtn.getAttribute("data-open-workspace") || "blok-t", {});
       return;
     }
-    var guideBtn = e.target.closest("[data-open-guide]");
+    var guideBtn = e.target.closest("[data-open-catalog]");
     if (guideBtn) {
-      openGuide(guideBtn.getAttribute("data-open-guide"));
-      return;
-    }
-    var journeyBtn = e.target.closest("[data-journey-step]");
-    if (journeyBtn) {
-      runJourneyStep(journeyBtn.getAttribute("data-journey-step"));
+      openGuide();
       return;
     }
   });
@@ -2858,14 +2855,6 @@ function renderHome() {
       renderMetricValueHtml(brief.loc.productId, brief.met) +
       '<span class="home-kpi-hint">L4 \u00b7 \u043a\u0432\u0430\u0440\u0442\u0430\u043b \u00b7 \u043a\u043b\u0438\u043a \u2192 \u043c\u0435\u0442\u0440\u0438\u043a\u0430</span></button>';
   }).join("");
-  var decisionsHtml = LEADER_HOME.decisions.map(function (d) {
-    return "<li><span class=\"home-list-title\">" + escapeHtml(d.title) + "</span>" +
-      '<span class="home-list-meta">' + escapeHtml(d.due) + " \u00b7 " + escapeHtml(d.owner) + "</span>" +
-      '<div class="home-actions-row">' +
-      '<button type="button" class="home-leaf-btn primary" data-open-product="' + escapeHtml(d.productId) + '">\u043f\u0440\u043e\u0434\u0443\u043a\u0442</button>' +
-      (d.metricId ? ' <button type="button" class="home-leaf-btn" data-goto-metric="' + escapeHtml(d.metricId) + '">\u043c\u0435\u0442\u0440\u0438\u043a\u0430</button>' : "") +
-      "</div></li>";
-  }).join("");
   var agendaHtml = LEADER_HOME.agenda.map(function (a) {
     var link = a.productId
       ? ' \u00b7 <button type="button" class="home-leaf-btn" data-open-product="' + escapeHtml(a.productId) + '">\u043e\u0442\u043a\u0440\u044b\u0442\u044c</button>'
@@ -2876,30 +2865,21 @@ function renderHome() {
   root.innerHTML =
     '<section class="home-hero">' +
     "<div><h1>" + escapeHtml(LEADER_HOME.leaderName) + "</h1>" +
-    '<p class="home-hero-sub">' + escapeHtml(LEADER_HOME.role) + " \u2014 \u0435\u0434\u0438\u043d\u044b\u0439 \u0432\u0437\u0433\u043b\u044f\u0434 \u043d\u0430 \u043f\u043e\u0440\u0442\u0444\u0435\u043b\u044c, \u043a\u043e\u043c\u0430\u043d\u0434\u0443 \u0438 \u0440\u0435\u0448\u0435\u043d\u0438\u044f. \u041e\u0441\u043d\u043e\u0432\u0430 \u2014 scorecard L4 \u0438 \u0441\u0438\u0433\u043d\u0430\u043b\u044b \u043e\u0442\u043a\u043b\u043e\u043d\u0435\u043d\u0438\u044f \u043e\u0442 \u043f\u043b\u0430\u043d\u0430.</p>" +
+    '<p class="home-hero-sub">' + escapeHtml(LEADER_HOME.role) + " — единый взгляд на портфель Блока Т: scorecard L4, сигналы отклонений и свод по кластерам.</p>" +
     '<p class="home-hero-meta">' + escapeHtml(LEADER_HOME.period) + "</p></div>" +
     '<div class="home-cadence-pill"><strong>' + escapeHtml(LEADER_HOME.nextCadence.title) + "</strong>" +
     escapeHtml(LEADER_HOME.nextCadence.when) + "<br>" + escapeHtml(LEADER_HOME.nextCadence.prep) + "</div></section>" +
     '<div class="home-quick-bar">' +
-    '<button type="button" class="home-action-btn primary" data-open-workspace="blok-t">\u041f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 \u0411\u043b\u043e\u043a \u0422</button>' +
-    '<button type="button" class="home-action-btn" data-open-guide="hierarchy">\u0418\u0435\u0440\u0430\u0440\u0445\u0438\u044f \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432</button>' +
-    '<button type="button" class="home-action-btn" data-open-guide="catalog">\u041a\u0430\u0442\u0430\u043b\u043e\u0433 \u043c\u0435\u0442\u0440\u0438\u043a</button>' +
-    '<button type="button" class="home-action-btn" data-open-guide="c2v">Cost-to-Value</button>' +
-    '<button type="button" class="home-action-btn" data-open-guide="levels">L1\u2013L4</button></div>' +
+    '<button type="button" class="home-action-btn primary" data-open-workspace="blok-t">Список продуктов</button></div>' +
     '<div class="home-focus"><strong>\u0424\u043e\u043a\u0443\u0441 \u043d\u0435\u0434\u0435\u043b\u0438:</strong> ' + escapeHtml(LEADER_HOME.weeklyFocus) + "</div>" +
     '<div class="home-scorecard">' + scoreHtml + "</div>" +
     '<div class="home-grid">' +
-    '<div><div class="home-panel"><div class="home-panel-head">\u041f\u043e\u0440\u0442\u0444\u0435\u043b\u044c \u0438 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u044b</div><div class="home-panel-body">' +
-    renderHomePortfolioHtml() + "</div></div>" +
-    '<div class="home-panel"><div class="home-panel-head">\u0420\u0435\u0448\u0435\u043d\u0438\u044f \u0438 \u044d\u0441\u043a\u0430\u043b\u0430\u0446\u0438\u0438</div><div class="home-panel-body"><ul class="home-list">' +
-    decisionsHtml + "</ul></div></div></div>" +
-    '<div><div class="home-panel"><div class="home-panel-head">\u0421\u0438\u0433\u043d\u0430\u043b\u044b \u0432\u043d\u0438\u043c\u0430\u043d\u0438\u044f</div><div class="home-panel-body">' +
+    '<div class="home-panel"><div class="home-panel-head">Сигналы внимания</div><div class="home-panel-body">' +
     renderHomeSignalsHtml() + "</div></div>" +
-    '<div class="home-panel"><div class="home-panel-head">\u041a\u043e\u043c\u0430\u043d\u0434\u0430 \u0438 \u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0430</div><div class="home-panel-body">' +
+    '<div><div class="home-panel"><div class="home-panel-head">Команда и загрузка</div><div class="home-panel-body">' +
     renderHomeTeamHtml() + "</div></div>" +
-    '<div class="home-panel"><div class="home-panel-head">\u041a\u0430\u043b\u0435\u043d\u0434\u0430\u0440\u044c \u043b\u0438\u0434\u0435\u0440\u0430</div><div class="home-panel-body"><ul class="home-list">' +
-    agendaHtml + "</ul></div></div></div></div>" +
-    renderHomeJourneyHtml();
+    '<div class="home-panel"><div class="home-panel-head">Календарь лидера</div><div class="home-panel-body"><ul class="home-list">' +
+    agendaHtml + "</ul></div></div></div>";
   bindHomeEvents(root);
 }
 
@@ -3061,12 +3041,85 @@ function metricInPrototype(catalogEntry) {
   return !!(catalogEntry && catalogEntry.proto && catalogEntry.proto.length);
 }
 
-function openGuide(tab) {
+function openGuide() {
   state.passportOpen = false;
   state.guideOpen = true;
-  state.guideTab = tab || "levels";
+  state.catalogStep = "overview";
+  state.catalogLevel = null;
   renderGuide();
   renderPassport();
+}
+
+function getCatalogLevelMeta(levelKey) {
+  for (var i = 0; i < CATALOG_LEVELS.length; i++) {
+    if (CATALOG_LEVELS[i].key === levelKey) return CATALOG_LEVELS[i];
+  }
+  return null;
+}
+
+function renderCatalogOverviewHtml() {
+  var html = "<p><strong>Каузальная цепочка:</strong> L1 → L2 → L3 → L4. Диагностика сверху вниз, управление снизу вверх. Выберите уровень для детализации.</p>";
+  CATALOG_LEVELS.forEach(function (lv) {
+    var names = METRIC_CATALOG.filter(function (c) { return c.level === lv.key; }).map(function (c) { return c.name; });
+    html += '<button type="button" class="catalog-level-card" data-catalog-level="' + escapeHtml(String(lv.key)) + '">' +
+      '<div class="catalog-level-head"><span class="catalog-level-title">' + escapeHtml(lv.label) + '</span>' +
+      '<span class="catalog-level-count">' + lv.count + ' метрик</span></div>' +
+      '<div class="catalog-level-meta">' + escapeHtml(lv.question) + " · " + escapeHtml(lv.audience) + " · " + escapeHtml(lv.cadence) + "</div>" +
+      '<div class="catalog-level-names">' + escapeHtml(names.slice(0, 6).join(" · ")) +
+      (names.length > 6 ? " · …" : "") + "</div></button>";
+  });
+  html += '<div class="catalog-overview-total">Итого: 61 метрика · L4 — 13 · L3 — 19 · L2 — 13 · L1 — 7 · Foundations — 9</div>';
+  return html;
+}
+
+function renderCatalogDetailHtml(levelKey) {
+  var meta = getCatalogLevelMeta(levelKey);
+  var items = METRIC_CATALOG.filter(function (c) { return c.level === levelKey; });
+  var html = '<button type="button" class="catalog-back" data-catalog-back="1">← Обзор уровней</button>';
+  if (meta) {
+    html += "<h4>" + escapeHtml(meta.label) + " · " + items.length + " метрик</h4>" +
+      '<p style="color:var(--text-muted);font-size:0.78rem">' + escapeHtml(meta.question) + " · " + escapeHtml(meta.audience) + " · " + escapeHtml(meta.cadence) + "</p>";
+  }
+  items.forEach(function (c) {
+    var inProto = metricInPrototype(c);
+    html += '<div class="guide-metric-row' + (inProto ? " in-proto" : "") + '"><strong>' + escapeHtml(c.name) + "</strong>" +
+      (c.formula ? '<span class="gm-formula"><b>Формула:</b> ' + escapeHtml(c.formula) + "</span>" : "") +
+      (c.what ? '<span class="gm-desc">' + escapeHtml(c.what) + "</span>" : "") +
+      (c.owner ? '<span class="gm-q"><b>Владелец:</b> ' + escapeHtml(c.owner) + "</span>" : "") +
+      (c.threshold ? '<span class="gm-q"><b>Порог:</b> ' + escapeHtml(c.threshold) + "</span>" : "") +
+      (c.proto && c.proto.length ? '<span class="gm-proto"><span class="infl-label">В прототипе:</span> ' + renderMetricLinksHtml(c.proto) + "</span>" : "") +
+      "</div>";
+  });
+  return html;
+}
+
+function bindCatalogGuideEvents(body) {
+  if (!body) return;
+  body.querySelectorAll("[data-catalog-level]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      state.catalogStep = "detail";
+      state.catalogLevel = btn.getAttribute("data-catalog-level");
+      if (state.catalogLevel === "4" || state.catalogLevel === "3" || state.catalogLevel === "2" || state.catalogLevel === "1") {
+        state.catalogLevel = parseInt(state.catalogLevel, 10);
+      }
+      renderGuide();
+    });
+  });
+  var back = body.querySelector("[data-catalog-back]");
+  if (back) {
+    back.addEventListener("click", function () {
+      state.catalogStep = "overview";
+      state.catalogLevel = null;
+      renderGuide();
+    });
+  }
+  body.querySelectorAll("[data-goto-metric]").forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      var mid = btn.getAttribute("data-goto-metric");
+      if (mid) { closeGuide(); navigateToMetric(mid); }
+    });
+  });
 }
 
 function closeGuide() {
@@ -3082,86 +3135,14 @@ function renderGuide() {
   var ov = document.getElementById("guideOverlay");
   var pn = document.getElementById("guidePanel");
   var body = document.getElementById("guideBody");
-  var tabs = document.getElementById("guideTabs");
   var titleEl = document.getElementById("guideTitle");
   if (!ov || !pn || !body) return;
-  var tab = state.guideTab;
-  var guideTitles = {
-    levels: "\u0423\u0440\u043e\u0432\u043d\u0438 \u0438 \u0440\u043e\u043b\u0438 L1\u2013L4",
-    catalog: "\u041a\u0430\u0442\u0430\u043b\u043e\u0433 \u043c\u0435\u0442\u0440\u0438\u043a \u0438 \u043e\u0431\u043e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u0435",
-    hierarchy: "\u0418\u0435\u0440\u0430\u0440\u0445\u0438\u044f \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432",
-    journey: "\u041a\u0430\u043a \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0438 \u0440\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043e\u0431\u044a\u0435\u043a\u0442\u044b \u0438 \u043c\u0435\u0442\u0440\u0438\u043a\u0438",
-    c2v: "Cost-to-Value — playbook и governance"
-  };
-  if (titleEl) titleEl.textContent = guideTitles[tab] || "\u0421\u043f\u0440\u0430\u0432\u043a\u0430";
-  if (tabs) {
-    tabs.querySelectorAll("button").forEach(function (btn) {
-      btn.classList.toggle("active", btn.getAttribute("data-guide-tab") === tab);
-    });
-  }
-  var html = "";
-  if (tab === "levels") {
-    html += "<p><strong>Цепочка влияния:</strong> команда (L1) → поставка (L2) → продукт (L3) → бизнес (L4). L4 не лечится напрямую — только через уровни ниже.</p>";
-    LEVELS.slice().reverse().forEach(function (lv) {
-      var meta = LEVEL_META[lv.id];
-      html += '<div class="guide-level-card"><div class="gl-title">' + escapeHtml(lv.label) + "</div>" +
-        "<div>" + escapeHtml(lv.tagline) + "</div>" +
-        '<div style="margin-top:6px;color:var(--text-muted);font-size:0.75rem">Каденс: ' + escapeHtml(meta.cadence) + " · " + escapeHtml(meta.audience) + "</div>" +
-        (GUIDE_LEVEL_BRIDGES[lv.id] ? '<div style="margin-top:6px;font-size:0.75rem">' + escapeHtml(GUIDE_LEVEL_BRIDGES[lv.id]) + "</div>" : "") +
-        "</div>";
-    });
-    html += "<h4>Роли по доменам</h4><p>Блок Т (лидер): TCO, чистый эффект, ROI. Внутренние: AI PDLC (записка), data. Инфра: cost of downtime, prevented loss.</p>";
-  } else if (tab === "catalog") {
-    html += "<p>\u041a\u0430\u0442\u0430\u043b\u043e\u0433 \u043c\u0435\u0442\u043e\u0434\u043e\u043b\u043e\u0433\u0438\u0438: <strong>\u041f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 \u043c\u0435\u0442\u0440\u0438\u043a v70</strong>, <strong>\u0417\u0430\u043f\u0438\u0441\u043a\u0430 \u043c\u0435\u0442\u0440\u0438\u043a\u0438 AI PDLC</strong>, <strong>\u043c\u0435\u0442\u0440\u0438\u043a\u0438 \u043f\u0440\u043e\u0446\u0435\u0441\u0441\u0430 (2.7)</strong>. \u041a\u043b\u0438\u043a \u043f\u043e \u0441\u0441\u044b\u043b\u043a\u0435 \u00ab\u0432 \u043f\u0440\u043e\u0442\u043e\u0442\u0438\u043f\u0435\u00bb \u043e\u0442\u043a\u0440\u043e\u0435\u0442 \u043c\u0435\u0442\u0440\u0438\u043a\u0443 \u043d\u0430 \u043f\u0438\u0440\u0430\u043c\u0438\u0434\u0435.</p>";
-    [4, 3, 2, 1].forEach(function (lv) {
-      var items = METRIC_CATALOG.filter(function (c) { return c.level === lv; });
-      if (!items.length) return;
-      html += '<div class="guide-level-heading">L' + lv + "</div>";
-      items.forEach(function (c) {
-        var inProto = metricInPrototype(c);
-        var rowCls = inProto ? "guide-metric-row in-proto" : "guide-metric-row";
-        var protoHtml = "";
-        if (c.proto && c.proto.length) {
-          protoHtml = '<span class="gm-proto"><span class="infl-label">В прототипе:</span> ' + renderMetricLinksHtml(c.proto) + "</span>";
-        }
-        html += '<div class="' + rowCls + '"><strong>' + escapeHtml(c.name) + "</strong>" +
-          (c.subtitle ? '<span class="gm-sub">' + escapeHtml(c.subtitle) + "</span>" : "") +
-          '<span class="gm-desc">' + escapeHtml(c.what) + "</span>" +
-          (c.question ? '<span class="gm-q"><b>Вопрос:</b> ' + escapeHtml(c.question) + "</span>" : "") +
-          (c.formula ? '<span class="gm-formula"><b>Формула:</b> ' + escapeHtml(c.formula) + "</span>" : "") +
-          '<span class="gm-src">Источник: ' + escapeHtml(c.source) + "</span>" +
-          protoHtml + "</div>";
-      });
-    });
-  } else if (tab === "hierarchy") {
-    html += "<p>\u0414\u0435\u0440\u0435\u0432\u043e \u043e\u043f\u0440\u0435\u0434\u0435\u043b\u044f\u0435\u0442, <strong>\u0433\u0434\u0435 \u0430\u0433\u0440\u0435\u0433\u0438\u0440\u0443\u044e\u0442\u0441\u044f</strong> \u043c\u0435\u0442\u0440\u0438\u043a\u0438. \u041d\u0430 \u043b\u0438\u0441\u0442\u0435 \u2014 \u043f\u043e\u043b\u043d\u0430\u044f \u043f\u0438\u0440\u0430\u043c\u0438\u0434\u0430; \u043d\u0430 \u0440\u043e\u0434\u0438\u0442\u0435\u043b\u044f\u0445 \u2014 \u0441\u0432\u043e\u0434 \u0441 \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u043e\u043c \u0432\u043d\u0438\u0437.</p>";
-    html += '<div class="hierarchy-guide-tree">' + renderHierarchyGuideTree(PRODUCT_TREE) + "</div>";
-    html += '<p class="hg-legend"><strong>\u0411\u043b\u043e\u043a \u0422 / \u043a\u043b\u0430\u0441\u0442\u0435\u0440 / \u0441\u0435\u0433\u043c\u0435\u043d\u0442</strong> \u2014 \u0441\u0432\u043e\u0434 L4\u2013L2 (\u0431\u0435\u0437 L1). <strong>\u041f\u0440\u043e\u0434\u0443\u043a\u0442 (\u043b\u0438\u0441\u0442)</strong> \u2014 \u043f\u043e\u043b\u043d\u0430\u044f \u043f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 L1\u2013L4.</p>';
-  } else if (tab === "journey") {
-    html += renderJourneyGuideHtml();
-  } else if (tab === "c2v") {
-    html += renderC2vGuideHtml();
-  }
+  if (titleEl) titleEl.textContent = "Каталог метрик";
+  var html = state.catalogStep === "detail" && state.catalogLevel != null
+    ? renderCatalogDetailHtml(state.catalogLevel)
+    : renderCatalogOverviewHtml();
   body.innerHTML = html;
-  if (tab === "journey") {
-    body.querySelectorAll("[data-journey-step]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        closeGuide();
-        runJourneyStep(btn.getAttribute("data-journey-step"));
-      });
-    });
-  } else if (tab === "c2v") {
-    body.querySelectorAll("[data-goto-metric]").forEach(function (btn) {
-      btn.addEventListener("click", function (e) {
-        e.preventDefault();
-        var mid = btn.getAttribute("data-goto-metric");
-        if (mid) {
-          closeGuide();
-          navigateToMetric(mid);
-        }
-      });
-    });
-  }
+  bindCatalogGuideEvents(body);
   ov.classList.add("open");
   pn.classList.add("open");
 }
@@ -3181,12 +3162,19 @@ function toggleTreeNode(nodeId) {
 
 function selectProduct(id, metricId) {
   closeGuide();
+  if (state.selectedProduct !== id) state.graphFocusMetricId = null;
   expandTreePath(id);
   state.selectedProduct = id;
   state.selectedMetric = null;
   state.selectedLevel = null;
   state.passportOpen = false;
-  state.centerView = "metrics";
+  if (!isLeafProduct(id)) {
+    state.metricsLayout = "pyramid";
+    state.centerView = "metrics";
+    state.graphFocusMetricId = null;
+  } else if (state.centerView !== "description") {
+    state.centerView = "metrics";
+  }
   if (metricId) {
     var loc = findMetricLocation(metricId);
     if (loc) {
@@ -3318,7 +3306,7 @@ function renderBreadcrumbs() {
 function scrollToActiveMetric() {
   if (!state.selectedMetric || state.centerView !== "metrics") return;
   requestAnimationFrame(function () {
-    var card = document.querySelector(".metric-card.active");
+    var card = document.querySelector(".metric-card.active, .mgraph-node.active, .mtree-node.active");
     if (card) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
   });
 }
@@ -3351,6 +3339,33 @@ function renderTreeNodeHtml(node, pathIds) {
 
 function renderTree() {
   var root = document.getElementById("treeRoot");
+  var q = (state.productSearch || "").trim().toLowerCase();
+  if (q) {
+    var flat = getFlatTree();
+    var matches = flat.filter(function (item) {
+      return item.node.name.toLowerCase().indexOf(q) >= 0;
+    });
+    if (!matches.length) {
+      root.innerHTML = '<div class="tree-search-results" style="padding:12px;color:var(--text-muted);font-size:0.78rem">Ничего не найдено</div>';
+      return;
+    }
+    root.innerHTML = '<div class="tree-search-results">' + matches.map(function (item) {
+      var path = item.path.slice(0, -1).map(function (n) { return n.name; }).join(" / ");
+      return '<button type="button" class="tree-search-hit" data-id="' + escapeHtml(item.node.id) + '">' +
+        escapeHtml(item.node.name) +
+        (path ? '<span class="tree-search-path">' + escapeHtml(path) + "</span>" : "") +
+        "</button>";
+    }).join("") + "</div>";
+    root.querySelectorAll(".tree-search-hit").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        state.productSearch = "";
+        var inp = document.getElementById("productSearch");
+        if (inp) inp.value = "";
+        selectProduct(btn.getAttribute("data-id"));
+      });
+    });
+    return;
+  }
   var pathIds = (findPath(PRODUCT_TREE, state.selectedProduct) || []).map(function (n) { return n.id; });
   root.innerHTML = renderTreeNodeHtml(PRODUCT_TREE, pathIds);
   root.querySelectorAll(".tree-node").forEach(function (btn) {
@@ -3370,7 +3385,15 @@ function renderPyramid() {
   var root = document.getElementById("pyramidRoot");
   renderPyramidPanelHead();
   if (state.centerView === "description" && isLeafProduct(state.selectedProduct)) {
-    root.innerHTML = buildProductDescriptionHtml(state.selectedProduct);
+    root.innerHTML = '<div class="workspace-center-view">' + buildProductDescriptionHtml(state.selectedProduct) + "</div>";
+    bindPyramidRootEvents(root);
+    return;
+  }
+  if (state.metricsLayout === "tree" && isLeafProduct(state.selectedProduct)) {
+    var treeProductId = state.selectedProduct;
+    var introTree = buildPyramidIntroBlock(treeProductId);
+    root.innerHTML = '<div class="workspace-center-view">' + introTree + renderMetricTree(treeProductId) + "</div>";
+    bindMetricTreeEvents(root, treeProductId);
     bindPyramidRootEvents(root);
     return;
   }
@@ -3419,7 +3442,7 @@ function renderPyramid() {
   if (!state.selectedMetric) {
     hintHtml = '<div class="pyramid-hint"><strong>\u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u0448\u0430\u0433:</strong> \u0432\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u043c\u0435\u0442\u0440\u0438\u043a\u0443 \u2014 \u043e\u0442\u043a\u0440\u043e\u0435\u0442\u0441\u044f \u043f\u0430\u0441\u043f\u043e\u0440\u0442 \u0438 \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u044b\u0439 \u0433\u0440\u0430\u0444\u0438\u043a \u0441\u043f\u0440\u0430\u0432\u0430. \u0421\u0432\u044f\u0437\u0438 \u00ab\u2191 / \u2193\u00bb \u0432\u0435\u0434\u0443\u0442 \u043a \u0441\u0432\u044f\u0437\u0430\u043d\u043d\u044b\u043c \u043f\u043e\u043a\u0430\u0437\u0430\u0442\u0435\u043b\u044f\u043c.</div>';
   }
-  root.innerHTML = intro + hintHtml + levelsHtml;
+  root.innerHTML = '<div class="workspace-center-view">' + intro + hintHtml + levelsHtml + "</div>";
   bindPyramidRootEvents(root);
   scrollToActiveMetric();
 }
@@ -3498,10 +3521,7 @@ function renderPassport() {
     ["Частота замера", p.freq, false],
     ["Ответственный", p.owner, false]
   ];
-  var editRow = '<div class="home-actions-row" style="margin-bottom:12px">' +
-    '<button type="button" class="passport-edit-btn" data-open-editor="metric-edit">\u0420\u0435\u0434\u0430\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u043f\u0430\u0441\u043f\u043e\u0440\u0442</button>' +
-    '<button type="button" class="passport-edit-btn" data-open-editor="metric-links">\u0421\u0432\u044f\u0437\u0438 \u2191\u2193</button></div>';
-  body.innerHTML = levelBlock + editRow + '<div class="passport-grid">' + infBlock + fields.map(function (f) {
+  body.innerHTML = levelBlock + '<div class="passport-grid">' + infBlock + fields.map(function (f) {
     var cls = f[2] ? "passport-field full" : "passport-field";
     return '<div class="' + cls + '"><label>' + escapeHtml(f[0]) + '</label><div class="val">' + escapeHtml(f[1]) + "</div></div>";
   }).join("") + "</div>";
@@ -3590,17 +3610,26 @@ document.getElementById("passportOverlay").addEventListener("click", function ()
   state.passportOpen = false;
   renderPassport();
 });
-document.getElementById("btnToggleProductView").addEventListener("click", function () {
-  if (!isLeafProduct(state.selectedProduct)) return;
-  state.centerView = state.centerView === "description" ? "metrics" : "description";
-  state.passportOpen = false;
-  renderAll();
-});
+var pyramidPanelActions = document.getElementById("pyramidPanelActions");
+if (pyramidPanelActions) {
+  pyramidPanelActions.addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-view-mode]");
+    if (!btn || !isLeafProduct(state.selectedProduct)) return;
+    var mode = btn.getAttribute("data-view-mode");
+    if (mode === "description") {
+      state.centerView = "description";
+    } else {
+      state.centerView = "metrics";
+      state.metricsLayout = mode;
+      if (mode !== "tree") state.graphFocusMetricId = null;
+    }
+    state.passportOpen = false;
+    renderAll();
+  });
+}
 document.addEventListener("keydown", function (e) {
   if (e.key !== "Escape") return;
-  if (state.editorOpen) {
-    closeEditor();
-  } else if (state.passportOpen) {
+  if (state.passportOpen) {
     state.passportOpen = false;
     renderPassport();
   } else if (state.centerView === "description") {
@@ -3611,37 +3640,13 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
-document.getElementById("editorClose").addEventListener("click", closeEditor);
-document.getElementById("editorCancel").addEventListener("click", closeEditor);
-document.getElementById("editorOverlay").addEventListener("click", closeEditor);
-document.getElementById("editorSave").addEventListener("click", function () {
-  var meta = EDITOR_META[state.editorType];
-  closeEditor();
-  showToast(meta ? meta.toast : "\u0421\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u043e (\u0434\u0435\u043c\u043e)");
-});
-document.getElementById("editorPanel").addEventListener("click", function (e) {
-  e.stopPropagation();
-});
-
-document.getElementById("btnGuideLevels").addEventListener("click", function () {
-  openGuide("levels");
-});
 document.getElementById("btnGuideCatalog").addEventListener("click", function () {
-  openGuide("catalog");
-});
-document.getElementById("btnGuideC2v").addEventListener("click", function () {
-  openGuide("c2v");
+  openGuide();
 });
 document.getElementById("guideClose").addEventListener("click", closeGuide);
 document.getElementById("guideOverlay").addEventListener("click", closeGuide);
 document.getElementById("guidePanel").addEventListener("click", function (e) {
   e.stopPropagation();
-});
-document.getElementById("guideTabs").addEventListener("click", function (e) {
-  var btn = e.target.closest("[data-guide-tab]");
-  if (!btn) return;
-  state.guideTab = btn.getAttribute("data-guide-tab");
-  renderGuide();
 });
 
 document.getElementById("headerNav").addEventListener("click", function (e) {
@@ -3654,16 +3659,10 @@ document.getElementById("headerBrand").addEventListener("click", function () {
 });
 
 document.addEventListener("click", function (e) {
-  var guideBtn = e.target.closest("[data-open-guide]");
-  if (guideBtn) {
+  var catalogBtn = e.target.closest("[data-open-catalog]");
+  if (catalogBtn) {
     e.preventDefault();
-    openGuide(guideBtn.getAttribute("data-open-guide"));
-    return;
-  }
-  var ed = e.target.closest("[data-open-editor]");
-  if (ed && !e.target.closest("#editorPanel")) {
-    e.preventDefault();
-    openEditor(ed.getAttribute("data-open-editor"));
+    openGuide();
     return;
   }
   var link = e.target.closest("[data-goto-metric]");
@@ -3675,6 +3674,25 @@ document.addEventListener("click", function (e) {
 });
 
 setAppView("home");
+
+var productSearchEl = document.getElementById("productSearch");
+if (productSearchEl) {
+  productSearchEl.addEventListener("input", function () {
+    state.productSearch = productSearchEl.value;
+    renderTree();
+  });
+}
+
+var metricGraphResizeTimer;
+window.addEventListener("resize", function () {
+  if (state.metricsLayout !== "tree" || !isLeafProduct(state.selectedProduct)) return;
+  clearTimeout(metricGraphResizeTimer);
+  metricGraphResizeTimer = setTimeout(function () {
+    var root = document.getElementById("pyramidRoot");
+    if (!root) return;
+    drawMetricGraphEdges(root, buildProductGraphEdges(getProductMetricMap(state.selectedProduct)), state.graphFocusMetricId);
+  }, 120);
+});
 </script>
 </body>
 </html>
