@@ -1,4 +1,4 @@
-# Deploy prototype to GitHub Pages
+# Deploy both prototypes to GitHub Pages
 # Prerequisite: gh auth login (one time)
 
 $ErrorActionPreference = "Stop"
@@ -14,11 +14,13 @@ if (-not (Test-Path $gh)) {
 
 & $gh auth status | Out-Null
 
-$source = Join-Path $PSScriptRoot "metric-tree-builder.html"
-if (-not (Test-Path -LiteralPath $source)) {
-  $source = Get-ChildItem -LiteralPath $PSScriptRoot -Filter "*.html" | Where-Object { $_.Name -ne "index.html" -and $_.Name -notlike "perechen*" -and $_.Name -notlike "Иерархия*" } | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-}
-if ($source) { Copy-Item -LiteralPath $source -Destination (Join-Path $PSScriptRoot "index.html") -Force }
+$metric = Join-Path $PSScriptRoot "metric-tree-builder.html"
+$kursor = Join-Path $PSScriptRoot "Курсор.html"
+$hub = Join-Path $PSScriptRoot "index.html"
+
+if (-not (Test-Path -LiteralPath $metric)) { Write-Error "metric-tree-builder.html not found" }
+if (-not (Test-Path -LiteralPath $kursor)) { Write-Error "Курсор.html not found" }
+if (-not (Test-Path -LiteralPath $hub)) { Write-Error "index.html hub not found" }
 if (-not (Test-Path ".\.nojekyll")) { New-Item -Path ".\.nojekyll" -ItemType File | Out-Null }
 
 if (-not (Test-Path ".\.git")) { & $git init; & $git branch -M main }
@@ -28,10 +30,10 @@ $env:GIT_AUTHOR_EMAIL = "avast@users.noreply.github.com"
 $env:GIT_COMMITTER_NAME = $env:GIT_AUTHOR_NAME
 $env:GIT_COMMITTER_EMAIL = $env:GIT_AUTHOR_EMAIL
 
-& $git add index.html metric-tree-builder.html README.md .nojekyll deploy-github-pages.ps1 .gitignore
+& $git add index.html metric-tree-builder.html "Курсор.html" README.md .nojekyll deploy-github-pages.ps1 .gitignore
 $status = & $git status --porcelain
 if ($status) {
-  & $git commit -m "Deploy metric tree builder: constructor and metrics library"
+  & $git commit -m "Deploy hub, metric tree builder and leader workspace"
 }
 
 $remotes = & $git remote 2>$null
@@ -42,14 +44,10 @@ if ($remotes -notcontains "origin") {
 }
 
 $owner = (& $gh api user -q .login).Trim()
-$pagesUrl = "https://$owner.github.io/$repoName/"
-
-try {
-  & $gh api -X POST "repos/$owner/$repoName/pages" -f build_type=legacy -f "source[branch]=main" -f "source[path]=/" | Out-Null
-} catch {
-  & $gh api -X PUT "repos/$owner/$repoName/pages" -f build_type=legacy -f "source[branch]=main" -f "source[path]=/" | Out-Null
-}
+$base = "https://$owner.github.io/$repoName"
 
 Write-Host ""
-Write-Host "Done. Site URL (may take 1-2 min to become available):"
-Write-Host $pagesUrl
+Write-Host "Done. URLs (may take 1-2 min):"
+Write-Host "$base/"
+Write-Host "$base/metric-tree-builder.html"
+Write-Host "$base/%D0%9A%D1%83%D1%80%D1%81%D0%BE%D1%80.html"

@@ -1,12 +1,21 @@
-# Конструктор метрик — Блок Т
+# Инструменты метрик — Блок Т
 
-Локальный инструмент для неспециалистов: описание продукта → дерево метрик → инсайты → библиотека метрик.
+Два статических прототипа на одном GitHub Pages:
 
-**Сайт:** https://strongcentr.github.io/blok-t-metrics-workspace/
+| Инструмент | Файл | Описание |
+|---|---|---|
+| **Конструктор метрик** | `metric-tree-builder.html` | Описание продукта → дерево метрик → инсайты → библиотека |
+| **Рабочее место лидера** | `Курсор.html` | Dashboard лидера, пирамида L1–L4, scorecard, сигналы |
+
+**Хаб (главная):** https://strongcentr.github.io/blok-t-metrics-workspace/
+
+**Прямые ссылки:**
+- https://strongcentr.github.io/blok-t-metrics-workspace/metric-tree-builder.html
+- https://strongcentr.github.io/blok-t-metrics-workspace/%D0%9A%D1%83%D1%80%D1%81%D0%BE%D1%80.html
 
 ## Локально
 
-Откройте `metric-tree-builder.html` или `index.html` в браузере.
+Откройте `index.html` в браузере или нужный HTML-файл напрямую.
 
 ## Обновление GitHub Pages
 
@@ -14,4 +23,4 @@
 .\deploy-github-pages.ps1
 ```
 
-Скрипт копирует `metric-tree-builder.html` в `index.html`, коммитит и пушит в `main`.
+Скрипт публикует хаб (`index.html`), конструктор и рабочее место лидера в `main`.
