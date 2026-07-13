@@ -30,7 +30,7 @@ $env:GIT_AUTHOR_EMAIL = "avast@users.noreply.github.com"
 $env:GIT_COMMITTER_NAME = $env:GIT_AUTHOR_NAME
 $env:GIT_COMMITTER_EMAIL = $env:GIT_AUTHOR_EMAIL
 
-& $git add index.html metric-tree-builder.html "Курсор.html" README.md .nojekyll deploy-github-pages.ps1 .gitignore
+& $git add index.html metric-tree-builder.html metrics-news.json "Курсор.html" README.md .nojekyll deploy-github-pages.ps1 .gitignore docs/metric-tree-builder-spec.md
 $status = & $git status --porcelain
 if ($status) {
   & $git commit -m "Deploy hub, metric tree builder and leader workspace"

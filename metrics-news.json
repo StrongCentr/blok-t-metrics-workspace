@@ -1,0 +1,186 @@
+{
+  "updatedAt": "2026-07-07",
+  "nextUpdate": "2026-07-14",
+  "cadence": "weekly",
+  "featured": [
+    {
+      "id": "dora-2024",
+      "title": "DORA 2024: что реально влияет на скорость и качество поставки",
+      "summary": "Отчёт DORA: частота релизов и lead time по-прежнему связаны с бизнес-результатом, но рост объёма AI-кода сам по себе не ускоряет поставку без метрик качества.",
+      "takeaways": [
+        "Рядом со скоростью держите guardrail-метрики — стабильность важнее гонки за деплоями.",
+        "Инженерные KPI связывайте с продуктовым деревом, а не отдельным дашбордом.",
+        "Для финтеха нужен audit trail изменений — отдельный слой в scorecard."
+      ],
+      "url": "https://dora.dev/research/2024/dora-report/",
+      "source": "Google / DORA",
+      "publishedAt": "2024-10-29",
+      "topics": ["engineering"]
+    },
+    {
+      "id": "modus-habr",
+      "title": "Как проектировать BI-главную для бизнес-лидера: иерархия метрик",
+      "summary": "Modus BI разбирает входной экран лидера: 3–5 KPI сверху, кластеры продуктов и сигналы отклонений — та же логика, что в дереве метрик.",
+      "takeaways": [
+        "Верхний ряд — только метрики, по которым принимаете решения на неделе.",
+        "Сигнал должен вести к действию, а не просто краснеть на экране.",
+        "Один продукт и портфель — разный масштаб одного scorecard."
+      ],
+      "url": "https://habr.com/ru/companies/modusbi/articles/760780/",
+      "source": "Habr · Modus BI",
+      "publishedAt": "2024-08-15",
+      "topics": ["scorecard"]
+    },
+    {
+      "id": "mckinsey-growth",
+      "title": "McKinsey: рост через customer-centric метрики, а не vanity",
+      "summary": "McKinsey показывает, как компании с высоким ростом связывают NPS, retention и unit economics с P&L — и почему «охват» без ценности вводит в заблуждение.",
+      "takeaways": [
+        "North Star привязывайте к экономике клиента, не к активности в приложении.",
+        "Для подписок сегментируйте метрики по когортам — иначе теряете картину.",
+        "CX-метрики нельзя жертвовать ради краткосрочного cross-sell."
+      ],
+      "url": "https://www.mckinsey.com/capabilities/growth-marketing-and-sales/our-insights",
+      "source": "McKinsey Insights",
+      "publishedAt": "2025-11-12",
+      "topics": ["product"]
+    }
+  ],
+  "feed": [
+    {
+      "id": "amplitude-nsm",
+      "title": "North Star Metric: как выбрать одну метрику без потери контекста",
+      "summary": "Фреймворк выбора North Star и набор supporting metrics — прямой аналог вершины дерева метрик. Полезно, когда на scorecard слишком много «главных» KPI.",
+      "url": "https://amplitude.com/blog/north-star-metric",
+      "source": "Amplitude Blog",
+      "publishedAt": "2025-06-18",
+      "topics": ["product"]
+    },
+    {
+      "id": "vc-fintech-kpi",
+      "title": "Какие KPI смотрят инвесторы в финтехе на стадии scale",
+      "summary": "Инвесторы на scale смотрят CAC payback, NIM, take rate и fraud rate — сегментные метрики для верхних уровней финтех-дерева.",
+      "url": "https://vc.ru/finance",
+      "source": "VC.ru",
+      "publishedAt": "2026-06-02",
+      "topics": ["fintech"]
+    },
+    {
+      "id": "habr-product-analytics",
+      "title": "Дерево метрик продукта: от цели к событиям в аналитике",
+      "summary": "Практический разбор декомпозиции бизнес-цели на продуктовые и технические слои — как связать P&L с событиями в аналитике.",
+      "url": "https://habr.com/ru/hub/productpm/",
+      "source": "Habr",
+      "publishedAt": "2026-05-20",
+      "topics": ["product"]
+    },
+    {
+      "id": "thoughtworks-radar",
+      "title": "Technology Radar: метрики зрелости платформ и observability",
+      "summary": "Зрелость платформы и качество данных — prerequisite для продуктовых экспериментов. Без телеметрии scorecard рискует показывать шум.",
+      "url": "https://www.thoughtworks.com/radar",
+      "source": "Thoughtworks",
+      "publishedAt": "2025-10-15",
+      "topics": ["engineering"]
+    },
+    {
+      "id": "statsig-guardrails",
+      "title": "Guardrail metrics в A/B-тестах: что мониторить параллельно с uplift",
+      "summary": "Любой рост конверсии проверяйте на побочные эффекты: churn, latency, нагрузка на поддержку. Guardrails — обязательная часть дерева.",
+      "url": "https://www.statsig.com/blog",
+      "source": "Statsig",
+      "publishedAt": "2026-04-11",
+      "topics": ["product"]
+    },
+    {
+      "id": "reforge-retention",
+      "title": "Когортный retention vs скользящий MAU: когда что использовать",
+      "summary": "MAU без когорт маскирует отток. Для подписочных моделей на scorecard нужны T+30 и T+90, а не только «активные пользователи».",
+      "url": "https://www.reforge.com/blog",
+      "source": "Reforge",
+      "publishedAt": "2025-09-08",
+      "topics": ["product"]
+    },
+    {
+      "id": "hbr-measurement",
+      "title": "HBR: измерять то, что влияет на решения, а не то, что легко посчитать",
+      "summary": "Классическая критика vanity KPI: лидеру нужны метрики, привязанные к решениям, с явными владельцами и guardrails.",
+      "url": "https://hbr.org/topic/subject/performance-measurement",
+      "source": "Harvard Business Review",
+      "publishedAt": "2025-12-01",
+      "topics": ["scorecard"]
+    },
+    {
+      "id": "mixpanel-activation",
+      "title": "Activation rate как ранний сигнал LTV в PLG-продуктах",
+      "summary": "Time-to-value и activation — leading-метрики до monetization. Ранний сигнал для решений о воронке и инвестициях в онбординг.",
+      "url": "https://mixpanel.com/blog/",
+      "source": "Mixpanel",
+      "publishedAt": "2026-03-22",
+      "topics": ["product"]
+    },
+    {
+      "id": "habr-bi-scorecard",
+      "title": "Scorecard для CPO: как не утонуть в 40 KPI на одном экране",
+      "summary": "Правило 3–5 метрик на уровень иерархии совпадает с практикой portfolio review — меньше KPI, больше ясности для лидера.",
+      "url": "https://habr.com/ru/hub/bi/",
+      "source": "Habr",
+      "publishedAt": "2026-02-14",
+      "topics": ["scorecard"]
+    },
+    {
+      "id": "bcg-fintech",
+      "title": "BCG: unit economics цифрового банка после эры роста любой ценой",
+      "summary": "Три опоры финтех-дерева: маржа с клиента, cost of risk и cost-to-serve. После эры «рост любой ценой» лидер смотрит на unit economics.",
+      "url": "https://www.bcg.com/publications",
+      "source": "BCG",
+      "publishedAt": "2025-10-30",
+      "topics": ["fintech"]
+    },
+    {
+      "id": "lenny-pmf",
+      "title": "Как понять, что метрика продукта «ведёт» вас не туда",
+      "summary": "Симптомы неправильной North Star и чеклист пересборки дерева — когда KPI растут, а бизнес-результат стоит.",
+      "url": "https://www.lennysnewsletter.com/",
+      "source": "Lenny's Newsletter",
+      "publishedAt": "2026-01-09",
+      "topics": ["product"]
+    },
+    {
+      "id": "owasp-llm",
+      "title": "OWASP LLM Top 10: метрики качества и безопасности AI-продуктов",
+      "summary": "Для AI-продуктов на scorecard нужны citation rate, guardrails от галлюцинаций и риски безопасности — не только adoption.",
+      "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+      "source": "OWASP",
+      "publishedAt": "2025-11-20",
+      "topics": ["ai"]
+    },
+    {
+      "id": "vc-neobank",
+      "title": "Необанк: funded accounts важнее открытий счетов",
+      "summary": "Разделяйте vanity-метрику (регистрация) и драйвер (funded account) — типичная ловушка для лидера цифрового банка.",
+      "url": "https://vc.ru/tech",
+      "source": "VC.ru",
+      "publishedAt": "2026-05-05",
+      "topics": ["fintech"]
+    },
+    {
+      "id": "spotify-hdd",
+      "title": "Hypothesis-Driven Development: HVR как метрика зрелости discovery",
+      "summary": "Доля подтверждённых гипотез — output-метрика зрелости discovery. Показывает, насколько команда учится, а не только ship'ит.",
+      "url": "https://www.spotify.com/insights/",
+      "source": "Spotify Insights",
+      "publishedAt": "2024-07-18",
+      "topics": ["product"]
+    },
+    {
+      "id": "gartner-press",
+      "title": "Gartner: тренд на composable analytics и metric layers",
+      "summary": "Семантический слой метрик снижает расхождение определений между BI и продуктом — меньше споров «чья цифра правильная» на совете.",
+      "url": "https://www.gartner.com/en/newsroom",
+      "source": "Gartner Newsroom",
+      "publishedAt": "2026-06-28",
+      "topics": ["scorecard", "ai"]
+    }
+  ]
+}
