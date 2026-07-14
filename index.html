@@ -63,16 +63,21 @@ body {
 }
 .metric-backdrop {
   position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  contain: strict;
   background:
     radial-gradient(ellipse 60% 55% at 24% 38%, rgba(110,231,200,0.10), transparent 70%),
     linear-gradient(90deg, rgba(110,231,200,0.10) 1px, transparent 1px),
     linear-gradient(0deg, rgba(141,187,255,0.075) 1px, transparent 1px);
   background-size: auto, 180px 180px, 180px 180px;
   opacity: 0.72;
+}
+html.backdrop-animated .metric-backdrop {
   animation: gridDrift 18s linear infinite;
 }
 .metric-backdrop .backdrop-scene {
   position: absolute; inset: 0;
+}
+html:not(.perf-lite) .metric-backdrop .backdrop-scene {
   -webkit-mask-image: radial-gradient(ellipse 48% 52% at 28% 52%, transparent 0 40%, rgba(0,0,0,0.35) 58%, rgba(0,0,0,0.75) 78%, #000 100%);
   mask-image: radial-gradient(ellipse 48% 52% at 28% 52%, transparent 0 40%, rgba(0,0,0,0.35) 58%, rgba(0,0,0,0.75) 78%, #000 100%);
 }
@@ -88,6 +93,10 @@ body {
   position: absolute; top: 50%; left: 0; width: 9px; height: 9px; border-radius: 50%;
   background: #d6b778;
   box-shadow: 0 0 10px rgba(110,231,200,0.65), 0 0 26px rgba(110,231,200,0.28);
+  transform: translate3d(var(--x0), -50%, 0);
+  opacity: var(--op, 0.55);
+}
+html.backdrop-animated .metric-backdrop .bgpin {
   animation: pinGlide var(--dur) cubic-bezier(0.4,0,0.2,1) infinite;
   animation-delay: var(--del);
   will-change: transform, opacity;
@@ -113,8 +122,11 @@ body {
   align-items: center; gap: var(--space-md);
   padding: var(--space-sm) var(--space-lg);
   min-height: var(--header-h);
-  background: rgba(7,10,16,0.78);
+  background: rgba(7,10,16,0.92);
   border-bottom: 1px solid var(--border);
+}
+html:not(.perf-lite) .header {
+  background: rgba(7,10,16,0.78);
   backdrop-filter: blur(18px);
 }
 .header-brand {
@@ -298,7 +310,7 @@ body {
 .mgraph-node.lvl-3, .mtree-node.lvl-3 { --node-color: var(--mtree-l3); }
 .mgraph-node.lvl-2, .mtree-node.lvl-2 { --node-color: var(--mtree-l2); }
 .mgraph-node.lvl-1, .mtree-node.lvl-1 { --node-color: var(--mtree-l1); }
-.mgraph-node.dimmed, .mtree-node.dimmed { opacity: 0.22; filter: grayscale(0.2); }
+.mgraph-node.dimmed, .mtree-node.dimmed { opacity: 0.22; }
 .mgraph-node.focus, .mtree-node.focus {
   opacity: 1; border-style: solid; border-color: #fff;
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--node-color) 50%, transparent);
@@ -892,6 +904,8 @@ body {
   border: 1px solid var(--border); border-radius: var(--radius-lg);
   box-shadow: var(--shadow), var(--shadow-inset); margin-bottom: var(--space-md);
   overflow: hidden;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 280px;
 }
 .home-panel-head {
   padding: 12px 14px; border-bottom: 1px solid var(--border);
@@ -1129,8 +1143,8 @@ body {
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 @media (prefers-reduced-motion: reduce) {
-  .metric-backdrop { animation: none; }
-  .metric-backdrop .bgpin { animation: none !important; opacity: 0.35 !important; }
+  html.backdrop-animated .metric-backdrop { animation: none; }
+  html.backdrop-animated .metric-backdrop .bgpin { animation: none !important; opacity: 0.35 !important; }
 }
 @media (max-width: 768px) {
   :root { --header-h: auto; --passport-w: 100%; }
@@ -1193,7 +1207,7 @@ body {
     </aside>
   </main>
   </div>
-  <footer class="footer-line" id="appFooter">Рабочее место лидера Блок Т · v3.6 · единый каталог метрик · mock-данные</footer>
+  <footer class="footer-line" id="appFooter">Рабочее место лидера Блок Т · v3.7 · единый каталог метрик · mock-данные</footer>
 </div>
 <div class="guide-overlay" id="guideOverlay"></div>
 <aside class="guide-panel" id="guidePanel">
@@ -2539,32 +2553,9 @@ function renderMetricTree(productId) {
 }
 
 function bindMetricTreeEvents(root, productId) {
-  var pmap = getProductMetricMap(productId);
-  var edges = buildProductGraphEdges(pmap);
-  root.querySelectorAll(".mgraph-node").forEach(function (node) {
-    node.addEventListener("click", function () {
-      var mid = node.getAttribute("data-metric-id");
-      var external = node.getAttribute("data-external") === "1";
-      if (external) {
-        navigateToMetric(mid);
-        return;
-      }
-      var entry = pmap[mid];
-      if (!entry) return;
-      closeGuide();
-      state.graphFocusMetricId = mid;
-      state.centerView = "metrics";
-      state.metricsLayout = "tree";
-      state.selectedMetric = entry.metric;
-      state.selectedLevel = entry.level;
-      state.passportOpen = true;
-      renderAll();
-    });
-  });
+  var edges = buildProductGraphEdges(getProductMetricMap(productId));
   requestAnimationFrame(function () {
-    requestAnimationFrame(function () {
-      drawMetricGraphEdges(root, edges, state.graphFocusMetricId);
-    });
+    drawMetricGraphEdges(root, edges, state.graphFocusMetricId);
   });
 }
 
@@ -3380,7 +3371,7 @@ function navigateBreadcrumb(productId) {
     state.selectedMetric = null;
     state.selectedLevel = null;
     state.passportOpen = false;
-    renderAll();
+    renderWorkspace({ centerOnly: true });
     return;
   }
   if (productId !== state.selectedProduct) selectProduct(productId);
@@ -3398,11 +3389,6 @@ function renderBreadcrumbs() {
     html += '<button type="button" class="' + cls + '" data-crumb-product="' + n.id + '">' + escapeHtml(n.name) + "</button>";
   });
   el.innerHTML = html;
-  el.querySelectorAll("[data-crumb-product]").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      navigateBreadcrumb(btn.getAttribute("data-crumb-product"));
-    });
-  });
   var mc = document.getElementById("metricCrumb");
   if (state.selectedMetric) {
     mc.textContent = state.selectedMetric.name;
@@ -3465,29 +3451,10 @@ function renderTree() {
         (path ? '<span class="tree-search-path">' + escapeHtml(path) + "</span>" : "") +
         "</button>";
     }).join("") + "</div>";
-    root.querySelectorAll(".tree-search-hit").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        state.productSearch = "";
-        var inp = document.getElementById("productSearch");
-        if (inp) inp.value = "";
-        selectProduct(btn.getAttribute("data-id"));
-      });
-    });
     return;
   }
   var pathIds = (findPath(PRODUCT_TREE, state.selectedProduct) || []).map(function (n) { return n.id; });
   root.innerHTML = renderTreeNodeHtml(PRODUCT_TREE, pathIds);
-  root.querySelectorAll(".tree-node").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      selectProduct(btn.getAttribute("data-id"));
-    });
-  });
-  root.querySelectorAll("[data-tree-toggle]").forEach(function (btn) {
-    btn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      toggleTreeNode(btn.getAttribute("data-tree-toggle"));
-    });
-  });
 }
 
 function renderPyramid() {
@@ -3557,32 +3524,7 @@ function renderPyramid() {
 }
 
 function bindPyramidRootEvents(root) {
-  root.querySelectorAll(".metric-card").forEach(function (card) {
-    card.addEventListener("click", function (e) {
-      if (e.target.closest("[data-goto-metric]")) return;
-      var mid = card.getAttribute("data-metric-id");
-      var lv = parseInt(card.getAttribute("data-level"), 10);
-      var data = getProductData(state.selectedProduct);
-      var found = null;
-      (data.metrics[lv] || []).forEach(function (met) {
-        if (met.id === mid) found = met;
-      });
-      if (found) {
-        closeGuide();
-        state.centerView = "metrics";
-        state.selectedMetric = found;
-        state.selectedLevel = lv;
-        state.passportOpen = true;
-        renderAll();
-      }
-    });
-    card.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        card.click();
-      }
-    });
-  });
+  /* clicks delegated from #pyramidRoot */
 }
 
 function renderPassport() {
@@ -3695,15 +3637,32 @@ function renderCharts() {
     '<div class="chart-note">' + escapeHtml(note) + "</div>";
 }
 
-function renderAll() {
+function renderWorkspace(opts) {
+  opts = opts || {};
   renderAppShell();
   if (state.appView !== "workspace") return;
-  renderBreadcrumbs();
-  renderTree();
+  if (!opts.centerOnly) {
+    renderBreadcrumbs();
+    renderTree();
+  } else {
+    var mc = document.getElementById("metricCrumb");
+    if (mc) {
+      if (state.selectedMetric) {
+        mc.textContent = state.selectedMetric.name;
+        mc.hidden = false;
+      } else {
+        mc.hidden = true;
+      }
+    }
+  }
   renderPyramid();
   renderPassport();
   renderCharts();
   if (state.guideOpen) renderGuide();
+}
+
+function renderAll() {
+  renderWorkspace();
 }
 
 function escapeHtml(s) {
@@ -3733,7 +3692,7 @@ if (pyramidPanelActions) {
       if (mode !== "tree") state.graphFocusMetricId = null;
     }
     state.passportOpen = false;
-    renderAll();
+    renderWorkspace({ centerOnly: true });
   });
 }
 document.addEventListener("keydown", function (e) {
@@ -3743,7 +3702,7 @@ document.addEventListener("keydown", function (e) {
     renderPassport();
   } else if (state.centerView === "description") {
     state.centerView = "metrics";
-    renderAll();
+    renderWorkspace({ centerOnly: true });
   } else if (state.guideOpen) {
     closeGuide();
   }
@@ -3782,16 +3741,118 @@ document.addEventListener("click", function (e) {
   if (mid) navigateToMetric(mid);
 });
 
+function selectMetricFromTree(metricId, isExternal) {
+  if (isExternal) {
+    navigateToMetric(metricId);
+    return;
+  }
+  var entry = getProductMetricMap(state.selectedProduct)[metricId];
+  if (!entry) return;
+  closeGuide();
+  state.graphFocusMetricId = metricId;
+  state.centerView = "metrics";
+  state.metricsLayout = "tree";
+  state.selectedMetric = entry.metric;
+  state.selectedLevel = entry.level;
+  state.passportOpen = true;
+  renderWorkspace({ centerOnly: true });
+}
+
+function selectMetricFromCard(metricId, level) {
+  var found = null;
+  (getProductData(state.selectedProduct).metrics[level] || []).forEach(function (met) {
+    if (met.id === metricId) found = met;
+  });
+  if (!found) return;
+  closeGuide();
+  state.centerView = "metrics";
+  state.selectedMetric = found;
+  state.selectedLevel = level;
+  state.passportOpen = true;
+  renderWorkspace({ centerOnly: true });
+}
+
+function bindWorkspaceEvents() {
+  var breadcrumb = document.getElementById("breadcrumb");
+  if (breadcrumb && !breadcrumb._bound) {
+    breadcrumb._bound = true;
+    breadcrumb.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-crumb-product]");
+      if (btn) navigateBreadcrumb(btn.getAttribute("data-crumb-product"));
+    });
+  }
+  var treeRoot = document.getElementById("treeRoot");
+  if (treeRoot && !treeRoot._bound) {
+    treeRoot._bound = true;
+    treeRoot.addEventListener("click", function (e) {
+      var toggle = e.target.closest("[data-tree-toggle]");
+      if (toggle) {
+        e.stopPropagation();
+        toggleTreeNode(toggle.getAttribute("data-tree-toggle"));
+        return;
+      }
+      var hit = e.target.closest(".tree-search-hit");
+      if (hit) {
+        state.productSearch = "";
+        var inp = document.getElementById("productSearch");
+        if (inp) inp.value = "";
+        selectProduct(hit.getAttribute("data-id"));
+        return;
+      }
+      var node = e.target.closest(".tree-node");
+      if (node) selectProduct(node.getAttribute("data-id"));
+    });
+  }
+  var pyramidRoot = document.getElementById("pyramidRoot");
+  if (pyramidRoot && !pyramidRoot._bound) {
+    pyramidRoot._bound = true;
+    pyramidRoot.addEventListener("click", function (e) {
+      var mnode = e.target.closest(".mgraph-node");
+      if (mnode) {
+        selectMetricFromTree(mnode.getAttribute("data-metric-id"), mnode.getAttribute("data-external") === "1");
+        return;
+      }
+      var card = e.target.closest(".metric-card");
+      if (card && !e.target.closest("[data-goto-metric]")) {
+        selectMetricFromCard(card.getAttribute("data-metric-id"), parseInt(card.getAttribute("data-level"), 10));
+      }
+    });
+    pyramidRoot.addEventListener("keydown", function (e) {
+      var card = e.target.closest(".metric-card");
+      if (card && (e.key === "Enter" || e.key === " ")) {
+        e.preventDefault();
+        card.click();
+      }
+    });
+  }
+}
+
+function initPerformanceProfile() {
+  var root = document.documentElement;
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var cores = navigator.hardwareConcurrency || 8;
+  var mem = navigator.deviceMemory || 8;
+  var saveData = navigator.connection && navigator.connection.saveData;
+  var lite = reduced || cores <= 4 || mem <= 4 || !!saveData;
+  root.classList.toggle("perf-lite", lite);
+  if (!lite && !reduced) root.classList.add("backdrop-animated");
+}
+
 function buildMetricBackdrop() {
   var bg = document.getElementById("metricBackdrop");
   if (!bg || bg.dataset.ready) return;
   bg.dataset.ready = "1";
+  var lite = document.documentElement.classList.contains("perf-lite");
   var scene = document.createElement("div");
   scene.className = "backdrop-scene";
   var center = document.createElement("div");
   center.className = "centerline";
   scene.appendChild(center);
-  var rows = [
+  var rows = lite ? [
+    { top: 14, x0: "18vw", op: 0.55 },
+    { top: 48, x0: "62vw", op: 0.45 },
+    { top: 78, x0: "34vw", op: 0.5 }
+  ] : [
     { top: 8, x0: "12vw", dur: 7.2, del: 0, op: 0.85 },
     { top: 20, x0: "78vw", dur: 8.6, del: 0.9, op: 0.6 },
     { top: 33, x0: "30vw", dur: 6.4, del: 1.7, op: 0.75 },
@@ -3807,23 +3868,29 @@ function buildMetricBackdrop() {
     var pin = document.createElement("div");
     pin.className = "bgpin";
     pin.style.setProperty("--x0", row.x0);
-    pin.style.setProperty("--dur", row.dur + "s");
-    pin.style.setProperty("--del", row.del + "s");
     pin.style.setProperty("--op", row.op);
+    if (!lite && row.dur) {
+      pin.style.setProperty("--dur", row.dur + "s");
+      pin.style.setProperty("--del", row.del + "s");
+    }
     tr.appendChild(pin);
     scene.appendChild(tr);
   });
   bg.appendChild(scene);
 }
 
+initPerformanceProfile();
+bindWorkspaceEvents();
 setAppView("home");
 buildMetricBackdrop();
 
 var productSearchEl = document.getElementById("productSearch");
+var productSearchTimer;
 if (productSearchEl) {
   productSearchEl.addEventListener("input", function () {
     state.productSearch = productSearchEl.value;
-    renderTree();
+    clearTimeout(productSearchTimer);
+    productSearchTimer = setTimeout(renderTree, 150);
   });
 }
 

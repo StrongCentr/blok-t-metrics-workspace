@@ -25,11 +25,12 @@ body{margin:0;background:
   radial-gradient(circle at 50% 112%,rgba(110,231,200,.08),transparent 32%),
   linear-gradient(160deg,#06080d,#0d1320 52%,#070a10);
   color:var(--text);font-family:var(--font);line-height:1.5;}
-.metric-backdrop{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:
+.metric-backdrop{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;contain:strict;
+  background:
   radial-gradient(ellipse 60% 55% at 24% 38%,rgba(110,231,200,.10),transparent 70%),
   linear-gradient(90deg,rgba(110,231,200,.10) 1px,transparent 1px),
   linear-gradient(0deg,rgba(141,187,255,.075) 1px,transparent 1px);
-  background-size:auto,180px 180px,180px 180px;opacity:.72;animation:gridDrift 18s linear infinite;}
+  background-size:auto,180px 180px,180px 180px;opacity:.72;}
 .metric-backdrop .backdrop-scene{position:absolute;inset:0;
   -webkit-mask-image:radial-gradient(ellipse 48% 52% at 28% 52%,transparent 0 40%,rgba(0,0,0,.35) 58%,rgba(0,0,0,.75) 78%,#000 100%);
   mask-image:radial-gradient(ellipse 48% 52% at 28% 52%,transparent 0 40%,rgba(0,0,0,.35) 58%,rgba(0,0,0,.75) 78%,#000 100%);}
@@ -37,9 +38,9 @@ body{margin:0;background:
   background:linear-gradient(180deg,transparent,rgba(110,231,200,.55) 20%,rgba(141,187,255,.42) 80%,transparent);}
 .metric-backdrop .bgtrack{position:absolute;left:0;right:0;height:1px;background:rgba(223,232,255,.08);}
 .metric-backdrop .bgpin{position:absolute;top:50%;left:0;width:9px;height:9px;border-radius:50%;
-  background:var(--accent-2);box-shadow:0 0 10px rgba(110,231,200,.65),0 0 26px rgba(110,231,200,.28);
-  animation:pinGlide var(--dur) cubic-bezier(.4,0,.2,1) infinite;animation-delay:var(--del);will-change:transform,opacity;}
-@keyframes gridDrift{from{background-position:0 0,0 0,0 0;}to{background-position:0 0,180px 90px,90px 180px;}}
+  background:var(--accent-2);box-shadow:0 0 8px rgba(110,231,200,.45);
+  animation:pinGlide var(--dur) cubic-bezier(.4,0,.2,1) infinite;animation-delay:var(--del);}
+.metric-backdrop.backdrop-paused .bgpin{animation-play-state:paused;opacity:.28;}
 @keyframes pinGlide{
   0%{transform:translate3d(var(--x0),-50%,0);opacity:0;}
   8%{opacity:var(--op);}
@@ -328,6 +329,11 @@ button:disabled{opacity:.5;cursor:not-allowed;}
 .helper-actions button{flex:1 1 150px;}
 .save-actions{position:sticky;bottom:-24px;margin:18px -22px -24px;padding:14px 22px;background:linear-gradient(180deg,rgba(13,20,32,.82),rgba(13,20,32,.96));border-top:1px solid var(--border);backdrop-filter:blur(12px);}
 .chip{font-size:.74rem;padding:4px 9px;border-radius:999px;border:1px solid var(--border);color:#cbd5e1;background:rgba(255,255,255,.03);}
+.lib-card,.pulse-row-inner{content-visibility:auto;contain-intrinsic-size:auto 132px;}
+html.perf-lite .metric-backdrop{opacity:.58;background-size:auto,160px 160px,160px 160px;}
+html.perf-lite .metric-backdrop .bgpin{display:none;}
+html.perf-lite .header,html.perf-lite .drawer-head,html.perf-lite .save-actions{backdrop-filter:none;}
+html.perf-lite .pulse-row-inner:hover{box-shadow:none;}
 @media(prefers-reduced-motion:reduce){
   *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important;}
   .metric-backdrop{animation:none;}
@@ -370,6 +376,7 @@ button:disabled{opacity:.5;cursor:not-allowed;}
 </style>
 </head>
 <body>
+<script>document.documentElement.classList.toggle("perf-lite",(function(){try{if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return true;var c=navigator.hardwareConcurrency||8,m=navigator.deviceMemory||8;return c<=4||m<=4;}catch(e){return false;}})());</script>
 <a class="skip-link" href="#mainContent">К основному содержимому</a>
 <div class="metric-backdrop" id="metricBackdrop" aria-hidden="true"></div>
 <div class="app">
@@ -1549,24 +1556,33 @@ function switchView(name){
   $("view-"+name).classList.add("active");
   const menu=$("btnExportMenu")?.closest(".menu");
   if(menu)menu.style.display=(name==="build")?"":"none";
+  setBackdropActive(name==="build"&&!document.hidden);
   if(name==="build")setTimeout(fitToView,40);
+  if(name==="library")ensureLibrary();
   if(name==="pulse")initPulse();
 }
 
 /* ============ ИНИЦ ============ */
+let libraryReady=false;
+function setBackdropActive(on){
+  const bg=$("metricBackdrop");
+  if(bg)bg.classList.toggle("backdrop-paused",!on);
+}
+function ensureLibrary(){
+  if(libraryReady)return;
+  libraryReady=true;
+  renderLibrary($("libSearch")?.value||"");
+}
 function buildMetricBackdrop(){
   const bg=$("metricBackdrop"); if(!bg||bg.dataset.ready)return;
   bg.dataset.ready="1";
+  if(document.documentElement.classList.contains("perf-lite"))return;
   const scene=document.createElement("div"); scene.className="backdrop-scene";
   const center=document.createElement("div"); center.className="centerline"; scene.appendChild(center);
   const rows=[
-    {top:8,x0:"12vw",dur:7.2,del:0,op:.85},
-    {top:20,x0:"78vw",dur:8.6,del:.9,op:.6},
-    {top:33,x0:"30vw",dur:6.4,del:1.7,op:.75},
-    {top:46,x0:"88vw",dur:9.4,del:.4,op:.55},
-    {top:59,x0:"20vw",dur:7.8,del:2.3,op:.7},
-    {top:72,x0:"70vw",dur:6.9,del:1.2,op:.82},
-    {top:85,x0:"38vw",dur:8.1,del:2.9,op:.55}
+    {top:12,x0:"12vw",dur:9.2,del:0,op:.75},
+    {top:38,x0:"78vw",dur:10.4,del:1.1,op:.55},
+    {top:64,x0:"30vw",dur:8.8,del:2.2,op:.65}
   ];
   rows.forEach(row=>{
     const tr=document.createElement("div"); tr.className="bgtrack"; tr.style.top=row.top+"%";
@@ -1602,7 +1618,13 @@ function bind(){
   $("consultBtn").addEventListener("click",()=>{ consultMetric($("consultInput").value); $("consultInput").value=""; });
   $("consultInput").addEventListener("keydown",e=>{ if(e.key==="Enter"){ consultMetric($("consultInput").value); $("consultInput").value=""; } });
   document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ if(linkMode)toggleLinkMode(false); closeDrawer(); } });
-  window.addEventListener("resize",()=>{ if($("view-build").classList.contains("active"))fitToView(); });
+  window.addEventListener("resize",()=>{
+    clearTimeout(window._fitTimer);
+    window._fitTimer=setTimeout(()=>{ if($("view-build").classList.contains("active"))fitToView(); },140);
+  });
+  document.addEventListener("visibilitychange",()=>{
+    setBackdropActive($("view-build").classList.contains("active")&&!document.hidden);
+  });
 }
 
 /* self-test (не затирает глобальное состояние) */
@@ -1625,7 +1647,6 @@ function selfTest(){
 
 buildMetricBackdrop();
 bind();
-renderLibrary();
 if(!restoreState()){
   fillSample("pnl");
   lastInput=collectInput();
@@ -1635,8 +1656,10 @@ if(!restoreState()){
   $("f_metrics").value=lastInput.metrics||"";
 }
 renderTree(); setTimeout(fitToView,40); refreshInsights();
-const _t=selfTest();
-if(_t.length)console.warn("Self-test:",_t);else console.log("Self-test passed");
+setBackdropActive(true);
+const runSelfTest=()=>{const _t=selfTest();if(_t.length)console.warn("Self-test:",_t);else console.log("Self-test passed");};
+if(typeof requestIdleCallback==="function")requestIdleCallback(runSelfTest,{timeout:2500});
+else setTimeout(runSelfTest,800);
 </script>
 </body>
 </html>
