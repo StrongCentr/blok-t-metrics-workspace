@@ -50,13 +50,60 @@
 html { font-size: 15px; }
 body {
   font-family: var(--font);
-  background: linear-gradient(165deg, #0a0c10 0%, #0e1118 40%, #0c0e14 100%);
+  margin: 0;
+  background:
+    radial-gradient(circle at 10% -10%, rgba(141,187,255,0.20), transparent 30%),
+    radial-gradient(circle at 78% 2%, rgba(214,183,120,0.14), transparent 26%),
+    radial-gradient(circle at 50% 112%, rgba(110,231,200,0.08), transparent 32%),
+    linear-gradient(160deg, #06080d, #0d1320 52%, #070a10);
   color: var(--text);
   min-height: 100vh;
   line-height: 1.45;
   overflow-x: hidden;
 }
-.app { display: flex; flex-direction: column; min-height: 100vh; }
+.metric-backdrop {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  background:
+    radial-gradient(ellipse 60% 55% at 24% 38%, rgba(110,231,200,0.10), transparent 70%),
+    linear-gradient(90deg, rgba(110,231,200,0.10) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(141,187,255,0.075) 1px, transparent 1px);
+  background-size: auto, 180px 180px, 180px 180px;
+  opacity: 0.72;
+  animation: gridDrift 18s linear infinite;
+}
+.metric-backdrop .backdrop-scene {
+  position: absolute; inset: 0;
+  -webkit-mask-image: radial-gradient(ellipse 48% 52% at 28% 52%, transparent 0 40%, rgba(0,0,0,0.35) 58%, rgba(0,0,0,0.75) 78%, #000 100%);
+  mask-image: radial-gradient(ellipse 48% 52% at 28% 52%, transparent 0 40%, rgba(0,0,0,0.35) 58%, rgba(0,0,0,0.75) 78%, #000 100%);
+}
+.metric-backdrop .centerline {
+  position: absolute; top: 6%; bottom: 6%; left: 72%; width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(110,231,200,0.55) 20%, rgba(141,187,255,0.42) 80%, transparent);
+}
+.metric-backdrop .bgtrack {
+  position: absolute; left: 0; right: 0; height: 1px;
+  background: rgba(223,232,255,0.08);
+}
+.metric-backdrop .bgpin {
+  position: absolute; top: 50%; left: 0; width: 9px; height: 9px; border-radius: 50%;
+  background: #d6b778;
+  box-shadow: 0 0 10px rgba(110,231,200,0.65), 0 0 26px rgba(110,231,200,0.28);
+  animation: pinGlide var(--dur) cubic-bezier(0.4,0,0.2,1) infinite;
+  animation-delay: var(--del);
+  will-change: transform, opacity;
+}
+@keyframes gridDrift {
+  from { background-position: 0 0, 0 0, 0 0; }
+  to { background-position: 0 0, 180px 90px, 90px 180px; }
+}
+@keyframes pinGlide {
+  0% { transform: translate3d(var(--x0), -50%, 0); opacity: 0; }
+  8% { opacity: var(--op); }
+  42%, 68% { transform: translate3d(calc(72vw - 50%), -50%, 0); opacity: var(--op); }
+  92% { opacity: var(--op); }
+  100% { transform: translate3d(var(--x0), -50%, 0); opacity: 0; }
+}
+.app { display: flex; flex-direction: column; min-height: 100vh; position: relative; z-index: 1; }
 .app-views { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .app-view-home #workspaceRoot { display: none !important; }
 .app-view-workspace #homeRoot { display: none !important; }
@@ -66,9 +113,9 @@ body {
   align-items: center; gap: var(--space-md);
   padding: var(--space-sm) var(--space-lg);
   min-height: var(--header-h);
-  background: rgba(11,13,17,0.94);
+  background: rgba(7,10,16,0.78);
   border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(18px);
 }
 .header-brand {
   font-size: 0.82rem; font-weight: 600; letter-spacing: -0.02em;
@@ -1081,6 +1128,10 @@ body {
   opacity: 0; pointer-events: none; transition: transform 0.25s, opacity 0.25s;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .metric-backdrop { animation: none; }
+  .metric-backdrop .bgpin { animation: none !important; opacity: 0.35 !important; }
+}
 @media (max-width: 768px) {
   :root { --header-h: auto; --passport-w: 100%; }
   .header { grid-template-columns: 1fr; padding: var(--space-md); }
@@ -1098,6 +1149,7 @@ body {
 </style>
 </head>
 <body>
+<div class="metric-backdrop" id="metricBackdrop" aria-hidden="true"></div>
 <div class="app app-view-home">
   <header class="header">
     <div class="header-brand" id="headerBrand" title="На главную">Рабочее место · Блок Т</div>
@@ -1141,7 +1193,7 @@ body {
     </aside>
   </main>
   </div>
-  <footer class="footer-line" id="appFooter">Рабочее место лидера Блок Т · v3.5 · единый каталог метрик · mock-данные</footer>
+  <footer class="footer-line" id="appFooter">Рабочее место лидера Блок Т · v3.6 · единый каталог метрик · mock-данные</footer>
 </div>
 <div class="guide-overlay" id="guideOverlay"></div>
 <aside class="guide-panel" id="guidePanel">
@@ -3730,7 +3782,42 @@ document.addEventListener("click", function (e) {
   if (mid) navigateToMetric(mid);
 });
 
+function buildMetricBackdrop() {
+  var bg = document.getElementById("metricBackdrop");
+  if (!bg || bg.dataset.ready) return;
+  bg.dataset.ready = "1";
+  var scene = document.createElement("div");
+  scene.className = "backdrop-scene";
+  var center = document.createElement("div");
+  center.className = "centerline";
+  scene.appendChild(center);
+  var rows = [
+    { top: 8, x0: "12vw", dur: 7.2, del: 0, op: 0.85 },
+    { top: 20, x0: "78vw", dur: 8.6, del: 0.9, op: 0.6 },
+    { top: 33, x0: "30vw", dur: 6.4, del: 1.7, op: 0.75 },
+    { top: 46, x0: "88vw", dur: 9.4, del: 0.4, op: 0.55 },
+    { top: 59, x0: "20vw", dur: 7.8, del: 2.3, op: 0.7 },
+    { top: 72, x0: "70vw", dur: 6.9, del: 1.2, op: 0.82 },
+    { top: 85, x0: "38vw", dur: 8.1, del: 2.9, op: 0.55 }
+  ];
+  rows.forEach(function (row) {
+    var tr = document.createElement("div");
+    tr.className = "bgtrack";
+    tr.style.top = row.top + "%";
+    var pin = document.createElement("div");
+    pin.className = "bgpin";
+    pin.style.setProperty("--x0", row.x0);
+    pin.style.setProperty("--dur", row.dur + "s");
+    pin.style.setProperty("--del", row.del + "s");
+    pin.style.setProperty("--op", row.op);
+    tr.appendChild(pin);
+    scene.appendChild(tr);
+  });
+  bg.appendChild(scene);
+}
+
 setAppView("home");
+buildMetricBackdrop();
 
 var productSearchEl = document.getElementById("productSearch");
 if (productSearchEl) {
