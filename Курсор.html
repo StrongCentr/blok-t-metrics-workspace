@@ -118,7 +118,7 @@ html.backdrop-animated .metric-backdrop .bgpin {
 .app-view-workspace #homeRoot { display: none !important; }
 .header {
   position: sticky; top: 0; z-index: 100;
-  display: grid; grid-template-columns: auto auto 1fr auto;
+  display: grid; grid-template-columns: auto auto 1fr;
   align-items: center; gap: var(--space-md);
   padding: var(--space-sm) var(--space-lg);
   min-height: var(--header-h);
@@ -152,17 +152,6 @@ html:not(.perf-lite) .header {
   display: flex; align-items: center; gap: var(--space-sm);
   flex-wrap: wrap; min-width: 0;
 }
-.header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.header-btn {
-  padding: 7px 12px; font-size: 0.72rem; font-family: inherit; font-weight: 500;
-  border: 1px solid var(--border); border-radius: var(--radius-sm);
-  background: var(--bg-card); color: var(--text-secondary); cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
-  white-space: nowrap;
-}
-.header-btn:hover { background: var(--bg-hover); color: var(--text); border-color: var(--border-strong); }
-.header-btn.primary { background: var(--accent-dim); color: var(--accent-soft); border-color: rgba(90,157,224,0.35); }
-.header-btn.primary:hover { background: rgba(90,157,224,0.22); color: #c5dff5; }
 .breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 0.78rem; min-width: 0; }
 .breadcrumb span { color: var(--text-muted); }
 .breadcrumb .crumb {
@@ -577,24 +566,6 @@ html:not(.perf-lite) .header {
   color: var(--text-muted); background: rgba(255,255,255,0.03);
   border: 1px dashed var(--border); border-radius: var(--radius-md);
 }
-.hierarchy-guide-tree { margin-top: 8px; }
-.hierarchy-guide-node {
-  margin-bottom: 10px; padding: 12px 14px;
-  border: 1px solid var(--border); border-radius: var(--radius-md);
-  background: var(--bg-card); box-shadow: var(--shadow-inset);
-}
-.hg-name { font-weight: 600; font-size: 0.88rem; color: var(--text); margin-bottom: 4px; }
-.hg-type {
-  font-size: 0.65rem; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.05em; color: var(--accent-soft); margin-left: 6px;
-}
-.hg-chain { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 6px; }
-.hg-text { font-size: 0.78rem; line-height: 1.45; color: var(--text-secondary); }
-.hg-legend {
-  margin-top: 14px; padding: 10px 12px; font-size: 0.76rem; line-height: 1.45;
-  color: var(--text-muted); background: rgba(255,255,255,0.03);
-  border-radius: var(--radius-md); border: 1px solid var(--border);
-}
 .m-influence {
   display: block; margin-top: 6px; font-size: 0.68rem; line-height: 1.35;
   color: var(--text-muted);
@@ -612,91 +583,6 @@ html:not(.perf-lite) .header {
 }
 .influence-link:hover { background: rgba(74,143,212,0.32); color: #c5dff5; }
 .influence-link.is-muted { opacity: 0.55; cursor: default; text-decoration: none; background: transparent; }
-.guide-metric-row .gm-sub { display: block; color: var(--accent); font-size: 0.74rem; margin-top: 2px; }
-.guide-metric-row .gm-desc { display: block; color: var(--text-secondary); margin-top: 6px; line-height: 1.45; }
-.guide-metric-row .gm-q, .guide-metric-row .gm-formula { display: block; color: var(--text-muted); font-size: 0.74rem; margin-top: 4px; }
-.guide-metric-row .gm-src { display: block; font-size: 0.68rem; color: var(--text-muted); margin-top: 6px; font-style: italic; }
-.guide-metric-row .gm-proto { display: block; margin-top: 6px; font-size: 0.72rem; }
-.guide-metric-row.in-proto { border-left: 2px solid var(--positive); padding-left: 8px; }
-.catalog-overview-total {
-  margin-top: 14px; padding: 10px 12px; text-align: center;
-  background: var(--accent-dim); border-radius: var(--radius-md);
-  font-size: 0.82rem; font-weight: 600; color: var(--accent-soft);
-}
-.catalog-level-card {
-  margin-bottom: 10px; padding: 12px 14px; border-radius: var(--radius-md);
-  border: 1px solid var(--border); background: var(--bg-card); cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
-}
-.catalog-level-card:hover { border-color: rgba(90,157,224,0.4); background: var(--bg-hover); }
-.catalog-level-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
-.catalog-level-title { font-weight: 600; font-size: 0.9rem; }
-.catalog-level-count { font-weight: 700; color: var(--accent-soft); font-size: 0.85rem; }
-.catalog-level-meta { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 6px; }
-.catalog-level-names { font-size: 0.72rem; color: var(--text-secondary); line-height: 1.45; }
-.catalog-back {
-  margin-bottom: 12px; padding: 6px 10px; font-size: 0.75rem; font-family: inherit;
-  border: 1px solid var(--border); border-radius: var(--radius-sm);
-  background: var(--bg-card); color: var(--text-secondary); cursor: pointer;
-}
-.catalog-back:hover { border-color: var(--border-strong); color: var(--text); }
-.home-portfolio-scale {
-  margin-bottom: 12px; padding: 10px 14px; font-size: 0.78rem; line-height: 1.45;
-  color: var(--text-secondary); background: rgba(255,255,255,0.03);
-  border: 1px dashed var(--border-strong); border-radius: var(--radius-md);
-}
-.home-portfolio-scale strong { color: var(--text); }
-.guide-overlay {
-  position: fixed; inset: 0; z-index: 250;
-  background: rgba(0,0,0,0.55); opacity: 0; pointer-events: none;
-  transition: opacity 0.2s;
-}
-.guide-overlay.open { opacity: 1; pointer-events: auto; }
-.guide-panel {
-  position: fixed; z-index: 260; top: 50%; left: 50%;
-  transform: translate(-50%, -50%) scale(0.96);
-  width: min(720px, 92vw); max-height: 85vh;
-  background: var(--bg-elevated); border: 1px solid var(--border-strong);
-  border-radius: var(--radius-lg); box-shadow: 0 12px 48px rgba(0,0,0,0.5);
-  display: flex; flex-direction: column; opacity: 0; pointer-events: none;
-  transition: opacity 0.2s, transform 0.2s;
-}
-.guide-panel.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
-.guide-head {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: var(--space-md) var(--space-lg); border-bottom: 1px solid var(--border);
-}
-.guide-head h3 { font-size: 1.05rem; font-weight: 600; }
-.guide-tabs { display: flex; gap: 4px; padding: var(--space-sm) var(--space-md); border-bottom: 1px solid var(--border); }
-.guide-tabs button {
-  padding: 6px 12px; font-size: 0.75rem; font-family: inherit;
-  border: 1px solid transparent; border-radius: var(--radius-sm);
-  background: transparent; color: var(--text-secondary); cursor: pointer;
-}
-.guide-tabs button.active { background: var(--accent-dim); color: var(--accent); border-color: rgba(74,143,212,0.35); }
-.guide-body { padding: var(--space-md) var(--space-lg); overflow-y: auto; flex: 1; font-size: 0.82rem; line-height: 1.5; }
-.guide-body h4 { font-size: 0.88rem; margin: 14px 0 8px; color: var(--text); }
-.guide-body h4:first-child { margin-top: 0; }
-.guide-body p { color: var(--text-secondary); margin-bottom: 10px; }
-.guide-level-card {
-  margin-bottom: 10px; padding: 14px; border-radius: var(--radius-md);
-  border: 1px solid var(--border); background: var(--bg-card);
-  box-shadow: var(--shadow-inset);
-}
-.guide-level-card .gl-title { font-weight: 600; color: var(--accent); margin-bottom: 4px; }
-.guide-metric-row {
-  padding: 10px 12px; margin-bottom: 8px;
-  border: 1px solid var(--border); border-radius: var(--radius-md);
-  background: var(--bg-card); font-size: 0.78rem;
-}
-.guide-metric-row:last-child { margin-bottom: 0; }
-.guide-metric-row strong { color: var(--text); font-size: 0.82rem; }
-.guide-metric-row .gm-why { color: var(--text-muted); font-size: 0.72rem; display: block; margin-top: 2px; }
-.guide-close {
-  width: 32px; height: 32px; border: none; border-radius: var(--radius-sm);
-  background: transparent; color: var(--text-secondary); font-size: 1.4rem; cursor: pointer;
-}
-.guide-close:hover { background: var(--bg-hover); color: var(--text); }
 .metric-card.has-link { border-left: 2px solid rgba(74,143,212,0.45); }
 .metric-card .m-level {
   display: inline-block; margin-bottom: 4px; font-size: 0.62rem; font-weight: 600;
@@ -781,13 +667,6 @@ html:not(.perf-lite) .header {
   color: var(--text-muted); margin-bottom: 2px;
 }
 .vision-grid dd { margin: 0 0 4px; color: var(--text-secondary); font-size: 0.86rem; line-height: 1.5; }
-.guide-level-heading {
-  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.08em; color: var(--accent-soft);
-  margin: 18px 0 10px; padding-bottom: 6px;
-  border-bottom: 1px solid var(--border);
-}
-.guide-level-heading:first-child { margin-top: 4px; }
 .chart-empty {
   padding: var(--space-xl) var(--space-md); text-align: center;
   color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;
@@ -875,12 +754,6 @@ html:not(.perf-lite) .header {
 .home-hero h1 { font-size: 1.35rem; font-weight: 600; margin-bottom: 6px; letter-spacing: -0.02em; }
 .home-hero-sub { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; max-width: 52ch; }
 .home-hero-meta { font-size: 0.72rem; color: var(--text-muted); margin-top: 8px; }
-.home-cadence-pill {
-  flex-shrink: 0; padding: 10px 14px; border-radius: var(--radius-md);
-  border: 1px solid rgba(90,157,224,0.25); background: rgba(90,157,224,0.08);
-  font-size: 0.72rem; color: var(--text-secondary); max-width: 260px;
-}
-.home-cadence-pill strong { display: block; color: var(--accent-soft); font-size: 0.78rem; margin-bottom: 4px; }
 .home-scorecard {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-sm);
   margin-bottom: var(--space-lg);
@@ -896,8 +769,7 @@ html:not(.perf-lite) .header {
   transform: translateY(-1px);
 }
 .home-kpi-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); display: block; margin-bottom: 8px; }
-.home-kpi-card .m-value-row { margin-bottom: 6px; }
-.home-kpi-hint { font-size: 0.68rem; color: var(--accent); opacity: 0.85; }
+.home-kpi-card .m-value-row { margin-bottom: 0; }
 .home-grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: var(--space-md); align-items: start; }
 .home-panel {
   background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 48%), var(--bg-elevated);
@@ -1149,7 +1021,6 @@ html:not(.perf-lite) .header {
 @media (max-width: 768px) {
   :root { --header-h: auto; --passport-w: 100%; }
   .header { grid-template-columns: 1fr; padding: var(--space-md); }
-  .header-actions { flex-wrap: wrap; }
   .main { grid-template-columns: 1fr; padding: var(--space-sm); gap: var(--space-sm); }
   .col-tree .panel-body, .col-pyramid .panel-body { max-height: none; }
   .passport-grid { grid-template-columns: 1fr; }
@@ -1174,9 +1045,6 @@ html:not(.perf-lite) .header {
     <div class="header-main" id="headerMain" hidden>
       <nav class="breadcrumb" id="breadcrumb"></nav>
       <span class="metric-crumb" id="metricCrumb" hidden></span>
-    </div>
-    <div class="header-actions">
-      <button type="button" class="header-btn primary" id="btnGuideCatalog">Каталог метрик</button>
     </div>
   </header>
   <div class="app-views">
@@ -1207,17 +1075,8 @@ html:not(.perf-lite) .header {
     </aside>
   </main>
   </div>
-  <footer class="footer-line" id="appFooter">Рабочее место лидера Блок Т · v3.7 · единый каталог метрик · mock-данные</footer>
+  <footer class="footer-line" id="appFooter">Рабочее место лидера Блок Т · v3.8</footer>
 </div>
-<div class="guide-overlay" id="guideOverlay"></div>
-<aside class="guide-panel" id="guidePanel">
-  <div class="guide-head">
-    <h3 id="guideTitle">Каталог метрик</h3>
-    <button type="button" class="guide-close" id="guideClose" aria-label="Закрыть">×</button>
-  </div>
-  <div class="guide-tabs" id="guideTabs" hidden></div>
-  <div class="guide-body" id="guideBody"></div>
-</aside>
 <div class="passport-overlay" id="passportOverlay"></div>
 <aside class="passport" id="passport">
   <div class="passport-head">
@@ -1862,13 +1721,6 @@ const LEVEL_BRIDGES_BY_SCOPE = {
   }
 };
 
-const GUIDE_LEVEL_BRIDGES = {
-  4: "L4 отвечает на вопрос ценности для бизнеса. Не «лечится» точечными действиями на L1.",
-  3: "L3 — мост между operational-слоем (L2) и бизнес-результатом (L4).",
-  2: "L2 — поток и качество обработки; ранний сигнал для уровней выше.",
-  1: "L1 — здоровье команды и активности; только на листовом продукте. На блоке, кластере и сегменте — свод L4–L2."
-};
-
 const LEVEL_ASSIGNMENT_CRITERIA = {
   4: {
     question: "Создаём ли ценность для бизнеса?",
@@ -2052,83 +1904,6 @@ const PRODUCT_HIERARCHY_ROLLUP = {
   }
 };
 
-function cm(lv, key, name, formula, what, owner, threshold, proto) {
-  return { level: lv, key: key, name: name, formula: formula, what: what || "", question: what || "", owner: owner || "", threshold: threshold || "", proto: proto || [] };
-}
-
-const CATALOG_LEVELS = [
-  { key: 4, label: "L4 · Outcome / Value", count: 13, question: "Создаём ли ценность для бизнеса?", audience: "Совет, CEO, CFO", cadence: "Квартал" },
-  { key: 3, label: "L3 · Product", count: 19, question: "Работает ли продукт у пользователей?", audience: "CPO, PO", cadence: "Месяц" },
-  { key: 2, label: "L2 · Flow / Throughput", count: 13, question: "Как течёт поставка?", audience: "CTO, Eng Director", cadence: "Неделя–месяц" },
-  { key: 1, label: "L1 · Activity / Health", count: 7, question: "Здорова ли команда?", audience: "Team Lead", cadence: "Спринт" },
-  { key: "fnd", label: "Foundations · DATA & KNOWLEDGE", count: 9, question: "Сквозные слои данных и знаний", audience: "Платформы", cadence: "Месяц" }
-];
-
-const METRIC_CATALOG = [
-  cm(4, "hvr", "HVR — Доля подтверждённых гипотез", "Гипотезы_подтверждённые / Гипотезы_закрытые × 100%", "Доля гипотез с измеримым бизнес-эффектом на проде", "CPO + Head of Experimentation", "Healthy 15–25%", ["bt-hvr"]),
-  cm(4, "roi12", "Initiative ROI (T+12)", "(Cumulative_Benefit − Fully_Loaded_Cost) / Fully_Loaded_Cost за 12 мес.", "Окупаемость инициативы через 12 месяцев", "FinOps", ">60% инициатив ROI>0", ["ai-roi", "id-roi", "bt-roi", "ip-roi", "wpt-roi"]),
-  cm(4, "oei", "OEI — Индекс организационной эффективности", "w1×Profitability + w2×Market_share + w3×NPS_norm", "Сводный индекс эффективности организации", "CEO + CFO", "Портфель"),
-  cm(4, "aue", "AUE — Машинная юнит-экономика", "(Revenue − COGS − Token_cost) / Active_unit", "Юнит-экономика с учётом токенов", "FinOps", "Healthy >3.5", ["ai-aue"]),
-  cm(4, "abi", "ABI — Атрибутированный бизнес-эффект", "Σ (ΔKPI в ₽ × attribution_factor)", "Подтверждённый дополнительный бизнес-эффект в рублях", "PO + FP&A", "Подпись бизнеса"),
-  cm(4, "ai-roi-y1", "AI Investment ROI (Y1)", "(Ценность_Y1 − Инвестиции_Y1) / Инвестиции × 100%", "ROI AI-программы за первый год", "FinOps", "≥39%"),
-  cm(4, "payback", "Payback Period", "min t: Σ(ценность − затраты)(0..t) ≥ 0", "Срок окупаемости с учётом J-curve", "FinOps", "≤8 мес."),
-  cm(4, "jcurve", "J-Curve Depth", "min(throughput_t / baseline) − 1", "Глубина провала throughput при внедрении AI", "FinOps", "Дно >−10%"),
-  cm(4, "downtime-delta", "Downtime Impact Delta", "(FDRT_после − FDRT_до) × cost/hour × incidents", "Изменение стоимости простоев", "FinOps", "Δ <5% AI-ценности"),
-  cm(4, "value-drivers", "5 Value Drivers Composite", "Сумма 5 драйверов ценности AI-программы", "Композит драйверов ценности", "FinOps", "≥ TCO × 1.5"),
-  cm(4, "cap-index", "AI Capability Index", "Σ(7 столпов) / 35 × 100%", "Зрелость AI-возможностей организации", "CTO", "≥70% к Y2"),
-  cm(4, "realloc", "Reallocation Rate", "часы на новую работу / всего освобождённых", "Доля времени на новую ценность", "CPO", "≥60%"),
-  cm(4, "spend-outcome", "AI Spend per Delivered Outcome", "TCO_AI_PDLC / validated_outcomes", "Стоимость одного подтверждённого outcome", "FinOps", "−40% к Y3"),
-  cm(3, "eorr", "EORR — Реализация outcome эпиков", "Эпики_с_outcome / Завершённые_эпики × 100%", "Доля эпиков с достигнутым outcome", "Product", "Healthy >70%", ["ai-eorr"]),
-  cm(3, "pps", "PPS — Product Performance Score", "Task_completion × Safety_SLA × Latency_SLA", "Композит производительности продукта", "Product", "Healthy >0.90", ["wpt-pps"]),
-  cm(3, "adopt", "Adoption & Retention", "D1 activation · Retention D30/D90", "Внедрение и удержание пользователей", "Product", "D30>25%", ["bt-adopt", "ip-adopt", "id-adopt", "wpt-adopt"]),
-  cm(3, "ttv", "TTV — Время до ценности", "median(дата эффекта − дата старта)", "Сжатие time-to-value", "Product", "−30…50% к baseline", ["id-tti", "id-ttm", "ai-ttm", "wpt-ttv"]),
-  cm(3, "col", "CoL — Cost of Learning", "(PM_time×rate + LLM + synthetic) / hypotheses", "Стоимость проверки гипотезы", "FinOps", "Healthy <$1500/hyp", ["ai-col"]),
-  cm(3, "iod", "IOD — Intent-to-Outcome Drift", "|spec_outcome − measured| / spec", "Дрейф между intent и фактом", "Arch", "Healthy <5%", ["ai-iod"]),
-  cm(3, "wfr", "WFR — Workaround-to-Flow Ratio", "redundant_API_calls / ideal_steps", "Доля обходных путей в процессе", "Product", "Healthy <1.15", ["ai-wfr"]),
-  cm(3, "arr", "ARR — Autonomous Recovery Rate", "auto_recovered / total_failures", "Автономное восстановление после сбоев", "Platform", "Healthy >70%", ["ai-arr"]),
-  cm(3, "ebcs", "EBCS — Evidence Bundle Completeness", "compliant_AI_tasks / total_AI_tasks", "Полнота evidence для AI-изменений", "Audit", "100%", ["ai-ebcs"]),
-  cm(3, "rev-attrib", "Revenue Attribution per Feature", "Δrevenue × idea_success_rate × impact", "Атрибуция выручки на фичу", "Product", "~33% success"),
-  cm(3, "vor", "Validated Outcome Rate", "validated_outcomes / shipped_features", "Доля фич с подтверждённым outcome", "Product", "≥75%"),
-  cm(3, "orr", "Outcome Reversal Rate", "reverted / shipped", "Доля откатов outcome (counter)", "Product", "<10%"),
-  cm(3, "srr", "Spec Reuse Rate", "reused_specs / total_specs", "Повторное использование спецификаций", "Arch", "≥50%"),
-  cm(3, "kpi-delta", "Feature Adoption / KPI Delta", "Δ product_KPI per feature @30d", "Изменение KPI продукта от фичи", "Product", "По продукту"),
-  cm(3, "ai-debt", "AI-yield Debt", "rework_cost / annual_AI_value", "Долг от низкого качества AI (counter)", "Eng", "<20%"),
-  cm(3, "trust", "Trust Index", "EvalPass × Override × (1−Hallucination)", "Доверие к AI-результатам", "Product", "≥0.85"),
-  cm(3, "stuck", "Stuck Rate", "initiatives>90d_no_release / active", "Застрявшие инициативы (counter)", "Product", "<10%"),
-  cm(3, "disc-ct", "Discovery Cycle Time", "median(spec_validated − hypothesis)", "Время discovery", "Product", "<5 дней", ["ai-disc"]),
-  cm(3, "cycle-ct", "Cycle Time", "median(deploy − first_commit)", "Полный цикл поставки", "Product", "−50% к baseline"),
-  cm(2, "df", "Deployment Frequency (DF)", "deploys_to_prod / неделя", "Частота деплоев в прод", "Eng", "Elite: неск./день"),
-  cm(2, "ltc", "Lead Time for Changes (LTC)", "median(deploy − commit)", "DORA Lead Time", "Eng", "Elite: <1 ч", ["ai-lt"]),
-  cm(2, "cfr", "Change Failure Rate (CFR)", "failed_deploys / total_deploys", "Доля неуспешных изменений", "Eng", "Elite: <5%", ["ai-cfr"]),
-  cm(2, "turnover", "Code Turnover Ratio", "LOC_churned_30d / LOC_merged", "Оборачиваемость кода в AI-era", "Eng", "AI turnover <12%"),
-  cm(2, "scr", "Spec Coverage Rate (SCR)", "epics_with_full_spec / total_epics", "Покрытие SDD-спецификациями", "Arch", ">70% SDD-ready"),
-  cm(2, "vsm", "VSM Maturity Score", "Шкала 1–5 зрелости VSM", "Зрелость value stream management", "CTO", "≥4"),
-  cm(2, "audit", "Audit Coverage", "audited_agent_actions / total", "Покрытие аудитом действий агентов", "Audit", "100%"),
-  cm(2, "obs", "AI Agent Observability Coverage", "ops_with_full_trace / total_ops", "Наблюдаемость AI-операций", "Platform", "100%"),
-  cm(2, "policy", "Policy Violations Detected", "Σ violations by severity", "Нарушения политик (counter)", "Governance", "0 critical"),
-  cm(2, "explain", "Explanation Coverage", "decisions_with_explanation / total", "Покрытие объяснениями решений", "Governance", "≥99%"),
-  cm(2, "platform", "Platform Coverage", "teams_on_IDP / total_teams", "Покрытие internal developer platform", "Platform", ">80%"),
-  cm(2, "fdrt", "FDRT — Failed Deployment Recovery Time", "median(recovered − failed_deploy)", "Время восстановления после сбоя деплоя", "SRE", "<30 мин"),
-  cm(2, "ai-share", "AI Code Share (линза, не KPI)", "ai_LOC / total_LOC", "Доля AI-кода — измерять, не таргетировать", "Eng", "Линза"),
-  cm(1, "spd", "Story per Developer", "SP_completed / devs / sprint", "Стабильность velocity (не ranking)", "Team Lead", "Тренд"),
-  cm(1, "dxi", "DXI — Developer Experience Index", "14 вопросов, шкала 0–100", "Индекс опыта разработчика", "Team Lead", "Leading 3–6 мес.", ["ai-tm"]),
-  cm(1, "flt", "Feedback Loop Time (FLT)", "median(commit → CI signal)", "Время обратной связи CI", "Team Lead", "Companion к DXI"),
-  cm(1, "cog", "Cognitive Load", "avg 4-Q DevEx survey 1–5", "Когнитивная нагрузка команды", "Team Lead", "Healthy ≤2.5"),
-  cm(1, "ait-roi", "AI Tool ROI (fully-loaded)", "(Value − FL_cost) / FL_cost", "Окупаемость AI-инструментов", "Team Lead", "Healthy 2.5–3.5×", ["ai-llm"]),
-  cm(1, "onb", "Onboarding Time", "median(days to 10th PR)", "Время выхода на продуктивность", "Team Lead", "p50<21д"),
-  cm(1, "literacy", "AI Literacy Coverage", "сотрудники с программой / headcount", "Покрытие AI-грамотностью", "HR", "Healthy >70%"),
-  cm("fnd", "t2data", "Time to Data (T2Data)", "median(data_used − requested)", "Время доступа к данным", "Data Platform", "<1 дня для 90%"),
-  cm("fnd", "dpp", "DPP Coverage", "objects_with_passport / total", "Покрытие паспортами данных", "Data Gov", "≥95%"),
-  cm("fnd", "semantic", "AI Semantic Layer Coverage", "queries_via_SL / total_queries", "Покрытие semantic layer", "Data Platform", "≥95%"),
-  cm("fnd", "housekeep", "Housekeeping Automation", "autonomous_ops / total", "Автоматизация housekeeping", "Data Ops", "≥70%"),
-  cm("fnd", "readiness", "AI-Readiness Score (СУЗ)", "composite 0–100", "Готовность базы знаний к AI", "Knowledge", "≥75"),
-  cm("fnd", "know-cov", "Knowledge Coverage Score", "tasks_with_knowledge / total", "Покрытие знаниями задач", "Knowledge", "≥90%"),
-  cm("fnd", "fresh", "Freshness Score", "fresh_artifacts / total", "Актуальность артефактов знаний", "Knowledge", "≥95%"),
-  cm("fnd", "ttca", "Time-to-Connect Agent", "median(agent_prod − need)", "Время подключения агента", "Knowledge", "≤3 дней"),
-  cm("fnd", "accuracy", "Agent Accuracy", "correct_responses / total", "Точность ответов агента", "Knowledge", "≥90%")
-];
-
-const PORTFOLIO_SCALE = { totalProducts: 214, demoProducts: 2, clustersShown: 2 };
 const state = {
   appView: "home",
   selectedProduct: "blok-t",
@@ -2137,9 +1912,6 @@ const state = {
   passportOpen: false,
   centerView: "metrics",
   metricsLayout: "pyramid",
-  guideOpen: false,
-  catalogStep: "overview",
-  catalogLevel: null,
   treeCollapsed: {},
   productSearch: "",
   graphFocusMetricId: null
@@ -2151,11 +1923,6 @@ const LEADER_HOME = {
   role: "\u0420\u0443\u043a\u043e\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u044c \u0411\u043b\u043e\u043a\u0430 \u0422",
   period: "Q2 2026 \u00b7 \u043d\u0435\u0434\u0435\u043b\u044f 24",
   weeklyFocus: "Закрыть gap по Time-to-Insight SberVision и cost of downtime Cloud; подготовить portfolio review L4.",
-  nextCadence: {
-    title: "Portfolio review L4",
-    when: "18 июня 2026",
-    prep: "Scorecard · риски TCO · сигналы по кластерам"
-  },
   scorecardMetrics: ["bt-net", "bt-tco", "bt-roi", "bt-hvr", "bt-csi"],
   clusterKpis: {
     "internal-products": ["sv-roi", "sv-csi", "sv-tti"],
@@ -2734,7 +2501,6 @@ function findMetricLocation(metricId) {
 function navigateToMetric(metricId) {
   var loc = findMetricLocation(metricId);
   if (!metricId || !loc) return false;
-  closeGuide();
   state.appView = "workspace";
   state.centerView = "metrics";
   selectProduct(loc.productId, metricId);
@@ -2780,7 +2546,6 @@ function setAppView(view) {
     return;
   }
   state.appView = view;
-  closeGuide();
   state.passportOpen = false;
   if (view === "home") {
     renderAppShell();
@@ -2793,7 +2558,6 @@ function setAppView(view) {
 
 function openWorkspace(productId, opts) {
   opts = opts || {};
-  closeGuide();
   state.appView = "workspace";
   state.selectedProduct = productId || "blok-t";
   state.selectedMetric = null;
@@ -2836,18 +2600,15 @@ function renderHomeMiniMetric(metricId) {
 }
 
 function renderHomeClusterStripHtml() {
-  var scale = PORTFOLIO_SCALE || { totalProducts: 214, demoProducts: 2 };
   var clusters = PRODUCT_TREE.children || [];
   var chips = clusters.map(function (cl) {
     var kpiIds = LEADER_HOME.clusterKpis[cl.id] || [];
     var miniHtml = kpiIds.map(renderHomeMiniMetric).join("");
     return '<div class="home-cluster-chip"><h4>' + escapeHtml(cl.name) + "</h4>" +
       (miniHtml ? '<div class="home-cluster-kpis">' + miniHtml + "</div>" : "") +
-      '<button type="button" class="home-leaf-btn" style="margin-top:8px" data-open-product="' + escapeHtml(cl.id) + '">Пирамида кластера</button></div>';
+      '<button type="button" class="home-leaf-btn" style="margin-top:8px" data-open-product="' + escapeHtml(cl.id) + '">Открыть кластер</button></div>';
   }).join("");
-  return '<div class="home-portfolio-scale"><strong>Портфель:</strong> ' + scale.totalProducts +
-    ' продуктов · в демо — ' + scale.demoProducts + ' (SberVision, Облачная платформа)</div>' +
-    '<div class="home-cluster-strip">' + chips + "</div>";
+  return '<div class="home-cluster-strip">' + chips + "</div>";
 }
 
 function renderHomeSignalsHtml() {
@@ -2934,12 +2695,6 @@ function bindHomeEvents(root) {
     var wsBtn = e.target.closest("[data-open-workspace]");
     if (wsBtn) {
       openWorkspace(wsBtn.getAttribute("data-open-workspace") || "blok-t", {});
-      return;
-    }
-    var guideBtn = e.target.closest("[data-open-catalog]");
-    if (guideBtn) {
-      openGuide();
-      return;
     }
   });
 }
@@ -2952,23 +2707,19 @@ function renderHome() {
     if (!brief) return "";
     return '<button type="button" class="home-kpi-card" data-goto-metric="' + escapeHtml(mid) + '">' +
       '<span class="home-kpi-label">' + escapeHtml(metricShortLabel(brief.met.name)) + "</span>" +
-      renderMetricValueHtml(brief.loc.productId, brief.met) +
-      '<span class="home-kpi-hint">L4 \u00b7 \u043a\u0432\u0430\u0440\u0442\u0430\u043b \u00b7 \u043a\u043b\u0438\u043a \u2192 \u043c\u0435\u0442\u0440\u0438\u043a\u0430</span></button>';
+      renderMetricValueHtml(brief.loc.productId, brief.met) + "</button>";
   }).join("");
   var agendaHtml = LEADER_HOME.agenda.map(function (a) {
     var link = a.productId
       ? ' \u00b7 <button type="button" class="home-leaf-btn" data-open-product="' + escapeHtml(a.productId) + '">\u043e\u0442\u043a\u0440\u044b\u0442\u044c</button>'
       : "";
     return "<li><span class=\"home-list-title\">" + escapeHtml(a.date) + " \u2014 " + escapeHtml(a.title) + "</span>" +
-      '<span class="home-list-meta">' + escapeHtml(a.type || "") + link + "</span></li>";
+      (link ? '<span class="home-list-meta">' + link + "</span>" : "") + "</li>";
   }).join("");
   root.innerHTML =
     '<section class="home-hero">' +
     "<div><h1>" + escapeHtml(LEADER_HOME.leaderName) + "</h1>" +
-    '<p class="home-hero-sub">' + escapeHtml(LEADER_HOME.role) + " — единый взгляд на портфель Блока Т: scorecard L4, сигналы отклонений и свод по кластерам.</p>" +
-    '<p class="home-hero-meta">' + escapeHtml(LEADER_HOME.period) + "</p></div>" +
-    '<div class="home-cadence-pill"><strong>' + escapeHtml(LEADER_HOME.nextCadence.title) + "</strong>" +
-    escapeHtml(LEADER_HOME.nextCadence.when) + "<br>" + escapeHtml(LEADER_HOME.nextCadence.prep) + "</div></section>" +
+    '<p class="home-hero-sub">' + escapeHtml(LEADER_HOME.role) + " · " + escapeHtml(LEADER_HOME.period) + "</p></div></section>" +
     '<div class="home-quick-bar">' +
     '<button type="button" class="home-action-btn primary" data-open-workspace="blok-t">Список продуктов</button></div>' +
     '<div class="home-focus"><strong>\u0424\u043e\u043a\u0443\u0441 \u043d\u0435\u0434\u0435\u043b\u0438:</strong> ' + escapeHtml(LEADER_HOME.weeklyFocus) + "</div>" +
@@ -3084,30 +2835,6 @@ function formatMetricValue(val, units, met) {
   return formatted + (u ? " " + u : "");
 }
 
-function renderHierarchyGuideTree(node, depth) {
-  depth = depth || 0;
-  var rollup = PRODUCT_HIERARCHY_ROLLUP[node.id];
-  var html = '<div class="hierarchy-guide-node" style="margin-left:' + (depth * 14) + 'px">';
-  html += '<div class="hg-name">' + escapeHtml(node.name);
-  if (node.level) html += '<span class="hg-type">' + escapeHtml(node.level) + "</span>";
-  html += "</div>";
-  if (rollup && rollup.chain) {
-    html += '<div class="hg-chain">' + escapeHtml(rollup.chain) + "</div>";
-    html += '<div class="hg-text">' + escapeHtml(rollup.text) + "</div>";
-  } else if (node.leaf) {
-    html += '<div class="hg-text">\u041b\u0438\u0441\u0442\u043e\u0432\u043e\u0439 \u043f\u0440\u043e\u0434\u0443\u043a\u0442: \u043f\u043e\u043b\u043d\u0430\u044f \u043f\u0438\u0440\u0430\u043c\u0438\u0434\u0430 L1\u2013L4 \u0438 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u0435.</div>';
-  } else if (node.children && node.children.length) {
-    html += '<div class="hg-text">\u0421\u0432\u043e\u0434\u043d\u044b\u0435 \u043c\u0435\u0442\u0440\u0438\u043a\u0438; drill-down \u2014 \u0432 \u0434\u043e\u0447\u0435\u0440\u043d\u0438\u0435 \u0443\u0437\u043b\u044b.</div>';
-  }
-  html += "</div>";
-  if (node.children) {
-    node.children.forEach(function (ch) {
-      html += renderHierarchyGuideTree(ch, depth + 1);
-    });
-  }
-  return html;
-}
-
 function isLeafProduct(id) {
   var path = findPath(PRODUCT_TREE, id);
   if (!path || !path.length) return false;
@@ -3137,116 +2864,6 @@ function formatInfluenceHtml(inf) {
   return parts.length ? '<span class="m-influence">' + parts.join("") + "</span>" : "";
 }
 
-function metricInPrototype(catalogEntry) {
-  return !!(catalogEntry && catalogEntry.proto && catalogEntry.proto.length);
-}
-
-function openGuide() {
-  state.passportOpen = false;
-  state.guideOpen = true;
-  state.catalogStep = "overview";
-  state.catalogLevel = null;
-  renderGuide();
-  renderPassport();
-}
-
-function getCatalogLevelMeta(levelKey) {
-  for (var i = 0; i < CATALOG_LEVELS.length; i++) {
-    if (CATALOG_LEVELS[i].key === levelKey) return CATALOG_LEVELS[i];
-  }
-  return null;
-}
-
-function renderCatalogOverviewHtml() {
-  var html = "<p><strong>Каузальная цепочка:</strong> L1 → L2 → L3 → L4. Диагностика сверху вниз, управление снизу вверх. Выберите уровень для детализации.</p>";
-  CATALOG_LEVELS.forEach(function (lv) {
-    var names = METRIC_CATALOG.filter(function (c) { return c.level === lv.key; }).map(function (c) { return c.name; });
-    html += '<button type="button" class="catalog-level-card" data-catalog-level="' + escapeHtml(String(lv.key)) + '">' +
-      '<div class="catalog-level-head"><span class="catalog-level-title">' + escapeHtml(lv.label) + '</span>' +
-      '<span class="catalog-level-count">' + lv.count + ' метрик</span></div>' +
-      '<div class="catalog-level-meta">' + escapeHtml(lv.question) + " · " + escapeHtml(lv.audience) + " · " + escapeHtml(lv.cadence) + "</div>" +
-      '<div class="catalog-level-names">' + escapeHtml(names.slice(0, 6).join(" · ")) +
-      (names.length > 6 ? " · …" : "") + "</div></button>";
-  });
-  html += '<div class="catalog-overview-total">Итого: 61 метрика · L4 — 13 · L3 — 19 · L2 — 13 · L1 — 7 · Foundations — 9</div>';
-  return html;
-}
-
-function renderCatalogDetailHtml(levelKey) {
-  var meta = getCatalogLevelMeta(levelKey);
-  var items = METRIC_CATALOG.filter(function (c) { return c.level === levelKey; });
-  var html = '<button type="button" class="catalog-back" data-catalog-back="1">← Обзор уровней</button>';
-  if (meta) {
-    html += "<h4>" + escapeHtml(meta.label) + " · " + items.length + " метрик</h4>" +
-      '<p style="color:var(--text-muted);font-size:0.78rem">' + escapeHtml(meta.question) + " · " + escapeHtml(meta.audience) + " · " + escapeHtml(meta.cadence) + "</p>";
-  }
-  items.forEach(function (c) {
-    var inProto = metricInPrototype(c);
-    html += '<div class="guide-metric-row' + (inProto ? " in-proto" : "") + '"><strong>' + escapeHtml(c.name) + "</strong>" +
-      (c.formula ? '<span class="gm-formula"><b>Формула:</b> ' + escapeHtml(c.formula) + "</span>" : "") +
-      (c.what ? '<span class="gm-desc">' + escapeHtml(c.what) + "</span>" : "") +
-      (c.owner ? '<span class="gm-q"><b>Владелец:</b> ' + escapeHtml(c.owner) + "</span>" : "") +
-      (c.threshold ? '<span class="gm-q"><b>Порог:</b> ' + escapeHtml(c.threshold) + "</span>" : "") +
-      (c.proto && c.proto.length ? '<span class="gm-proto"><span class="infl-label">В прототипе:</span> ' + renderMetricLinksHtml(c.proto) + "</span>" : "") +
-      "</div>";
-  });
-  return html;
-}
-
-function bindCatalogGuideEvents(body) {
-  if (!body) return;
-  body.querySelectorAll("[data-catalog-level]").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      state.catalogStep = "detail";
-      state.catalogLevel = btn.getAttribute("data-catalog-level");
-      if (state.catalogLevel === "4" || state.catalogLevel === "3" || state.catalogLevel === "2" || state.catalogLevel === "1") {
-        state.catalogLevel = parseInt(state.catalogLevel, 10);
-      }
-      renderGuide();
-    });
-  });
-  var back = body.querySelector("[data-catalog-back]");
-  if (back) {
-    back.addEventListener("click", function () {
-      state.catalogStep = "overview";
-      state.catalogLevel = null;
-      renderGuide();
-    });
-  }
-  body.querySelectorAll("[data-goto-metric]").forEach(function (btn) {
-    btn.addEventListener("click", function (e) {
-      e.preventDefault();
-      var mid = btn.getAttribute("data-goto-metric");
-      if (mid) { closeGuide(); navigateToMetric(mid); }
-    });
-  });
-}
-
-function closeGuide() {
-  if (!state.guideOpen) return;
-  state.guideOpen = false;
-  var ov = document.getElementById("guideOverlay");
-  var pn = document.getElementById("guidePanel");
-  if (ov) ov.classList.remove("open");
-  if (pn) pn.classList.remove("open");
-}
-
-function renderGuide() {
-  var ov = document.getElementById("guideOverlay");
-  var pn = document.getElementById("guidePanel");
-  var body = document.getElementById("guideBody");
-  var titleEl = document.getElementById("guideTitle");
-  if (!ov || !pn || !body) return;
-  if (titleEl) titleEl.textContent = "Каталог метрик";
-  var html = state.catalogStep === "detail" && state.catalogLevel != null
-    ? renderCatalogDetailHtml(state.catalogLevel)
-    : renderCatalogOverviewHtml();
-  body.innerHTML = html;
-  bindCatalogGuideEvents(body);
-  ov.classList.add("open");
-  pn.classList.add("open");
-}
-
 function expandTreePath(productId) {
   var path = findPath(PRODUCT_TREE, productId) || [];
   path.forEach(function (n) {
@@ -3261,7 +2878,6 @@ function toggleTreeNode(nodeId) {
 }
 
 function selectProduct(id, metricId) {
-  closeGuide();
   if (state.selectedProduct !== id) state.graphFocusMetricId = null;
   expandTreePath(id);
   state.selectedProduct = id;
@@ -3658,7 +3274,6 @@ function renderWorkspace(opts) {
   renderPyramid();
   renderPassport();
   renderCharts();
-  if (state.guideOpen) renderGuide();
 }
 
 function renderAll() {
@@ -3703,18 +3318,7 @@ document.addEventListener("keydown", function (e) {
   } else if (state.centerView === "description") {
     state.centerView = "metrics";
     renderWorkspace({ centerOnly: true });
-  } else if (state.guideOpen) {
-    closeGuide();
   }
-});
-
-document.getElementById("btnGuideCatalog").addEventListener("click", function () {
-  openGuide();
-});
-document.getElementById("guideClose").addEventListener("click", closeGuide);
-document.getElementById("guideOverlay").addEventListener("click", closeGuide);
-document.getElementById("guidePanel").addEventListener("click", function (e) {
-  e.stopPropagation();
 });
 
 document.getElementById("headerNav").addEventListener("click", function (e) {
@@ -3727,12 +3331,6 @@ document.getElementById("headerBrand").addEventListener("click", function () {
 });
 
 document.addEventListener("click", function (e) {
-  var catalogBtn = e.target.closest("[data-open-catalog]");
-  if (catalogBtn) {
-    e.preventDefault();
-    openGuide();
-    return;
-  }
   var link = e.target.closest("[data-goto-metric]");
   if (!link) return;
   e.preventDefault();
@@ -3748,7 +3346,6 @@ function selectMetricFromTree(metricId, isExternal) {
   }
   var entry = getProductMetricMap(state.selectedProduct)[metricId];
   if (!entry) return;
-  closeGuide();
   state.graphFocusMetricId = metricId;
   state.centerView = "metrics";
   state.metricsLayout = "tree";
@@ -3764,7 +3361,6 @@ function selectMetricFromCard(metricId, level) {
     if (met.id === metricId) found = met;
   });
   if (!found) return;
-  closeGuide();
   state.centerView = "metrics";
   state.selectedMetric = found;
   state.selectedLevel = level;
